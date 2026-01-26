@@ -81,7 +81,12 @@ export default function Retreats() {
       <section className="section-padding bg-background">
         <div className="container-page">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {retreats.map(retreat => <div key={retreat.id} className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300">
+            {retreats.map(retreat => (
+              <Link
+                key={retreat.id}
+                to={`/retreats/${retreat.id}`}
+                className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300 block"
+              >
                 <div className="aspect-[16/10] overflow-hidden">
                   <img src={retreat.image} alt={retreat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
@@ -100,12 +105,13 @@ export default function Retreats() {
                   <p className="text-body mb-6">{retreat.description}</p>
                   <div className="flex items-center justify-between">
                     <span className="font-serif text-lg text-foreground">{retreat.price}</span>
-                    <Button variant="sage-outline" size="sm" asChild>
-                      <Link to="/contact">Request to Book</Link>
+                    <Button variant="sage-outline" size="sm">
+                      View Details
                     </Button>
                   </div>
                 </div>
-              </div>)}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
