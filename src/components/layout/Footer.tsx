@@ -1,24 +1,32 @@
 import { Link } from "react-router-dom";
-
 const footerLinks = {
-  explore: [
-    { name: "All Retreats", href: "/retreats" },
-    { name: "Mat Pilates", href: "/retreats?type=mat" },
-    { name: "Reformer Pilates", href: "/retreats?type=reformer" },
-  ],
-  company: [
-    { name: "About Us", href: "/about" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
-  ],
-  hosts: [
-    { name: "List Your Retreat", href: "/list-retreat" },
-  ],
+  explore: [{
+    name: "All Retreats",
+    href: "/retreats"
+  }, {
+    name: "Mat Pilates",
+    href: "/retreats?type=mat"
+  }, {
+    name: "Reformer Pilates",
+    href: "/retreats?type=reformer"
+  }],
+  company: [{
+    name: "About Us",
+    href: "/about"
+  }, {
+    name: "Blog",
+    href: "/blog"
+  }, {
+    name: "Contact",
+    href: "/contact"
+  }],
+  hosts: [{
+    name: "List Your Retreat",
+    href: "/list-retreat"
+  }]
 };
-
 export function Footer() {
-  return (
-    <footer className="bg-secondary border-t border-border">
+  return <footer className="bg-secondary border-t border-border">
       <div className="container-page py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           {/* Brand */}
@@ -28,9 +36,7 @@ export function Footer() {
                 Kinturi
               </span>
             </Link>
-            <p className="mt-4 text-small max-w-xs">
-              Discover transformative Pilates retreats in the world's most beautiful locations.
-            </p>
+            <p className="mt-4 text-small max-w-xs">We curate transformative, fitness-first holidays and retreats in beautiful location in beautiful l.</p>
           </div>
 
           {/* Explore */}
@@ -39,16 +45,11 @@ export function Footer() {
               Explore
             </h4>
             <ul className="space-y-3">
-              {footerLinks.explore.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-small hover:text-foreground transition-colors"
-                  >
+              {footerLinks.explore.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -58,16 +59,11 @@ export function Footer() {
               Company
             </h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-small hover:text-foreground transition-colors"
-                  >
+              {footerLinks.company.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -77,16 +73,11 @@ export function Footer() {
               For Hosts
             </h4>
             <ul className="space-y-3">
-              {footerLinks.hosts.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-small hover:text-foreground transition-colors"
-                  >
+              {footerLinks.hosts.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
@@ -98,6 +89,5 @@ export function Footer() {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 }
