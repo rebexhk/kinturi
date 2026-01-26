@@ -3,46 +3,35 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-retreat.jpg";
-
-const featuredRetreats = [
-  {
-    id: 1,
-    title: "Alpine Serenity Reformer Retreat",
-    location: "Swiss Alps, Switzerland",
-    duration: "5 nights",
-    type: "Reformer Pilates",
-    image: heroImage,
-  },
-  {
-    id: 2,
-    title: "Coastal Mat Flow Experience",
-    location: "Algarve, Portugal",
-    duration: "7 nights",
-    type: "Mat Pilates",
-    image: heroImage,
-  },
-  {
-    id: 3,
-    title: "Tuscan Villa Wellness Retreat",
-    location: "Tuscany, Italy",
-    duration: "4 nights",
-    type: "Mat & Reformer",
-    image: heroImage,
-  },
-];
-
+const featuredRetreats = [{
+  id: 1,
+  title: "Alpine Serenity Reformer Retreat",
+  location: "Swiss Alps, Switzerland",
+  duration: "5 nights",
+  type: "Reformer Pilates",
+  image: heroImage
+}, {
+  id: 2,
+  title: "Coastal Mat Flow Experience",
+  location: "Algarve, Portugal",
+  duration: "7 nights",
+  type: "Mat Pilates",
+  image: heroImage
+}, {
+  id: 3,
+  title: "Tuscan Villa Wellness Retreat",
+  location: "Tuscany, Italy",
+  duration: "4 nights",
+  type: "Mat & Reformer",
+  image: heroImage
+}];
 export default function Index() {
-  return (
-    <Layout transparentHeader>
+  return <Layout transparentHeader>
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="Pilates reformer retreat with mountain views"
-            className="w-full h-full object-cover"
-          />
+          <img src={heroImage} alt="Pilates reformer retreat with mountain views" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/40 via-charcoal/20 to-charcoal/50" />
         </div>
 
@@ -54,7 +43,7 @@ export default function Index() {
             Pilates Retreat
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">
-            Discover transformative Mat and Reformer Pilates experiences in the world's most beautiful destinations.
+            Discover transformative fitness-focused holidays and retreats in the world's most beautiful destinations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" asChild>
@@ -100,18 +89,9 @@ export default function Index() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredRetreats.map((retreat) => (
-              <Link
-                key={retreat.id}
-                to="/retreats"
-                className="group block bg-background rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300"
-              >
+            {featuredRetreats.map(retreat => <Link key={retreat.id} to="/retreats" className="group block bg-background rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300">
                 <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={retreat.image}
-                    alt={retreat.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  <img src={retreat.image} alt={retreat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6">
                   <span className="text-xs tracking-wide uppercase text-primary font-medium">
@@ -124,8 +104,7 @@ export default function Index() {
                     {retreat.location} · {retreat.duration}
                   </p>
                 </div>
-              </Link>
-            ))}
+              </Link>)}
           </div>
 
           <div className="text-center mt-12">
@@ -153,6 +132,5 @@ export default function Index() {
           </Button>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 }
