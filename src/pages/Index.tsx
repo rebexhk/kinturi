@@ -125,7 +125,7 @@ export default function Index() {
             Host Your Own Retreat
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Are you a Pilates instructor or retreat organizer? List your retreat on Kinturi and connect with passionate practitioners worldwide.
+            Are you a retreat organiser or venue manager? List your retreat on Kinturi and connect with passionate practitioners worldwide.
           </p>
           <Button variant="hero-outline" size="lg" asChild>
             <Link to="/list-retreat">Learn More</Link>

@@ -14,7 +14,7 @@ const blogPosts = [
   {
     id: 2,
     title: "5 Questions to Ask Before Booking a Pilates Retreat",
-    excerpt: "Make the most of your retreat investment by knowing exactly what to look for and what questions to ask organizers.",
+    excerpt: "Make the most of your retreat investment by knowing exactly what to look for and what questions to ask organisers.",
     date: "January 15, 2026",
     category: "Tips",
     image: heroImage,
