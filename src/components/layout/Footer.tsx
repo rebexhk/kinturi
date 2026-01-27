@@ -36,7 +36,7 @@ export function Footer() {
                 Kinturi
               </span>
             </Link>
-            <p className="mt-4 text-small max-w-xs">We curate transformative, fitness-first holidays and retreats in beautiful location in beautiful l.</p>
+            <p className="mt-4 text-small max-w-xs">Discover a curated selection of fitness-focused holidays and active retreats in beautiful destinations.</p>
           </div>
 
           {/* Explore */}

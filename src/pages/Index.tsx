@@ -42,9 +42,7 @@ export default function Index() {
             <br />
             Pilates Retreat
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">
-            Discover transformative fitness-focused holidays and retreats in the world's most beautiful destinations.
-          </p>
+          <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">Discover a curated selection of fitness-focused holidays and active retreats in beautiful destinations.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" asChild>
               <Link to="/retreats">
@@ -72,11 +70,7 @@ export default function Index() {
           <h2 className="heading-section text-foreground mb-6 animate-fade-in-up">
             Wellness Through Movement
           </h2>
-          <p className="text-body text-lg leading-relaxed">
-            Kinturi connects you with carefully curated Pilates retreats that combine expert instruction, 
-            stunning locations, and mindful experiences. Whether you're deepening your mat practice or 
-            exploring reformer work, find your path to wellness.
-          </p>
+          <p className="text-body text-lg leading-relaxed">Kinturi connects you with carefully curated active retreats that combine expert instruction, stunning locations, and mindful experiences. Whether you're tackling your next challenge, or using movement to relax and connect with new people, we have a trip for you.</p>
         </div>
       </section>
 
@@ -121,12 +115,8 @@ export default function Index() {
       {/* CTA Section */}
       <section className="section-padding bg-primary">
         <div className="container-page text-center">
-          <h2 className="heading-section text-primary-foreground mb-6">
-            Host Your Own Retreat
-          </h2>
-          <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Are you a retreat organiser or venue manager? List your retreat on Kinturi and connect with passionate practitioners worldwide.
-          </p>
+          <h2 className="heading-section text-primary-foreground mb-6">Work with us</h2>
+          <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">Are you a retreat organiser or venue manager? List your retreat on Kinturi and connect with guests worldwide.</p>
           <Button variant="hero-outline" size="lg" asChild>
             <Link to="/list-retreat">Learn More</Link>
           </Button>
