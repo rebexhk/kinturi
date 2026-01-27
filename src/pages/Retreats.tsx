@@ -1,69 +1,84 @@
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-retreat.jpg";
-const retreats = [{
-  id: 1,
-  title: "Alpine Serenity Reformer Retreat",
-  location: "Swiss Alps, Switzerland",
-  duration: "5 nights",
-  type: "Reformer Pilates",
-  description: "Experience Pilates at altitude with panoramic mountain views and world-class instruction.",
-  price: "From €2,400",
-  image: heroImage
-}, {
-  id: 2,
-  title: "Coastal Mat Flow Experience",
-  location: "Algarve, Portugal",
-  duration: "7 nights",
-  type: "Mat Pilates",
-  description: "Oceanfront mat sessions combined with cliff walks and Portuguese wellness traditions.",
-  price: "From €1,800",
-  image: heroImage
-}, {
-  id: 3,
-  title: "Tuscan Villa Wellness Retreat",
-  location: "Tuscany, Italy",
-  duration: "4 nights",
-  type: "Mat & Reformer",
-  description: "Blend of mat and reformer work in a restored 18th-century villa surrounded by vineyards.",
-  price: "From €2,100",
-  image: heroImage
-}, {
-  id: 4,
-  title: "Bali Reformer Sanctuary",
-  location: "Ubud, Bali",
-  duration: "6 nights",
-  type: "Reformer Pilates",
-  description: "Tropical reformer practice with rice paddy views, Balinese healing traditions, and organic cuisine.",
-  price: "From €2,800",
-  image: heroImage
-}, {
-  id: 5,
-  title: "Nordic Wellness Escape",
-  location: "Norwegian Fjords",
-  duration: "5 nights",
-  type: "Mat Pilates",
-  description: "Mat Pilates meets Nordic wellness with saunas, cold plunges, and fjord meditation.",
-  price: "From €2,600",
-  image: heroImage
-}, {
-  id: 6,
-  title: "Desert Oasis Retreat",
-  location: "Marrakech, Morocco",
-  duration: "4 nights",
-  type: "Mat & Reformer",
-  description: "Practice in a stunning riad with rooftop sessions, hammam experiences, and Moroccan hospitality.",
-  price: "From €1,900",
-  image: heroImage
-}];
+import retreatUK from "@/assets/retreat-uk.jpg";
+import retreatSpain from "@/assets/retreat-spain.jpg";
+import retreatItaly from "@/assets/retreat-italy.jpg";
+import retreatPortugal from "@/assets/retreat-portugal.jpg";
+
+const retreats = [
+  {
+    id: 1,
+    title: "Cotswolds Pilates & Wellness Escape",
+    location: "Cotswolds, United Kingdom",
+    duration: "5 nights",
+    type: "Mat & Reformer Pilates",
+    description: "Restore and recharge at a stunning manor house with daily Pilates sessions, countryside walks, and farm-to-table dining.",
+    price: "From £1,850",
+    image: retreatUK
+  },
+  {
+    id: 2,
+    title: "Andalucía Reformer & Coastal Fitness",
+    location: "Costa de la Luz, Spain",
+    duration: "6 nights",
+    type: "Reformer & Fitness",
+    description: "Mediterranean sunshine, oceanfront reformer sessions, beach bootcamps, and traditional Spanish cuisine.",
+    price: "From €1,950",
+    image: retreatSpain
+  },
+  {
+    id: 3,
+    title: "Tuscan Wine & Wellness Retreat",
+    location: "Chianti, Italy",
+    duration: "4 nights",
+    type: "Wine & Culinary",
+    description: "Combine gentle mat Pilates with vineyard tours, wine tastings, and authentic Tuscan cooking classes.",
+    price: "From €2,100",
+    image: retreatItaly
+  },
+  {
+    id: 4,
+    title: "Algarve Cliffs & Coastal Hiking",
+    location: "Algarve, Portugal",
+    duration: "7 nights",
+    type: "Hiking & Lifestyle",
+    description: "Explore dramatic coastal trails, clifftop yoga sessions, and Portugal's finest seafood in this active adventure.",
+    price: "From €1,800",
+    image: retreatPortugal
+  },
+  {
+    id: 5,
+    title: "Lake District Active Wellness",
+    location: "Lake District, United Kingdom",
+    duration: "4 nights",
+    type: "Hiking & Fitness",
+    description: "Mountain hikes, wild swimming, and invigorating fitness classes surrounded by England's most beautiful scenery.",
+    price: "From £1,650",
+    image: retreatUK
+  },
+  {
+    id: 6,
+    title: "Mallorca Fitness & Food Escape",
+    location: "Mallorca, Spain",
+    duration: "5 nights",
+    type: "Fitness & Culinary",
+    description: "High-energy workouts, scenic cycling, and Mediterranean cooking classes on this beautiful Balearic island.",
+    price: "From €1,750",
+    image: retreatSpain
+  },
+];
+
 export default function Retreats() {
-  return <Layout>
+  return (
+    <Layout>
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">Our Retreats</h1>
-          <p className="text-body text-lg max-w-2xl mx-auto">Discover carefully curated selection of fitness-first holidays and retreats that combine expert instruction with extraordinary destinations.</p>
+          <p className="text-body text-lg max-w-2xl mx-auto">
+            Discover our carefully curated selection of wellness retreats across the UK and Europe—from Pilates and fitness to hiking, wine tasting, and culinary experiences.
+          </p>
         </div>
       </section>
 
@@ -71,9 +86,10 @@ export default function Retreats() {
       <section className="py-8 border-b border-border bg-background">
         <div className="container-page flex flex-wrap gap-3 justify-center">
           <Button variant="sage" size="sm">All Retreats</Button>
-          <Button variant="outline" size="sm">Mat Pilates</Button>
-          <Button variant="outline" size="sm">Reformer Pilates</Button>
-          <Button variant="outline" size="sm">Mat & Reformer</Button>
+          <Button variant="outline" size="sm">Pilates</Button>
+          <Button variant="outline" size="sm">Fitness</Button>
+          <Button variant="outline" size="sm">Hiking</Button>
+          <Button variant="outline" size="sm">Wine & Culinary</Button>
         </div>
       </section>
 
@@ -127,5 +143,6 @@ export default function Retreats() {
           </Button>
         </div>
       </section>
-    </Layout>;
+    </Layout>
+  );
 }
