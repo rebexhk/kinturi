@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Contact() {
@@ -65,14 +66,23 @@ export default function Contact() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input
-                  id="subject"
-                  placeholder="What is this regarding?"
+                <Label htmlFor="subject">Enquiry Type</Label>
+                <Select
                   value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  onValueChange={(value) => setFormData({ ...formData, subject: value })}
                   required
-                />
+                >
+                  <SelectTrigger id="subject" className="bg-background">
+                    <SelectValue placeholder="How can we help you?" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background">
+                    <SelectItem value="general">General Enquiry</SelectItem>
+                    <SelectItem value="booking">Retreat Booking Request</SelectItem>
+                    <SelectItem value="listing">Listing Your Retreat</SelectItem>
+                    <SelectItem value="partnership">Partnership Enquiry</SelectItem>
+                    <SelectItem value="press">Press / Media</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">Message</Label>
