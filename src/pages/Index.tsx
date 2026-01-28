@@ -40,7 +40,7 @@ export default function Index() {
           <h1 className="heading-display text-primary-foreground mb-6">
             Find Your Perfect Active Retreat
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">Discover a curated selection of fitness-focused holidays and active retreats in beautiful destinations.</p>
+          <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">Discover a curated selection of fitness-focused holidays and active escapes in beautiful destinations.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" asChild>
               <Link to="/retreats">
@@ -68,7 +68,7 @@ export default function Index() {
           <h2 className="heading-section text-foreground mb-6 animate-fade-in-up">
             Wellness Through Movement
           </h2>
-          <p className="text-body text-lg leading-relaxed">Kinturi connects you with carefully curated active retreats that combine expert instruction, stunning locations, and mindful experiences. Whether you're tackling your next challenge, or using movement to relax and connect with new people, we have a trip for you.</p>
+          <p className="text-body text-lg leading-relaxed">Kinturi connects you with carefully curated active escapes that combine expert instruction, stunning locations, and mindful experiences. Whether you're tackling your next challenge, or using movement to relax and connect with new people, we have a trip for you.</p>
         </div>
       </section>
 
