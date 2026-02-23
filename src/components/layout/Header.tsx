@@ -31,14 +31,15 @@ export function Header({ transparent = false }: HeaderProps) {
       <nav className="container-page flex items-center justify-between py-4 lg:py-5">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span
-            className={cn(
-              "font-serif text-2xl lg:text-3xl font-medium tracking-tight",
-              transparent ? "text-primary-foreground" : "text-foreground"
-            )}
-          >
-            Kinturi
-          </span>
+            <span
+              className={cn(
+                "text-2xl lg:text-3xl font-semibold tracking-tight",
+                transparent ? "text-primary-foreground" : "text-foreground"
+              )}
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Kinturi
+            </span>
         </Link>
 
         {/* Desktop Navigation */}
