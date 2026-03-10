@@ -1,75 +1,55 @@
+import { useState, useEffect, useMemo } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import retreatUK from "@/assets/retreat-uk.jpg";
-import retreatSpain from "@/assets/retreat-spain.jpg";
-import retreatItaly from "@/assets/retreat-italy.jpg";
-import retreatPortugal from "@/assets/retreat-portugal.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const retreats = [
-  {
-    id: 1,
-    title: "Cotswolds Pilates & Wellness Escape",
-    location: "Cotswolds, United Kingdom",
-    duration: "5 nights",
-    type: "Mat & Reformer Pilates",
-    description: "Restore and recharge at a stunning manor house with daily Pilates sessions, countryside walks, and farm-to-table dining.",
-    price: "From £1,850",
-    image: retreatUK
-  },
-  {
-    id: 2,
-    title: "Andalucía Reformer & Coastal Fitness",
-    location: "Costa de la Luz, Spain",
-    duration: "6 nights",
-    type: "Reformer & Fitness",
-    description: "Mediterranean sunshine, oceanfront reformer sessions, beach bootcamps, and traditional Spanish cuisine.",
-    price: "From €1,950",
-    image: retreatSpain
-  },
-  {
-    id: 3,
-    title: "Tuscan Wine & Wellness Retreat",
-    location: "Chianti, Italy",
-    duration: "4 nights",
-    type: "Wine & Culinary",
-    description: "Combine gentle mat Pilates with vineyard tours, wine tastings, and authentic Tuscan cooking classes.",
-    price: "From €2,100",
-    image: retreatItaly
-  },
-  {
-    id: 4,
-    title: "Algarve Cliffs & Coastal Hiking",
-    location: "Algarve, Portugal",
-    duration: "7 nights",
-    type: "Hiking & Lifestyle",
-    description: "Explore dramatic coastal trails, clifftop yoga sessions, and Portugal's finest seafood in this active adventure.",
-    price: "From €1,800",
-    image: retreatPortugal
-  },
-  {
-    id: 5,
-    title: "Lake District Active Wellness",
-    location: "Lake District, United Kingdom",
-    duration: "4 nights",
-    type: "Hiking & Fitness",
-    description: "Mountain hikes, wild swimming, and invigorating fitness classes surrounded by England's most beautiful scenery.",
-    price: "From £1,650",
-    image: retreatUK
-  },
-  {
-    id: 6,
-    title: "Mallorca Fitness & Food Escape",
-    location: "Mallorca, Spain",
-    duration: "5 nights",
-    type: "Fitness & Culinary",
-    description: "High-energy workouts, scenic cycling, and Mediterranean cooking classes on this beautiful Balearic island.",
-    price: "From €1,750",
-    image: retreatSpain
-  },
-];
+interface Retreat {
+  id: string;
+  title: string;
+  slug: string;
+  location: string;
+  duration: string;
+  type: string;
+  description: string;
+  price: string;
+  hero_image_url: string | null;
+  tags: string[] | null;
+}
 
 export default function Retreats() {
+  const [retreats, setRetreats] = useState<Retreat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRetreats = async () => {
+      const { data, error } = await supabase
+        .from("retreats")
+        .select("id, title, slug, location, duration, type, description, price, hero_image_url, tags")
+        .eq("status", "published")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setRetreats(data);
+      }
+      setLoading(false);
+    };
+    fetchRetreats();
+  }, []);
+
+  // Collect unique tags from all retreats
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    retreats.forEach((r) => r.tags?.forEach((t) => tagSet.add(t)));
+    return Array.from(tagSet).sort();
+  }, [retreats]);
+
+  const filtered = activeTag
+    ? retreats.filter((r) => r.tags?.includes(activeTag))
+    : retreats;
+
   return (
     <Layout>
       {/* Header */}
@@ -83,52 +63,98 @@ export default function Retreats() {
       </section>
 
       {/* Filters */}
-      <section className="py-8 border-b border-border bg-background">
-        <div className="container-page flex flex-wrap gap-3 justify-center">
-          <Button variant="sage" size="sm">All Retreats</Button>
-          <Button variant="outline" size="sm">Pilates</Button>
-          <Button variant="outline" size="sm">Fitness</Button>
-          <Button variant="outline" size="sm">Hiking</Button>
-          <Button variant="outline" size="sm">Wine & Culinary</Button>
-        </div>
-      </section>
+      {allTags.length > 0 && (
+        <section className="py-8 border-b border-border bg-background">
+          <div className="container-page flex flex-wrap gap-3 justify-center">
+            <Button
+              variant={activeTag === null ? "sage" : "outline"}
+              size="sm"
+              onClick={() => setActiveTag(null)}
+            >
+              All Retreats
+            </Button>
+            {allTags.map((tag) => (
+              <Button
+                key={tag}
+                variant={activeTag === tag ? "sage" : "outline"}
+                size="sm"
+                onClick={() => setActiveTag(tag)}
+              >
+                {tag}
+              </Button>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Retreat Grid */}
       <section className="section-padding bg-background">
         <div className="container-page">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {retreats.map(retreat => (
-              <Link
-                key={retreat.id}
-                to={`/retreats/${retreat.id}`}
-                className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300 block"
-              >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img src={retreat.image} alt={retreat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-6 lg:p-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                      {retreat.type}
-                    </span>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-small">{retreat.duration}</span>
-                  </div>
-                  <h3 className="heading-card text-foreground mb-2">
-                    {retreat.title}
-                  </h3>
-                  <p className="text-small mb-4">{retreat.location}</p>
-                  <p className="text-body mb-6">{retreat.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-serif text-lg text-foreground">{retreat.price}</span>
-                    <Button variant="sage-outline" size="sm">
-                      View Details
-                    </Button>
+          {loading ? (
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-card rounded-lg overflow-hidden shadow-soft">
+                  <Skeleton className="aspect-[16/10] w-full" />
+                  <div className="p-6 space-y-3">
+                    <Skeleton className="h-4 w-1/3" />
+                    <Skeleton className="h-6 w-2/3" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-body text-lg text-muted-foreground">
+                {activeTag ? `No retreats found for "${activeTag}".` : "No retreats available yet. Check back soon!"}
+              </p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {filtered.map((retreat) => (
+                <Link
+                  key={retreat.id}
+                  to={`/retreats/${retreat.slug}`}
+                  className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300 block"
+                >
+                  <div className="aspect-[16/10] overflow-hidden bg-muted">
+                    {retreat.hero_image_url ? (
+                      <img
+                        src={retreat.hero_image_url}
+                        alt={retreat.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
+                        No image
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 lg:p-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs tracking-wide uppercase text-primary font-medium">
+                        {retreat.type}
+                      </span>
+                      <span className="text-muted-foreground">·</span>
+                      <span className="text-small">{retreat.duration}</span>
+                    </div>
+                    <h3 className="heading-card text-foreground mb-2">
+                      {retreat.title}
+                    </h3>
+                    <p className="text-small mb-4">{retreat.location}</p>
+                    <p className="text-body mb-6 line-clamp-3">{retreat.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="font-serif text-lg text-foreground">{retreat.price}</span>
+                      <Button variant="sage-outline" size="sm" tabIndex={-1}>
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
