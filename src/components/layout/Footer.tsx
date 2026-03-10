@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Settings } from "lucide-react";
 const footerLinks = {
   explore: [{
     name: "All Retreats",
@@ -83,10 +84,13 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border">
-          <p className="text-small text-center">
+        <div className="mt-12 pt-8 border-t border-border flex items-center justify-between">
+          <p className="text-small">
             © {new Date().getFullYear()} Kinturi. All rights reserved.
           </p>
+          <Link to="/admin-login" className="text-muted-foreground/40 hover:text-muted-foreground transition-colors" aria-label="Admin">
+            <Settings className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
     </footer>;
