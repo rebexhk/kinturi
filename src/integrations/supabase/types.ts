@@ -14,7 +14,102 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      retreats: {
+        Row: {
+          accommodation: Json | null
+          address: string | null
+          categories: string[] | null
+          created_at: string
+          dates: Json | null
+          description: string
+          duration: string
+          facilities: string[] | null
+          gallery_image_urls: string[] | null
+          group_size: string | null
+          hero_image_url: string | null
+          id: string
+          inclusions: string[] | null
+          instructor: Json | null
+          level: string | null
+          location: string
+          menu: Json | null
+          not_included: string[] | null
+          price: string
+          schedule: Json | null
+          seo_description: string | null
+          seo_keywords: string[] | null
+          seo_title: string | null
+          slug: string
+          status: string
+          tags: string[] | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          accommodation?: Json | null
+          address?: string | null
+          categories?: string[] | null
+          created_at?: string
+          dates?: Json | null
+          description: string
+          duration: string
+          facilities?: string[] | null
+          gallery_image_urls?: string[] | null
+          group_size?: string | null
+          hero_image_url?: string | null
+          id?: string
+          inclusions?: string[] | null
+          instructor?: Json | null
+          level?: string | null
+          location: string
+          menu?: Json | null
+          not_included?: string[] | null
+          price: string
+          schedule?: Json | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          accommodation?: Json | null
+          address?: string | null
+          categories?: string[] | null
+          created_at?: string
+          dates?: Json | null
+          description?: string
+          duration?: string
+          facilities?: string[] | null
+          gallery_image_urls?: string[] | null
+          group_size?: string | null
+          hero_image_url?: string | null
+          id?: string
+          inclusions?: string[] | null
+          instructor?: Json | null
+          level?: string | null
+          location?: string
+          menu?: Json | null
+          not_included?: string[] | null
+          price?: string
+          schedule?: Json | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
