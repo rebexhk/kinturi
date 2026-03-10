@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Settings } from "lucide-react";
 const footerLinks = {
   explore: [{
     name: "All Retreats",
