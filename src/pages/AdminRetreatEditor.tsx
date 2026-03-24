@@ -68,6 +68,7 @@ export default function AdminRetreatEditor() {
   const { adminFetch, token } = useAdminApi();
   const isNew = id === "new";
   const [form, setForm] = useState<RetreatForm>(emptyForm);
+  const [originalForm, setOriginalForm] = useState<RetreatForm | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -79,12 +80,13 @@ export default function AdminRetreatEditor() {
   const loadRetreat = async (retreatId: string) => {
     try {
       const data = await adminFetch(`admin-retreats?id=${retreatId}`);
-      setForm({
+      const loaded: RetreatForm = {
         ...emptyForm,
         ...data,
         gallery_image_urls: data.gallery_image_urls || [],
         accommodation_image_urls: data.accommodation_image_urls || [],
         dining_image_urls: data.dining_image_urls || [],
+        dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
         inclusions: data.inclusions || [],
@@ -95,7 +97,9 @@ export default function AdminRetreatEditor() {
         seo_keywords: data.seo_keywords || [],
         categories: data.categories || [],
         tags: data.tags || [],
-      });
+      };
+      setForm(loaded);
+      setOriginalForm(loaded);
     } catch {
       toast.error("Failed to load retreat");
       navigate("/admin");
@@ -119,8 +123,26 @@ export default function AdminRetreatEditor() {
     }
     setSaving(true);
     try {
-      const { created_at, updated_at, ...cleanForm } = form as any;
-      const payload = isNew ? cleanForm : { id, ...cleanForm };
+      let payload: any;
+      if (isNew) {
+        const { created_at, updated_at, ...cleanForm } = form as any;
+        payload = cleanForm;
+      } else {
+        // Only send changed fields to keep payload small
+        const changes: any = { id };
+        const orig = originalForm || emptyForm;
+        for (const key of Object.keys(form)) {
+          if (key === 'created_at' || key === 'updated_at') continue;
+          const current = JSON.stringify((form as any)[key]);
+          const original = JSON.stringify((orig as any)[key]);
+          if (current !== original) {
+            changes[key] = form[key];
+          }
+        }
+        // Always include slug for identification
+        if (!changes.slug) changes.slug = form.slug;
+        payload = changes;
+      }
       
       const url = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/admin-retreats`;
       
@@ -148,9 +170,13 @@ export default function AdminRetreatEditor() {
             throw new Error(err.error || "Request failed");
           }
           
-          await response.json();
+          const savedData = await response.json();
           toast.success(isNew ? "Retreat created!" : "Retreat updated!");
-          navigate("/admin");
+          // Update originalForm so subsequent saves only send new changes
+          setOriginalForm({ ...form });
+          if (isNew) {
+            navigate("/admin");
+          }
           return;
         } catch (err: any) {
           lastError = err;
