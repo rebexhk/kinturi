@@ -45,7 +45,7 @@ export default function Blog() {
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">Journal</h1>
           <p className="text-body text-lg max-w-2xl mx-auto">
-            Insights, tips, and inspiration for your Pilates journey.
+            Insights, tips, and inspiration for your next active escape.
           </p>
         </div>
       </section>
