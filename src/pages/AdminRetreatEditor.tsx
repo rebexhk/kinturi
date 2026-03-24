@@ -315,9 +315,12 @@ export default function AdminRetreatEditor() {
             <FieldGroup label="Description *">
               <Textarea value={form.description} onChange={(e) => updateField("description", e.target.value)} rows={5} placeholder="Full retreat description..." />
             </FieldGroup>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <FieldGroup label="Location *">
                 <Input value={form.location} onChange={(e) => updateField("location", e.target.value)} placeholder="e.g. Cotswolds, United Kingdom" />
+              </FieldGroup>
+              <FieldGroup label="Country (auto)">
+                <Input value={form.country} onChange={(e) => updateField("country", e.target.value)} placeholder="Auto-extracted from location" className="bg-muted" />
               </FieldGroup>
               <FieldGroup label="Address">
                 <Input value={form.address} onChange={(e) => updateField("address", e.target.value)} placeholder="e.g. Langley Manor, Burford" />
