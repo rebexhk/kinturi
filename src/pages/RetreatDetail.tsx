@@ -36,7 +36,7 @@ interface RetreatData {
   schedule: Array<{ time: string; activity: string }>;
 }
 
-function ScrollGallery({ images, label }: { images: string[]; label: string }) {
+function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: string[]; label: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -54,7 +54,7 @@ function ScrollGallery({ images, label }: { images: string[]; label: string }) {
           <img
             key={i}
             src={url}
-            alt={`${label} ${i + 1}`}
+            alt={alts[i] || `${label} ${i + 1}`}
             className="w-72 h-48 object-cover rounded-lg flex-shrink-0 snap-start"
           />
         ))}
