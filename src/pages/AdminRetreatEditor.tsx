@@ -174,6 +174,7 @@ export default function AdminRetreatEditor() {
     if (!files?.length) return;
     setUploading(true);
     try {
+      const newUrls: string[] = [];
       for (const file of Array.from(files)) {
         const ext = file.name.split(".").pop();
         const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
@@ -183,10 +184,16 @@ export default function AdminRetreatEditor() {
         if (field === "hero") {
           updateField("hero_image_url", urlData.publicUrl);
         } else {
-          updateField("gallery_image_urls", [...form.gallery_image_urls, urlData.publicUrl]);
+          newUrls.push(urlData.publicUrl);
         }
       }
-      toast.success("Image uploaded!");
+      if (field === "gallery" && newUrls.length > 0) {
+        setForm(prev => ({
+          ...prev,
+          gallery_image_urls: [...prev.gallery_image_urls, ...newUrls],
+        }));
+      }
+      toast.success(`${files.length} image${files.length > 1 ? 's' : ''} uploaded!`);
     } catch (err: any) {
       toast.error("Upload failed: " + err.message);
     } finally {
