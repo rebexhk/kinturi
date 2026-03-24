@@ -157,7 +157,7 @@ export default function RetreatDetail() {
       <section className="relative h-[60vh] min-h-[400px]">
         <div className="absolute inset-0">
           {retreat.hero_image_url ? (
-            <img src={retreat.hero_image_url} alt={retreat.title} className="w-full h-full object-cover" />
+            <img src={retreat.hero_image_url} alt={retreat.hero_image_alt || retreat.title} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-muted" />
           )}
