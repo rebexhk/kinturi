@@ -100,9 +100,13 @@ export default function RetreatDetail() {
         const menuData = (data.menu as any) || {};
         setRetreat({
           ...data,
+          hero_image_alt: (data as any).hero_image_alt || null,
           gallery_image_urls: data.gallery_image_urls || [],
+          gallery_image_alts: (data as any).gallery_image_alts || [],
           accommodation_image_urls: (data as any).accommodation_image_urls || [],
+          accommodation_image_alts: (data as any).accommodation_image_alts || [],
           dining_image_urls: (data as any).dining_image_urls || [],
+          dining_image_alts: (data as any).dining_image_alts || [],
           dates: Array.isArray(data.dates) ? data.dates as any : [],
           instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [] },
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
