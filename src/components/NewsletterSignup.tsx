@@ -35,10 +35,10 @@ export function NewsletterSignup() {
   };
 
   return (
-    <section className="section-padding bg-primary">
+    <section className="section-padding bg-primary shadow-none">
       <div className="container-page text-center max-w-xl mx-auto">
-        <h2 className="font-serif text-2xl md:text-3xl font-medium text-primary-foreground mb-3">
-          The best active retreats, straight to your inbox
+        <h2 className="font-serif text-2xl text-primary-foreground mb-3 font-normal shadow-none md:text-2xl">
+          The best active escapes, straight to your inbox
         </h2>
         <p className="text-primary-foreground/80 text-sm mb-8">
           Be the first to hear about new retreats, exclusive offers, and travel inspiration.
