@@ -173,7 +173,7 @@ export default function AdminRetreatEditor() {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "hero" | "gallery") => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "hero" | "gallery" | "accommodation" | "dining") => {
     const files = e.target.files;
     if (!files?.length) return;
     setUploading(true);
@@ -191,10 +191,13 @@ export default function AdminRetreatEditor() {
           newUrls.push(urlData.publicUrl);
         }
       }
-      if (field === "gallery" && newUrls.length > 0) {
+      if (newUrls.length > 0) {
+        const arrayField = field === "gallery" ? "gallery_image_urls" 
+          : field === "accommodation" ? "accommodation_image_urls" 
+          : "dining_image_urls";
         setForm(prev => ({
           ...prev,
-          gallery_image_urls: [...prev.gallery_image_urls, ...newUrls],
+          [arrayField]: [...(prev as any)[arrayField], ...newUrls],
         }));
       }
       toast.success(`${files.length} image${files.length > 1 ? 's' : ''} uploaded!`);
