@@ -289,7 +289,7 @@ export default function RetreatDetail() {
                   </h2>
                   {retreat.dining_image_urls.length > 0 && (
                     <div className="mb-6">
-                      <ScrollGallery images={retreat.dining_image_urls} label="Dining" />
+                      <ScrollGallery images={retreat.dining_image_urls} alts={retreat.dining_image_alts} label="Dining" />
                     </div>
                   )}
                   <p className="text-body mb-4">{retreat.menu.description}</p>

@@ -607,3 +607,58 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
     </div>
   );
 }
+
+// Reusable image gallery editor with alt text support
+function ImageGalleryEditor({ title, urls, alts, onUrlsChange, onAltsChange, onUpload, uploading }: {
+  title: string;
+  urls: string[];
+  alts: string[];
+  onUrlsChange: (urls: string[]) => void;
+  onAltsChange: (alts: string[]) => void;
+  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  uploading: boolean;
+}) {
+  const removeImage = (index: number) => {
+    onUrlsChange(urls.filter((_, j) => j !== index));
+    onAltsChange(alts.filter((_, j) => j !== index));
+  };
+
+  const updateAlt = (index: number, value: string) => {
+    const updated = [...alts];
+    while (updated.length <= index) updated.push("");
+    updated[index] = value;
+    onAltsChange(updated);
+  };
+
+  return (
+    <div className="border border-border rounded-lg p-5 space-y-4">
+      <h3 className="font-medium text-foreground">{title}</h3>
+      <div className="space-y-4">
+        {urls.map((url, i) => (
+          <div key={i} className="flex gap-4 items-start bg-secondary/50 rounded-lg p-3">
+            <div className="relative flex-shrink-0">
+              <img src={url} alt={alts[i] || `${title} ${i + 1}`} className="w-32 h-24 object-cover rounded-lg" />
+              <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => removeImage(i)}>
+                <X className="w-3 h-3" />
+              </Button>
+            </div>
+            <div className="flex-1">
+              <FieldGroup label="Alt Text (SEO)">
+                <Input
+                  value={alts[i] || ""}
+                  onChange={(e) => updateAlt(i, e.target.value)}
+                  placeholder="Describe this image for search engines and accessibility"
+                />
+              </FieldGroup>
+            </div>
+          </div>
+        ))}
+      </div>
+      <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+        <Plus className="w-6 h-6 text-muted-foreground mb-1" />
+        <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
+        <input type="file" accept="image/*" multiple className="hidden" onChange={onUpload} disabled={uploading} />
+      </label>
+    </div>
+  );
+}

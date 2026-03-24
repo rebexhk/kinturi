@@ -123,7 +123,7 @@ export default function Retreats() {
                     {retreat.hero_image_url ? (
                       <img
                         src={retreat.hero_image_url}
-                        alt={retreat.title}
+                        alt={retreat.hero_image_alt || retreat.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
