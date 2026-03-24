@@ -28,7 +28,8 @@ interface RetreatForm {
   level: string;
   hero_image_url: string;
   gallery_image_urls: string[];
-  // Nested
+  accommodation_image_urls: string[];
+  dining_image_urls: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
   instructor: { name: string; bio: string; certifications: string[] };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
@@ -48,7 +49,7 @@ interface RetreatForm {
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
-  hero_image_url: "", gallery_image_urls: [],
+  hero_image_url: "", gallery_image_urls: [], accommodation_image_urls: [], dining_image_urls: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
@@ -82,7 +83,8 @@ export default function AdminRetreatEditor() {
         ...emptyForm,
         ...data,
         gallery_image_urls: data.gallery_image_urls || [],
-        dates: data.dates || [],
+        accommodation_image_urls: data.accommodation_image_urls || [],
+        dining_image_urls: data.dining_image_urls || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
         inclusions: data.inclusions || [],
@@ -171,7 +173,7 @@ export default function AdminRetreatEditor() {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "hero" | "gallery") => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "hero" | "gallery" | "accommodation" | "dining") => {
     const files = e.target.files;
     if (!files?.length) return;
     setUploading(true);
@@ -189,10 +191,13 @@ export default function AdminRetreatEditor() {
           newUrls.push(urlData.publicUrl);
         }
       }
-      if (field === "gallery" && newUrls.length > 0) {
+      if (newUrls.length > 0) {
+        const arrayField = field === "gallery" ? "gallery_image_urls" 
+          : field === "accommodation" ? "accommodation_image_urls" 
+          : "dining_image_urls";
         setForm(prev => ({
           ...prev,
-          gallery_image_urls: [...prev.gallery_image_urls, ...newUrls],
+          [arrayField]: [...(prev as any)[arrayField], ...newUrls],
         }));
       }
       toast.success(`${files.length} image${files.length > 1 ? 's' : ''} uploaded!`);
@@ -443,6 +448,46 @@ export default function AdminRetreatEditor() {
                   <Plus className="w-6 h-6 text-muted-foreground mb-1" />
                   <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
                   <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "gallery")} disabled={uploading} />
+                </label>
+              </div>
+            </div>
+
+            {/* Accommodation Images */}
+            <div className="border border-border rounded-lg p-5 space-y-4">
+              <h3 className="font-medium text-foreground">Accommodation Images</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {form.accommodation_image_urls.map((url, i) => (
+                  <div key={i} className="relative">
+                    <img src={url} alt={`Accommodation ${i + 1}`} className="w-full h-32 object-cover rounded-lg" />
+                    <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => updateField("accommodation_image_urls", form.accommodation_image_urls.filter((_, j) => j !== i))}>
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
+                ))}
+                <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                  <Plus className="w-6 h-6 text-muted-foreground mb-1" />
+                  <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "accommodation")} disabled={uploading} />
+                </label>
+              </div>
+            </div>
+
+            {/* Dining Images */}
+            <div className="border border-border rounded-lg p-5 space-y-4">
+              <h3 className="font-medium text-foreground">Dining Images</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {form.dining_image_urls.map((url, i) => (
+                  <div key={i} className="relative">
+                    <img src={url} alt={`Dining ${i + 1}`} className="w-full h-32 object-cover rounded-lg" />
+                    <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => updateField("dining_image_urls", form.dining_image_urls.filter((_, j) => j !== i))}>
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
+                ))}
+                <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                  <Plus className="w-6 h-6 text-muted-foreground mb-1" />
+                  <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
+                  <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "dining")} disabled={uploading} />
                 </label>
               </div>
             </div>
