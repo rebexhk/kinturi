@@ -123,8 +123,26 @@ export default function AdminRetreatEditor() {
     }
     setSaving(true);
     try {
-      const { created_at, updated_at, ...cleanForm } = form as any;
-      const payload = isNew ? cleanForm : { id, ...cleanForm };
+      let payload: any;
+      if (isNew) {
+        const { created_at, updated_at, ...cleanForm } = form as any;
+        payload = cleanForm;
+      } else {
+        // Only send changed fields to keep payload small
+        const changes: any = { id };
+        const orig = originalForm || emptyForm;
+        for (const key of Object.keys(form) as Array<keyof RetreatForm>) {
+          if (key === 'created_at' || key === 'updated_at') continue;
+          const current = JSON.stringify(form[key]);
+          const original = JSON.stringify(orig[key]);
+          if (current !== original) {
+            changes[key] = form[key];
+          }
+        }
+        // Always include slug for identification
+        if (!changes.slug) changes.slug = form.slug;
+        payload = changes;
+      }
       
       const url = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/admin-retreats`;
       
