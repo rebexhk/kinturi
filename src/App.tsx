@@ -9,7 +9,7 @@ import Retreats from "./pages/Retreats";
 import RetreatDetail from "./pages/RetreatDetail";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
-import ListRetreat from "./pages/ListRetreat";
+
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
@@ -31,7 +31,7 @@ const App = () => (
             <Route path="/retreats/:id" element={<RetreatDetail />} /> {/* id = slug */}
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
-            <Route path="/list-retreat" element={<ListRetreat />} />
+            
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />

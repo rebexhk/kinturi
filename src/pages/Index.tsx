@@ -120,16 +120,6 @@ export default function Index() {
         </section>
       )}
 
-      {/* CTA Section */}
-      <section className="section-padding bg-primary">
-        <div className="container-page text-center">
-          <h2 className="heading-section text-primary-foreground mb-6">Work with us</h2>
-          <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">Are you a retreat organiser or venue manager? List your retreat on Kinturi and connect with guests worldwide.</p>
-          <Button variant="hero-outline" size="lg" asChild>
-            <Link to="/list-retreat">Learn More</Link>
-          </Button>
-        </div>
-      </section>
     </Layout>
   );
 }

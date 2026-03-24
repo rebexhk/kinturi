@@ -9,7 +9,7 @@ const navigation = [
   { name: "Retreats", href: "/retreats" },
   { name: "About", href: "/about" },
   { name: "Blog", href: "/blog" },
-  { name: "List Your Retreat", href: "/list-retreat" },
+  
   { name: "Contact", href: "/contact" },
 ];
 

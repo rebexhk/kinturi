@@ -21,10 +21,7 @@ const footerLinks = {
     name: "Contact",
     href: "/contact"
   }],
-  hosts: [{
-    name: "List Your Retreat",
-    href: "/list-retreat"
-  }]
+  hosts: []
 };
 export function Footer() {
   return <footer className="bg-secondary border-t border-border">
