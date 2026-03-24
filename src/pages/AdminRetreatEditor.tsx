@@ -68,6 +68,7 @@ export default function AdminRetreatEditor() {
   const { adminFetch, token } = useAdminApi();
   const isNew = id === "new";
   const [form, setForm] = useState<RetreatForm>(emptyForm);
+  const [originalForm, setOriginalForm] = useState<RetreatForm | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
