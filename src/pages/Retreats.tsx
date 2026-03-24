@@ -146,7 +146,7 @@ export default function Retreats() {
           ) : filtered.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-body text-lg text-muted-foreground">
-                {activeTag ? `No retreats found for "${activeTag}".` : "No retreats available yet. Check back soon!"}
+                {(activeType || activeCountry) ? "No retreats match the selected filters." : "No retreats available yet. Check back soon!"}
               </p>
             </div>
           ) : (
