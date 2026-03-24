@@ -10,7 +10,6 @@ export default function About() {
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">About Kinturi</h1>
           <p className="text-body text-lg max-w-2xl mx-auto">
-            Connecting practitioners with transformative Pilates experiences worldwide.
           </p>
         </div>
       </section>
