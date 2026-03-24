@@ -45,16 +45,19 @@ export default function RetreatDetail() {
         .single();
 
       if (!error && data) {
+        const inst = (data.instructor as any) || {};
+        const accom = (data.accommodation as any) || {};
+        const menuData = (data.menu as any) || {};
         setRetreat({
           ...data,
-          dates: (data.dates as any) || [],
-          instructor: (data.instructor as any) || { name: "", bio: "", certifications: [] },
-          accommodation: (data.accommodation as any) || { description: "", options: [] },
+          dates: Array.isArray(data.dates) ? data.dates as any : [],
+          instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [] },
+          accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
-          menu: (data.menu as any) || { description: "", highlights: [] },
+          menu: { description: menuData.description || "", highlights: Array.isArray(menuData.highlights) ? menuData.highlights : [] },
           facilities: data.facilities || [],
-          schedule: (data.schedule as any) || [],
+          schedule: Array.isArray(data.schedule) ? data.schedule as any : [],
         });
       }
       setLoading(false);
