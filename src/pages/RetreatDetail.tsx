@@ -17,9 +17,13 @@ interface RetreatData {
   description: string;
   price: string;
   hero_image_url: string | null;
+  hero_image_alt: string | null;
   gallery_image_urls: string[];
+  gallery_image_alts: string[];
   accommodation_image_urls: string[];
+  accommodation_image_alts: string[];
   dining_image_urls: string[];
+  dining_image_alts: string[];
   group_size: string | null;
   level: string | null;
   dates: Array<{ start: string; end: string; availability: string }>;
