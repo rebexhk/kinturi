@@ -218,6 +218,14 @@ export default function AdminRetreatEditor() {
           </span>
         </div>
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="featured"
+              checked={form.featured}
+              onCheckedChange={(checked) => updateField("featured", !!checked)}
+            />
+            <Label htmlFor="featured" className="text-sm cursor-pointer">Featured</Label>
+          </div>
           <Select value={form.status} onValueChange={(v) => updateField("status", v)}>
             <SelectTrigger className="w-32">
               <SelectValue />
