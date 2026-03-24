@@ -27,9 +27,13 @@ interface RetreatForm {
   group_size: string;
   level: string;
   hero_image_url: string;
+  hero_image_alt: string;
   gallery_image_urls: string[];
+  gallery_image_alts: string[];
   accommodation_image_urls: string[];
+  accommodation_image_alts: string[];
   dining_image_urls: string[];
+  dining_image_alts: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
   instructor: { name: string; bio: string; certifications: string[] };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
@@ -49,7 +53,10 @@ interface RetreatForm {
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
-  hero_image_url: "", gallery_image_urls: [], accommodation_image_urls: [], dining_image_urls: [],
+  hero_image_url: "", hero_image_alt: "",
+  gallery_image_urls: [], gallery_image_alts: [],
+  accommodation_image_urls: [], accommodation_image_alts: [],
+  dining_image_urls: [], dining_image_alts: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
