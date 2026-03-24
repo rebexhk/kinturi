@@ -70,7 +70,7 @@ export default function Index() {
           <h2 className="heading-section text-foreground mb-6 animate-fade-in-up">
             Wellness Through Movement
           </h2>
-          <p className="text-body text-lg leading-relaxed">Kinturi connects you with carefully curated active escapes that combine expert instruction, stunning locations, and mindful experiences. Whether you're tackling your next challenge, or using movement to relax and connect with new people, we have a trip for you.</p>
+          <p className="text-body text-lg leading-relaxed">You work hard, and we believe your time off should work just as hard for you. Kinturi helps you discover Active Retreats designed for those looking to find their "zen" in a high-intensity reformer session rather than a silent meditation. We combine fitness-focused holidays with the actual holiday part. Think challenging morning workouts followed by an afternoon poolside with a book, a coastal walk at your own pace, or tasting local wines with new friends. Whether you’re traveling solo or looking to find your tribe, we provide the perfect balance of community and "me-time." No forced spirituality - just transformative movement in the world’s most beautiful destinations.</p>
         </div>
       </section>
 
