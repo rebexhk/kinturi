@@ -17,6 +17,7 @@ interface RetreatForm {
   title: string;
   slug: string;
   status: string;
+  featured: boolean;
   location: string;
   address: string;
   duration: string;
