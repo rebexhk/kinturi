@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
@@ -16,6 +17,7 @@ interface RetreatForm {
   title: string;
   slug: string;
   status: string;
+  featured: boolean;
   location: string;
   address: string;
   duration: string;
@@ -44,7 +46,7 @@ interface RetreatForm {
 }
 
 const emptyForm: RetreatForm = {
-  title: "", slug: "", status: "draft", location: "", address: "",
+  title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
   hero_image_url: "", gallery_image_urls: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
@@ -216,6 +218,14 @@ export default function AdminRetreatEditor() {
           </span>
         </div>
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="featured"
+              checked={form.featured}
+              onCheckedChange={(checked) => updateField("featured", !!checked)}
+            />
+            <Label htmlFor="featured" className="text-sm cursor-pointer">Featured</Label>
+          </div>
           <Select value={form.status} onValueChange={(v) => updateField("status", v)}>
             <SelectTrigger className="w-32">
               <SelectValue />
