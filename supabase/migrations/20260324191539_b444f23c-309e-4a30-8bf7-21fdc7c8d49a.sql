@@ -1,0 +1,1 @@
+ALTER TABLE public.retreats ADD COLUMN country text DEFAULT '' NOT NULL;

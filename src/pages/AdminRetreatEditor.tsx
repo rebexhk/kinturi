@@ -19,6 +19,7 @@ interface RetreatForm {
   status: string;
   featured: boolean;
   location: string;
+  country: string;
   address: string;
   duration: string;
   type: string;
@@ -51,7 +52,7 @@ interface RetreatForm {
 }
 
 const emptyForm: RetreatForm = {
-  title: "", slug: "", status: "draft", featured: false, location: "", address: "",
+  title: "", slug: "", status: "draft", featured: false, location: "", country: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
   hero_image_url: "", hero_image_alt: "",
   gallery_image_urls: [], gallery_image_alts: [],
@@ -97,6 +98,7 @@ export default function AdminRetreatEditor() {
         dining_image_urls: data.dining_image_urls || [],
         dining_image_alts: data.dining_image_alts || [],
         hero_image_alt: data.hero_image_alt || "",
+        country: data.country || (data.location ? data.location.split(",").map((s: string) => s.trim()).pop() || "" : ""),
         dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
@@ -117,11 +119,19 @@ export default function AdminRetreatEditor() {
     }
   };
 
+  const extractCountry = (location: string): string => {
+    const parts = location.split(",").map((s) => s.trim());
+    return parts.length > 1 ? parts[parts.length - 1] : "";
+  };
+
   const updateField = (field: keyof RetreatForm, value: any) => {
     setForm((prev) => {
       const next = { ...prev, [field]: value };
       if (field === "title" && (isNew || prev.slug === slugify(prev.title))) {
         next.slug = slugify(value);
+      }
+      if (field === "location") {
+        next.country = extractCountry(value as string);
       }
       return next;
     });
@@ -306,9 +316,12 @@ export default function AdminRetreatEditor() {
             <FieldGroup label="Description *">
               <Textarea value={form.description} onChange={(e) => updateField("description", e.target.value)} rows={5} placeholder="Full retreat description..." />
             </FieldGroup>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <FieldGroup label="Location *">
                 <Input value={form.location} onChange={(e) => updateField("location", e.target.value)} placeholder="e.g. Cotswolds, United Kingdom" />
+              </FieldGroup>
+              <FieldGroup label="Country (auto)">
+                <Input value={form.country} onChange={(e) => updateField("country", e.target.value)} placeholder="Auto-extracted from location" className="bg-muted" />
               </FieldGroup>
               <FieldGroup label="Address">
                 <Input value={form.address} onChange={(e) => updateField("address", e.target.value)} placeholder="e.g. Langley Manor, Burford" />
