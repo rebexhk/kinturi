@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,11 @@ export default function AdminLogin() {
   const { login, isAdmin } = useAdmin();
   const navigate = useNavigate();
 
-  if (isAdmin) {
-    navigate("/admin");
-    return null;
-  }
+  useEffect(() => {
+    if (isAdmin) {
+      navigate("/admin");
+    }
+  }, [isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
