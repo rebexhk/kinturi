@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroImage from "@/assets/hero-retreat.jpg";
+import heroImage from "@/assets/hero-cover.jpg";
 const featuredRetreats = [{
   id: 1,
   title: "Alpine Serenity Reformer Retreat",
