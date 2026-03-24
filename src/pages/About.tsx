@@ -10,7 +10,6 @@ export default function About() {
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">About Kinturi</h1>
           <p className="text-body text-lg max-w-2xl mx-auto">
-            Connecting practitioners with transformative Pilates experiences worldwide.
           </p>
         </div>
       </section>
@@ -22,19 +21,14 @@ export default function About() {
             <h2 className="heading-section text-foreground mb-8">Our Story</h2>
             <div className="space-y-6 text-body text-lg">
               <p>
-                Kinturi was born from a simple belief: that the combination of mindful movement, 
-                beautiful surroundings, and expert guidance can create truly transformative experiences.
+                Kinturi exists for the people who come back from holiday feeling better than when they left. 
+                We believe movement is the best way to recharge - and that it doesn't have to mean 
+                punishing yourself. It means finding your rhythm somewhere beautiful, pushing 
+                yourself in good company, and earning every moment of rest.
               </p>
               <p>
-                We founded Kinturi to make it easier for Pilates enthusiasts to discover retreats that 
-                go beyond the ordinary—experiences that nourish the body, calm the mind, and inspire 
-                lasting wellness habits.
-              </p>
-              <p>
-                Every retreat on our platform is carefully vetted to ensure quality instruction, 
-                thoughtful programming, and accommodation that enhances the overall experience. 
-                Whether you're a seasoned practitioner or new to Pilates, we're here to help you 
-                find your perfect retreat.
+                Every retreat in our collection is hand-picked. We visit, we vet, and we only 
+                list what we'd book ourselves.
               </p>
             </div>
           </div>
