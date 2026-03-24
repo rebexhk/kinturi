@@ -15,6 +15,7 @@ interface Retreat {
   description: string;
   price: string;
   hero_image_url: string | null;
+  hero_image_alt: string | null;
   tags: string[] | null;
 }
 
