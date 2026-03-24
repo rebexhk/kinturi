@@ -49,7 +49,7 @@ interface RetreatForm {
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
-  hero_image_url: "", gallery_image_urls: [],
+  hero_image_url: "", gallery_image_urls: [], accommodation_image_urls: [], dining_image_urls: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
