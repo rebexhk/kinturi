@@ -57,7 +57,7 @@ export default function Retreats() {
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">Our Retreats</h1>
           <p className="text-body text-lg max-w-2xl mx-auto">
-            Discover our carefully curated selection of wellness retreats across the UK and Europe—from Pilates and fitness to hiking, wine tasting, and culinary experiences.
+            Move, reset, and come back stronger. Every Kinturi retreat is chosen to leave you more energised than when you arrived.
           </p>
         </div>
       </section>
