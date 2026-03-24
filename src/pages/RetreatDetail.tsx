@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, ChevronLeft } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,6 +17,9 @@ interface RetreatData {
   description: string;
   price: string;
   hero_image_url: string | null;
+  gallery_image_urls: string[];
+  accommodation_image_urls: string[];
+  dining_image_urls: string[];
   group_size: string | null;
   level: string | null;
   dates: Array<{ start: string; end: string; availability: string }>;
@@ -27,6 +30,49 @@ interface RetreatData {
   menu: { description: string; highlights: string[] };
   facilities: string[];
   schedule: Array<{ time: string; activity: string }>;
+}
+
+function ScrollGallery({ images, label }: { images: string[]; label: string }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const amount = scrollRef.current.clientWidth * 0.7;
+    scrollRef.current.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
+  if (!images.length) return null;
+
+  return (
+    <div className="relative group">
+      <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
+        {images.map((url, i) => (
+          <img
+            key={i}
+            src={url}
+            alt={`${label} ${i + 1}`}
+            className="w-72 h-48 object-cover rounded-lg flex-shrink-0 snap-start"
+          />
+        ))}
+      </div>
+      {images.length > 2 && (
+        <>
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <ChevronLeft className="w-4 h-4 text-foreground" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <ChevronRight className="w-4 h-4 text-foreground" />
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default function RetreatDetail() {
@@ -50,6 +96,9 @@ export default function RetreatDetail() {
         const menuData = (data.menu as any) || {};
         setRetreat({
           ...data,
+          gallery_image_urls: data.gallery_image_urls || [],
+          accommodation_image_urls: (data as any).accommodation_image_urls || [],
+          dining_image_urls: (data as any).dining_image_urls || [],
           dates: Array.isArray(data.dates) ? data.dates as any : [],
           instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [] },
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
@@ -100,11 +149,7 @@ export default function RetreatDetail() {
       <section className="relative h-[60vh] min-h-[400px]">
         <div className="absolute inset-0">
           {retreat.hero_image_url ? (
-            <img
-              src={retreat.hero_image_url}
-              alt={retreat.title}
-              className="w-full h-full object-cover"
-            />
+            <img src={retreat.hero_image_url} alt={retreat.title} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-muted" />
           )}
@@ -112,10 +157,7 @@ export default function RetreatDetail() {
         </div>
         <div className="absolute inset-0 flex items-end">
           <div className="container-page pb-12">
-            <Link
-              to="/retreats"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colours"
-            >
+            <Link to="/retreats" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors">
               <ChevronLeft className="w-4 h-4" />
               Back to Retreats
             </Link>
@@ -124,20 +166,9 @@ export default function RetreatDetail() {
             </span>
             <h1 className="heading-display text-white mb-4">{retreat.title}</h1>
             <div className="flex flex-wrap items-center gap-6 text-white/90">
-              <span className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                {retreat.location}
-              </span>
-              <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                {retreat.duration}
-              </span>
-              {retreat.group_size && (
-                <span className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  {retreat.group_size}
-                </span>
-              )}
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4" />{retreat.location}</span>
+              <span className="flex items-center gap-2"><Clock className="w-4 h-4" />{retreat.duration}</span>
+              {retreat.group_size && <span className="flex items-center gap-2"><Users className="w-4 h-4" />{retreat.group_size}</span>}
             </div>
           </div>
         </div>
@@ -156,6 +187,15 @@ export default function RetreatDetail() {
         </div>
       </section>
 
+      {/* Gallery */}
+      {retreat.gallery_image_urls.length > 0 && (
+        <section className="py-8 bg-background">
+          <div className="container-page">
+            <ScrollGallery images={retreat.gallery_image_urls} label="Gallery" />
+          </div>
+        </section>
+      )}
+
       {/* Main Content */}
       <section className="section-padding bg-background">
         <div className="container-page">
@@ -173,24 +213,16 @@ export default function RetreatDetail() {
               {retreat.dates.length > 0 && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
-                    <Calendar className="w-6 h-6 text-primary" />
-                    Available Dates
+                    <Calendar className="w-6 h-6 text-primary" />Available Dates
                   </h2>
                   <div className="space-y-4">
                     {retreat.dates.map((date, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-wrap items-center justify-between gap-4 p-4 bg-secondary rounded-lg"
-                      >
+                      <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 bg-secondary rounded-lg">
                         <div>
-                          <p className="font-medium text-foreground">
-                            {date.start} – {date.end}
-                          </p>
+                          <p className="font-medium text-foreground">{date.start} – {date.end}</p>
                           <p className="text-sm text-muted-foreground">{date.availability}</p>
                         </div>
-                        <Button variant="sage-outline" size="sm" asChild>
-                          <Link to="/contact">Enquire</Link>
-                        </Button>
+                        <Button variant="sage-outline" size="sm" asChild><Link to="/contact">Enquire</Link></Button>
                       </div>
                     ))}
                   </div>
@@ -201,20 +233,14 @@ export default function RetreatDetail() {
               {retreat.instructor.name && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
-                    <Heart className="w-6 h-6 text-primary" />
-                    Your Instructor
+                    <Heart className="w-6 h-6 text-primary" />Your Instructor
                   </h2>
                   <div className="bg-secondary rounded-lg p-6">
                     <h3 className="font-serif text-xl text-foreground mb-3">{retreat.instructor.name}</h3>
                     <p className="text-body mb-4">{retreat.instructor.bio}</p>
                     <div className="flex flex-wrap gap-2">
                       {retreat.instructor.certifications.map((cert, index) => (
-                        <span
-                          key={index}
-                          className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full"
-                        >
-                          {cert}
-                        </span>
+                        <span key={index} className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">{cert}</span>
                       ))}
                     </div>
                   </div>
@@ -225,16 +251,17 @@ export default function RetreatDetail() {
               {retreat.accommodation.description && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
-                    <Bed className="w-6 h-6 text-primary" />
-                    Accommodation
+                    <Bed className="w-6 h-6 text-primary" />Accommodation
                   </h2>
+                  {retreat.accommodation_image_urls.length > 0 && (
+                    <div className="mb-6">
+                      <ScrollGallery images={retreat.accommodation_image_urls} label="Accommodation" />
+                    </div>
+                  )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
                   <div className="space-y-4">
                     {retreat.accommodation.options.map((option, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-wrap items-center justify-between gap-4 p-4 border border-border rounded-lg"
-                      >
+                      <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 border border-border rounded-lg">
                         <div>
                           <p className="font-medium text-foreground">{option.type}</p>
                           <p className="text-sm text-muted-foreground">{option.description}</p>
@@ -246,13 +273,17 @@ export default function RetreatDetail() {
                 </div>
               )}
 
-              {/* Menu */}
+              {/* Dining */}
               {retreat.menu.description && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
-                    <Utensils className="w-6 h-6 text-primary" />
-                    Dining
+                    <Utensils className="w-6 h-6 text-primary" />Dining
                   </h2>
+                  {retreat.dining_image_urls.length > 0 && (
+                    <div className="mb-6">
+                      <ScrollGallery images={retreat.dining_image_urls} label="Dining" />
+                    </div>
+                  )}
                   <p className="text-body mb-4">{retreat.menu.description}</p>
                   <ul className="space-y-2">
                     {retreat.menu.highlights.map((item, index) => (
@@ -283,63 +314,53 @@ export default function RetreatDetail() {
 
             {/* Sidebar */}
             <div className="space-y-8">
-              {/* Facilities */}
               {retreat.facilities.length > 0 && (
                 <div className="bg-secondary rounded-lg p-6">
                   <h3 className="heading-card text-foreground mb-4 flex items-center gap-2">
-                    <Dumbbell className="w-5 h-5 text-primary" />
-                    Facilities
+                    <Dumbbell className="w-5 h-5 text-primary" />Facilities
                   </h3>
                   <ul className="space-y-2">
                     {retreat.facilities.map((facility, index) => (
                       <li key={index} className="flex items-start gap-3 text-body text-sm">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-                        {facility}
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />{facility}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {/* Inclusions */}
               {retreat.inclusions.length > 0 && (
                 <div className="bg-secondary rounded-lg p-6">
                   <h3 className="heading-card text-foreground mb-4">What's Included</h3>
                   <ul className="space-y-2">
                     {retreat.inclusions.map((item, index) => (
                       <li key={index} className="flex items-start gap-3 text-body text-sm">
-                        <span className="text-primary">✓</span>
-                        {item}
+                        <span className="text-primary">✓</span>{item}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {/* Not Included */}
               {retreat.not_included.length > 0 && (
                 <div className="bg-muted/30 rounded-lg p-6">
                   <h3 className="heading-card text-foreground mb-4">Not Included</h3>
                   <ul className="space-y-2">
                     {retreat.not_included.map((item, index) => (
                       <li key={index} className="flex items-start gap-3 text-body text-sm text-muted-foreground">
-                        <span>–</span>
-                        {item}
+                        <span>–</span>{item}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {/* CTA */}
               <div className="bg-primary/10 rounded-lg p-6 text-center">
                 <p className="text-body mb-4">Ready to book your place?</p>
                 <Button variant="sage" className="w-full" asChild>
                   <Link to="/contact">Request to Book</Link>
                 </Button>
-                <p className="text-xs text-muted-foreground mt-3">
-                  No payment required until your place is confirmed
-                </p>
+                <p className="text-xs text-muted-foreground mt-3">No payment required until your place is confirmed</p>
               </div>
             </div>
           </div>
