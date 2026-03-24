@@ -28,7 +28,7 @@ export default function Retreats() {
     const fetchRetreats = async () => {
       const { data, error } = await supabase
         .from("retreats")
-        .select("id, title, slug, location, duration, type, description, price, hero_image_url, tags")
+        .select("id, title, slug, location, duration, type, description, price, hero_image_url, hero_image_alt, tags")
         .eq("status", "published")
         .order("created_at", { ascending: false });
 
