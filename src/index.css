@@ -195,3 +195,12 @@
     }
   }
 }
+
+/* Hide scrollbar for scroll galleries */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
