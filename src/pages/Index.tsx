@@ -56,9 +56,7 @@ export default function Index() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-delay-2">
-          <div className="w-6 h-10 border-2 border-primary-foreground/50 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-primary-foreground/50 rounded-full animate-bounce" />
-          </div>
+          <ChevronDown className="h-6 w-6 text-primary-foreground/60 animate-bounce" />
         </div>
       </section>
 
