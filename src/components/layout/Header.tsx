@@ -45,15 +45,14 @@ export function Header({ transparent = false }: HeaderProps) {
       <nav className="container-page flex items-center justify-between py-4 lg:py-5">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span
+          <img
+            src={logoBlue}
+            alt="Kinturi"
             className={cn(
-              "text-2xl lg:text-3xl font-semibold tracking-tight transition-colors duration-300",
-              isTransparentNow ? "text-primary-foreground" : "text-primary"
+              "h-7 lg:h-8 w-auto transition-all duration-300",
+              isTransparentNow ? "brightness-0 invert" : ""
             )}
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-          >
-            Kinturi
-          </span>
+          />
         </Link>
 
         {/* Desktop Navigation */}
