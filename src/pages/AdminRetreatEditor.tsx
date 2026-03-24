@@ -115,33 +115,52 @@ export default function AdminRetreatEditor() {
     }
     setSaving(true);
     try {
-      // Strip created_at/updated_at to avoid sending unnecessary fields
       const { created_at, updated_at, ...cleanForm } = form as any;
       const payload = isNew ? cleanForm : { id, ...cleanForm };
-      console.log("[save] payload size:", JSON.stringify(payload).length, "bytes");
       
-      const response = await fetch(
-        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/admin-retreats`,
-        {
-          method: isNew ? "POST" : "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "x-admin-token": token || "",
-          },
-          body: JSON.stringify(payload),
+      const url = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/admin-retreats`;
+      
+      // Retry up to 3 times on network failures
+      let lastError: Error | null = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+          
+          const response = await fetch(url, {
+            method: isNew ? "POST" : "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "x-admin-token": token || "",
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (!response.ok) {
+            const err = await response.json().catch(() => ({ error: "Request failed" }));
+            throw new Error(err.error || "Request failed");
+          }
+          
+          await response.json();
+          toast.success(isNew ? "Retreat created!" : "Retreat updated!");
+          navigate("/admin");
+          return;
+        } catch (err: any) {
+          lastError = err;
+          if (err.name === 'AbortError') {
+            console.log(`[save] Attempt ${attempt + 1} timed out, retrying...`);
+          } else if (err.message === 'Failed to fetch') {
+            console.log(`[save] Attempt ${attempt + 1} network error, retrying...`);
+            await new Promise(r => setTimeout(r, 1000));
+          } else {
+            throw err; // Non-network error, don't retry
+          }
         }
-      );
-      
-      console.log("[save] response status:", response.status);
-      
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({ error: "Request failed" }));
-        throw new Error(err.error || "Request failed");
       }
-      
-      await response.json();
-      toast.success(isNew ? "Retreat created!" : "Retreat updated!");
-      navigate("/admin");
+      throw lastError || new Error("Failed to save after retries");
     } catch (err: any) {
       console.error("[save] error:", err);
       toast.error(err.message || "Failed to save");
