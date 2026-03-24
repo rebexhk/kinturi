@@ -17,18 +17,22 @@ export type Database = {
       retreats: {
         Row: {
           accommodation: Json | null
+          accommodation_image_alts: string[] | null
           accommodation_image_urls: string[]
           address: string | null
           categories: string[] | null
           created_at: string
           dates: Json | null
           description: string
+          dining_image_alts: string[] | null
           dining_image_urls: string[]
           duration: string
           facilities: string[] | null
           featured: boolean
+          gallery_image_alts: string[] | null
           gallery_image_urls: string[] | null
           group_size: string | null
+          hero_image_alt: string | null
           hero_image_url: string | null
           id: string
           inclusions: string[] | null
@@ -51,18 +55,22 @@ export type Database = {
         }
         Insert: {
           accommodation?: Json | null
+          accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
           created_at?: string
           dates?: Json | null
           description: string
+          dining_image_alts?: string[] | null
           dining_image_urls?: string[]
           duration: string
           facilities?: string[] | null
           featured?: boolean
+          gallery_image_alts?: string[] | null
           gallery_image_urls?: string[] | null
           group_size?: string | null
+          hero_image_alt?: string | null
           hero_image_url?: string | null
           id?: string
           inclusions?: string[] | null
@@ -85,18 +93,22 @@ export type Database = {
         }
         Update: {
           accommodation?: Json | null
+          accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
           created_at?: string
           dates?: Json | null
           description?: string
+          dining_image_alts?: string[] | null
           dining_image_urls?: string[]
           duration?: string
           facilities?: string[] | null
           featured?: boolean
+          gallery_image_alts?: string[] | null
           gallery_image_urls?: string[] | null
           group_size?: string | null
+          hero_image_alt?: string | null
           hero_image_url?: string | null
           id?: string
           inclusions?: string[] | null
