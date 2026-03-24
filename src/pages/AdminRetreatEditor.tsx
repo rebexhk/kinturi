@@ -170,9 +170,13 @@ export default function AdminRetreatEditor() {
             throw new Error(err.error || "Request failed");
           }
           
-          await response.json();
+          const savedData = await response.json();
           toast.success(isNew ? "Retreat created!" : "Retreat updated!");
-          navigate("/admin");
+          // Update originalForm so subsequent saves only send new changes
+          setOriginalForm({ ...form });
+          if (isNew) {
+            navigate("/admin");
+          }
           return;
         } catch (err: any) {
           lastError = err;
