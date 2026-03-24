@@ -131,10 +131,10 @@ export default function AdminRetreatEditor() {
         // Only send changed fields to keep payload small
         const changes: any = { id };
         const orig = originalForm || emptyForm;
-        for (const key of Object.keys(form) as Array<keyof RetreatForm>) {
+        for (const key of Object.keys(form)) {
           if (key === 'created_at' || key === 'updated_at') continue;
-          const current = JSON.stringify(form[key]);
-          const original = JSON.stringify(orig[key]);
+          const current = JSON.stringify((form as any)[key]);
+          const original = JSON.stringify((orig as any)[key]);
           if (current !== original) {
             changes[key] = form[key];
           }
