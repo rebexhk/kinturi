@@ -199,7 +199,7 @@ export default function RetreatDetail() {
       {retreat.gallery_image_urls.length > 0 && (
         <section className="py-8 bg-background">
           <div className="container-page">
-            <ScrollGallery images={retreat.gallery_image_urls} label="Gallery" />
+            <ScrollGallery images={retreat.gallery_image_urls} alts={retreat.gallery_image_alts} label="Gallery" />
           </div>
         </section>
       )}
