@@ -45,7 +45,7 @@ export default function Index() {
           <h1 className="heading-display text-primary-foreground mb-6">
             Find Your Perfect Active Retreat
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light">Discover a curated selection of fitness-focused holidays and active escapes in beautiful destinations.</p>
+          <p className="text-lg text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light md:text-2xl">Discover a curated selection of fitness-focused holidays and active escapes worldwide.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" asChild>
               <Link to="/retreats">
