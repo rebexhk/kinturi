@@ -24,6 +24,7 @@ export type Database = {
           description: string
           duration: string
           facilities: string[] | null
+          featured: boolean
           gallery_image_urls: string[] | null
           group_size: string | null
           hero_image_url: string | null
@@ -55,6 +56,7 @@ export type Database = {
           description: string
           duration: string
           facilities?: string[] | null
+          featured?: boolean
           gallery_image_urls?: string[] | null
           group_size?: string | null
           hero_image_url?: string | null
@@ -86,6 +88,7 @@ export type Database = {
           description?: string
           duration?: string
           facilities?: string[] | null
+          featured?: boolean
           gallery_image_urls?: string[] | null
           group_size?: string | null
           hero_image_url?: string | null
