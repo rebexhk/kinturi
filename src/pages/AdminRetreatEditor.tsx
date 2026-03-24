@@ -118,11 +118,19 @@ export default function AdminRetreatEditor() {
     }
   };
 
+  const extractCountry = (location: string): string => {
+    const parts = location.split(",").map((s) => s.trim());
+    return parts.length > 1 ? parts[parts.length - 1] : "";
+  };
+
   const updateField = (field: keyof RetreatForm, value: any) => {
     setForm((prev) => {
       const next = { ...prev, [field]: value };
       if (field === "title" && (isNew || prev.slug === slugify(prev.title))) {
         next.slug = slugify(value);
+      }
+      if (field === "location") {
+        next.country = extractCountry(value as string);
       }
       return next;
     });
