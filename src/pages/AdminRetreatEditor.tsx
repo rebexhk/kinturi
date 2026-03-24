@@ -46,7 +46,7 @@ interface RetreatForm {
 }
 
 const emptyForm: RetreatForm = {
-  title: "", slug: "", status: "draft", location: "", address: "",
+  title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
   hero_image_url: "", gallery_image_urls: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
