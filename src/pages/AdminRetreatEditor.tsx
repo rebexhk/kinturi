@@ -98,6 +98,7 @@ export default function AdminRetreatEditor() {
         dining_image_urls: data.dining_image_urls || [],
         dining_image_alts: data.dining_image_alts || [],
         hero_image_alt: data.hero_image_alt || "",
+        country: data.country || (data.location ? data.location.split(",").map((s: string) => s.trim()).pop() || "" : ""),
         dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
