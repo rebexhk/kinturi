@@ -10,6 +10,7 @@ interface Retreat {
   title: string;
   slug: string;
   location: string;
+  country: string;
   duration: string;
   type: string;
   description: string;
@@ -22,13 +23,14 @@ interface Retreat {
 export default function Retreats() {
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeType, setActiveType] = useState<string | null>(null);
+  const [activeCountry, setActiveCountry] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRetreats = async () => {
       const { data, error } = await supabase
         .from("retreats")
-        .select("id, title, slug, location, duration, type, description, price, hero_image_url, hero_image_alt, tags")
+        .select("id, title, slug, location, country, duration, type, description, price, hero_image_url, hero_image_alt, tags")
         .eq("status", "published")
         .order("created_at", { ascending: false });
 
@@ -40,16 +42,25 @@ export default function Retreats() {
     fetchRetreats();
   }, []);
 
-  // Collect unique tags from all retreats
-  const allTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    retreats.forEach((r) => r.tags?.forEach((t) => tagSet.add(t)));
-    return Array.from(tagSet).sort();
+  const allTypes = useMemo(() => {
+    const set = new Set<string>();
+    retreats.forEach((r) => { if (r.type) set.add(r.type); });
+    return Array.from(set).sort();
   }, [retreats]);
 
-  const filtered = activeTag
-    ? retreats.filter((r) => r.tags?.includes(activeTag))
-    : retreats;
+  const allCountries = useMemo(() => {
+    const set = new Set<string>();
+    retreats.forEach((r) => { if (r.country) set.add(r.country); });
+    return Array.from(set).sort();
+  }, [retreats]);
+
+  const filtered = useMemo(() => {
+    return retreats.filter((r) => {
+      if (activeType && r.type !== activeType) return false;
+      if (activeCountry && r.country !== activeCountry) return false;
+      return true;
+    });
+  }, [retreats, activeType, activeCountry]);
 
   return (
     <Layout>
@@ -64,26 +75,53 @@ export default function Retreats() {
       </section>
 
       {/* Filters */}
-      {allTags.length > 0 && (
+      {(allTypes.length > 0 || allCountries.length > 0) && (
         <section className="py-8 border-b border-border bg-background">
-          <div className="container-page flex flex-wrap gap-3 justify-center">
-            <Button
-              variant={activeTag === null ? "sage" : "outline"}
-              size="sm"
-              onClick={() => setActiveTag(null)}
-            >
-              All Retreats
-            </Button>
-            {allTags.map((tag) => (
-              <Button
-                key={tag}
-                variant={activeTag === tag ? "sage" : "outline"}
-                size="sm"
-                onClick={() => setActiveTag(tag)}
-              >
-                {tag}
-              </Button>
-            ))}
+          <div className="container-page space-y-4">
+            {allTypes.length > 0 && (
+              <div className="flex flex-wrap gap-3 justify-center">
+                <span className="text-sm font-medium text-muted-foreground self-center mr-1">Type:</span>
+                <Button
+                  variant={activeType === null ? "sage" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveType(null)}
+                >
+                  All
+                </Button>
+                {allTypes.map((type) => (
+                  <Button
+                    key={type}
+                    variant={activeType === type ? "sage" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveType(type)}
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+            )}
+            {allCountries.length > 0 && (
+              <div className="flex flex-wrap gap-3 justify-center">
+                <span className="text-sm font-medium text-muted-foreground self-center mr-1">Location:</span>
+                <Button
+                  variant={activeCountry === null ? "sage" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveCountry(null)}
+                >
+                  All
+                </Button>
+                {allCountries.map((country) => (
+                  <Button
+                    key={country}
+                    variant={activeCountry === country ? "sage" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveCountry(country)}
+                  >
+                    {country}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
