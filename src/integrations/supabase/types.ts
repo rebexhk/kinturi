@@ -39,6 +39,7 @@ export type Database = {
           accommodation_image_urls: string[]
           address: string | null
           categories: string[] | null
+          country: string
           created_at: string
           dates: Json | null
           description: string
@@ -77,6 +78,7 @@ export type Database = {
           accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
+          country?: string
           created_at?: string
           dates?: Json | null
           description: string
@@ -115,6 +117,7 @@ export type Database = {
           accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
+          country?: string
           created_at?: string
           dates?: Json | null
           description?: string
