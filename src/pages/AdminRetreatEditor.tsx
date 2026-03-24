@@ -80,12 +80,13 @@ export default function AdminRetreatEditor() {
   const loadRetreat = async (retreatId: string) => {
     try {
       const data = await adminFetch(`admin-retreats?id=${retreatId}`);
-      setForm({
+      const loaded: RetreatForm = {
         ...emptyForm,
         ...data,
         gallery_image_urls: data.gallery_image_urls || [],
         accommodation_image_urls: data.accommodation_image_urls || [],
         dining_image_urls: data.dining_image_urls || [],
+        dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
         inclusions: data.inclusions || [],
@@ -96,7 +97,9 @@ export default function AdminRetreatEditor() {
         seo_keywords: data.seo_keywords || [],
         categories: data.categories || [],
         tags: data.tags || [],
-      });
+      };
+      setForm(loaded);
+      setOriginalForm(loaded);
     } catch {
       toast.error("Failed to load retreat");
       navigate("/admin");
