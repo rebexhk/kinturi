@@ -19,6 +19,7 @@ interface RetreatForm {
   status: string;
   featured: boolean;
   location: string;
+  country: string;
   address: string;
   duration: string;
   type: string;
