@@ -121,6 +121,9 @@ export default function Index() {
         </section>
       )}
 
+      {/* Newsletter Signup */}
+      <NewsletterSignup />
+
     </Layout>
   );
 }
