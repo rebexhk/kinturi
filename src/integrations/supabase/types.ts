@@ -17,11 +17,13 @@ export type Database = {
       retreats: {
         Row: {
           accommodation: Json | null
+          accommodation_image_urls: string[]
           address: string | null
           categories: string[] | null
           created_at: string
           dates: Json | null
           description: string
+          dining_image_urls: string[]
           duration: string
           facilities: string[] | null
           featured: boolean
@@ -49,11 +51,13 @@ export type Database = {
         }
         Insert: {
           accommodation?: Json | null
+          accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
           created_at?: string
           dates?: Json | null
           description: string
+          dining_image_urls?: string[]
           duration: string
           facilities?: string[] | null
           featured?: boolean
@@ -81,11 +85,13 @@ export type Database = {
         }
         Update: {
           accommodation?: Json | null
+          accommodation_image_urls?: string[]
           address?: string | null
           categories?: string[] | null
           created_at?: string
           dates?: Json | null
           description?: string
+          dining_image_urls?: string[]
           duration?: string
           facilities?: string[] | null
           featured?: boolean
