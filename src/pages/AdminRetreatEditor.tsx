@@ -27,9 +27,13 @@ interface RetreatForm {
   group_size: string;
   level: string;
   hero_image_url: string;
+  hero_image_alt: string;
   gallery_image_urls: string[];
+  gallery_image_alts: string[];
   accommodation_image_urls: string[];
+  accommodation_image_alts: string[];
   dining_image_urls: string[];
+  dining_image_alts: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
   instructor: { name: string; bio: string; certifications: string[] };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
@@ -49,7 +53,10 @@ interface RetreatForm {
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", address: "",
   duration: "", type: "", description: "", price: "", group_size: "", level: "",
-  hero_image_url: "", gallery_image_urls: [], accommodation_image_urls: [], dining_image_urls: [],
+  hero_image_url: "", hero_image_alt: "",
+  gallery_image_urls: [], gallery_image_alts: [],
+  accommodation_image_urls: [], accommodation_image_alts: [],
+  dining_image_urls: [], dining_image_alts: [],
   dates: [], instructor: { name: "", bio: "", certifications: [] },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
@@ -84,8 +91,12 @@ export default function AdminRetreatEditor() {
         ...emptyForm,
         ...data,
         gallery_image_urls: data.gallery_image_urls || [],
+        gallery_image_alts: data.gallery_image_alts || [],
         accommodation_image_urls: data.accommodation_image_urls || [],
+        accommodation_image_alts: data.accommodation_image_alts || [],
         dining_image_urls: data.dining_image_urls || [],
+        dining_image_alts: data.dining_image_alts || [],
+        hero_image_alt: data.hero_image_alt || "",
         dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
@@ -443,11 +454,16 @@ export default function AdminRetreatEditor() {
             <div className="border border-border rounded-lg p-5 space-y-4">
               <h3 className="font-medium text-foreground">Hero Image</h3>
               {form.hero_image_url ? (
-                <div className="relative">
-                  <img src={form.hero_image_url} alt="Hero" className="w-full h-48 object-cover rounded-lg" />
-                  <Button variant="destructive" size="sm" className="absolute top-2 right-2" onClick={() => updateField("hero_image_url", "")}>
-                    <X className="w-3 h-3" />
-                  </Button>
+                <div className="space-y-3">
+                  <div className="relative">
+                    <img src={form.hero_image_url} alt={form.hero_image_alt || "Hero"} className="w-full h-48 object-cover rounded-lg" />
+                    <Button variant="destructive" size="sm" className="absolute top-2 right-2" onClick={() => { updateField("hero_image_url", ""); updateField("hero_image_alt", ""); }}>
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
+                  <FieldGroup label="Alt Text (SEO)">
+                    <Input value={form.hero_image_alt} onChange={(e) => updateField("hero_image_alt", e.target.value)} placeholder="Describe this image for search engines and accessibility" />
+                  </FieldGroup>
                 </div>
               ) : (
                 <label className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
@@ -459,64 +475,37 @@ export default function AdminRetreatEditor() {
             </div>
 
             {/* Gallery */}
-            <div className="border border-border rounded-lg p-5 space-y-4">
-              <h3 className="font-medium text-foreground">Gallery Images</h3>
-              <div className="grid grid-cols-3 gap-4">
-                {form.gallery_image_urls.map((url, i) => (
-                  <div key={i} className="relative">
-                    <img src={url} alt={`Gallery ${i + 1}`} className="w-full h-32 object-cover rounded-lg" />
-                    <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => updateField("gallery_image_urls", form.gallery_image_urls.filter((_, j) => j !== i))}>
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-                <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                  <Plus className="w-6 h-6 text-muted-foreground mb-1" />
-                  <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "gallery")} disabled={uploading} />
-                </label>
-              </div>
-            </div>
+            <ImageGalleryEditor
+              title="Gallery Images"
+              urls={form.gallery_image_urls}
+              alts={form.gallery_image_alts}
+              onUrlsChange={(urls) => updateField("gallery_image_urls", urls)}
+              onAltsChange={(alts) => updateField("gallery_image_alts", alts)}
+              onUpload={(e) => handleImageUpload(e, "gallery")}
+              uploading={uploading}
+            />
 
             {/* Accommodation Images */}
-            <div className="border border-border rounded-lg p-5 space-y-4">
-              <h3 className="font-medium text-foreground">Accommodation Images</h3>
-              <div className="grid grid-cols-3 gap-4">
-                {form.accommodation_image_urls.map((url, i) => (
-                  <div key={i} className="relative">
-                    <img src={url} alt={`Accommodation ${i + 1}`} className="w-full h-32 object-cover rounded-lg" />
-                    <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => updateField("accommodation_image_urls", form.accommodation_image_urls.filter((_, j) => j !== i))}>
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-                <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                  <Plus className="w-6 h-6 text-muted-foreground mb-1" />
-                  <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "accommodation")} disabled={uploading} />
-                </label>
-              </div>
-            </div>
+            <ImageGalleryEditor
+              title="Accommodation Images"
+              urls={form.accommodation_image_urls}
+              alts={form.accommodation_image_alts}
+              onUrlsChange={(urls) => updateField("accommodation_image_urls", urls)}
+              onAltsChange={(alts) => updateField("accommodation_image_alts", alts)}
+              onUpload={(e) => handleImageUpload(e, "accommodation")}
+              uploading={uploading}
+            />
 
             {/* Dining Images */}
-            <div className="border border-border rounded-lg p-5 space-y-4">
-              <h3 className="font-medium text-foreground">Dining Images</h3>
-              <div className="grid grid-cols-3 gap-4">
-                {form.dining_image_urls.map((url, i) => (
-                  <div key={i} className="relative">
-                    <img src={url} alt={`Dining ${i + 1}`} className="w-full h-32 object-cover rounded-lg" />
-                    <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => updateField("dining_image_urls", form.dining_image_urls.filter((_, j) => j !== i))}>
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-                <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                  <Plus className="w-6 h-6 text-muted-foreground mb-1" />
-                  <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
-                  <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, "dining")} disabled={uploading} />
-                </label>
-              </div>
-            </div>
+            <ImageGalleryEditor
+              title="Dining Images"
+              urls={form.dining_image_urls}
+              alts={form.dining_image_alts}
+              onUrlsChange={(urls) => updateField("dining_image_urls", urls)}
+              onAltsChange={(alts) => updateField("dining_image_alts", alts)}
+              onUpload={(e) => handleImageUpload(e, "dining")}
+              uploading={uploading}
+            />
           </TabsContent>
 
           {/* SCHEDULE TAB */}
@@ -615,6 +604,61 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
           <Plus className="w-3 h-3" />
         </Button>
       </div>
+    </div>
+  );
+}
+
+// Reusable image gallery editor with alt text support
+function ImageGalleryEditor({ title, urls, alts, onUrlsChange, onAltsChange, onUpload, uploading }: {
+  title: string;
+  urls: string[];
+  alts: string[];
+  onUrlsChange: (urls: string[]) => void;
+  onAltsChange: (alts: string[]) => void;
+  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  uploading: boolean;
+}) {
+  const removeImage = (index: number) => {
+    onUrlsChange(urls.filter((_, j) => j !== index));
+    onAltsChange(alts.filter((_, j) => j !== index));
+  };
+
+  const updateAlt = (index: number, value: string) => {
+    const updated = [...alts];
+    while (updated.length <= index) updated.push("");
+    updated[index] = value;
+    onAltsChange(updated);
+  };
+
+  return (
+    <div className="border border-border rounded-lg p-5 space-y-4">
+      <h3 className="font-medium text-foreground">{title}</h3>
+      <div className="space-y-4">
+        {urls.map((url, i) => (
+          <div key={i} className="flex gap-4 items-start bg-secondary/50 rounded-lg p-3">
+            <div className="relative flex-shrink-0">
+              <img src={url} alt={alts[i] || `${title} ${i + 1}`} className="w-32 h-24 object-cover rounded-lg" />
+              <Button variant="destructive" size="sm" className="absolute top-1 right-1 h-6 w-6 p-0" onClick={() => removeImage(i)}>
+                <X className="w-3 h-3" />
+              </Button>
+            </div>
+            <div className="flex-1">
+              <FieldGroup label="Alt Text (SEO)">
+                <Input
+                  value={alts[i] || ""}
+                  onChange={(e) => updateAlt(i, e.target.value)}
+                  placeholder="Describe this image for search engines and accessibility"
+                />
+              </FieldGroup>
+            </div>
+          </div>
+        ))}
+      </div>
+      <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+        <Plus className="w-6 h-6 text-muted-foreground mb-1" />
+        <span className="text-xs text-muted-foreground">{uploading ? "Uploading..." : "Add image"}</span>
+        <input type="file" accept="image/*" multiple className="hidden" onChange={onUpload} disabled={uploading} />
+      </label>
     </div>
   );
 }

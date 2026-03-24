@@ -17,9 +17,13 @@ interface RetreatData {
   description: string;
   price: string;
   hero_image_url: string | null;
+  hero_image_alt: string | null;
   gallery_image_urls: string[];
+  gallery_image_alts: string[];
   accommodation_image_urls: string[];
+  accommodation_image_alts: string[];
   dining_image_urls: string[];
+  dining_image_alts: string[];
   group_size: string | null;
   level: string | null;
   dates: Array<{ start: string; end: string; availability: string }>;
@@ -32,7 +36,7 @@ interface RetreatData {
   schedule: Array<{ time: string; activity: string }>;
 }
 
-function ScrollGallery({ images, label }: { images: string[]; label: string }) {
+function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: string[]; label: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -50,7 +54,7 @@ function ScrollGallery({ images, label }: { images: string[]; label: string }) {
           <img
             key={i}
             src={url}
-            alt={`${label} ${i + 1}`}
+            alt={alts[i] || `${label} ${i + 1}`}
             className="w-72 h-48 object-cover rounded-lg flex-shrink-0 snap-start"
           />
         ))}
@@ -96,9 +100,13 @@ export default function RetreatDetail() {
         const menuData = (data.menu as any) || {};
         setRetreat({
           ...data,
+          hero_image_alt: (data as any).hero_image_alt || null,
           gallery_image_urls: data.gallery_image_urls || [],
+          gallery_image_alts: (data as any).gallery_image_alts || [],
           accommodation_image_urls: (data as any).accommodation_image_urls || [],
+          accommodation_image_alts: (data as any).accommodation_image_alts || [],
           dining_image_urls: (data as any).dining_image_urls || [],
+          dining_image_alts: (data as any).dining_image_alts || [],
           dates: Array.isArray(data.dates) ? data.dates as any : [],
           instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [] },
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
@@ -149,7 +157,7 @@ export default function RetreatDetail() {
       <section className="relative h-[60vh] min-h-[400px]">
         <div className="absolute inset-0">
           {retreat.hero_image_url ? (
-            <img src={retreat.hero_image_url} alt={retreat.title} className="w-full h-full object-cover" />
+            <img src={retreat.hero_image_url} alt={retreat.hero_image_alt || retreat.title} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-muted" />
           )}
@@ -191,7 +199,7 @@ export default function RetreatDetail() {
       {retreat.gallery_image_urls.length > 0 && (
         <section className="py-8 bg-background">
           <div className="container-page">
-            <ScrollGallery images={retreat.gallery_image_urls} label="Gallery" />
+            <ScrollGallery images={retreat.gallery_image_urls} alts={retreat.gallery_image_alts} label="Gallery" />
           </div>
         </section>
       )}
@@ -255,7 +263,7 @@ export default function RetreatDetail() {
                   </h2>
                   {retreat.accommodation_image_urls.length > 0 && (
                     <div className="mb-6">
-                      <ScrollGallery images={retreat.accommodation_image_urls} label="Accommodation" />
+                      <ScrollGallery images={retreat.accommodation_image_urls} alts={retreat.accommodation_image_alts} label="Accommodation" />
                     </div>
                   )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
@@ -281,7 +289,7 @@ export default function RetreatDetail() {
                   </h2>
                   {retreat.dining_image_urls.length > 0 && (
                     <div className="mb-6">
-                      <ScrollGallery images={retreat.dining_image_urls} label="Dining" />
+                      <ScrollGallery images={retreat.dining_image_urls} alts={retreat.dining_image_alts} label="Dining" />
                     </div>
                   )}
                   <p className="text-body mb-4">{retreat.menu.description}</p>

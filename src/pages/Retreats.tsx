@@ -15,6 +15,7 @@ interface Retreat {
   description: string;
   price: string;
   hero_image_url: string | null;
+  hero_image_alt: string | null;
   tags: string[] | null;
 }
 
@@ -27,7 +28,7 @@ export default function Retreats() {
     const fetchRetreats = async () => {
       const { data, error } = await supabase
         .from("retreats")
-        .select("id, title, slug, location, duration, type, description, price, hero_image_url, tags")
+        .select("id, title, slug, location, duration, type, description, price, hero_image_url, hero_image_alt, tags")
         .eq("status", "published")
         .order("created_at", { ascending: false });
 
@@ -122,7 +123,7 @@ export default function Retreats() {
                     {retreat.hero_image_url ? (
                       <img
                         src={retreat.hero_image_url}
-                        alt={retreat.title}
+                        alt={retreat.hero_image_alt || retreat.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
