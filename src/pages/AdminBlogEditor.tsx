@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import BlockEditor, { ContentBlock } from "@/components/BlockEditor";
+import BlockEditor from "@/components/BlockEditor";
 
 interface BlogForm {
   title: string;
