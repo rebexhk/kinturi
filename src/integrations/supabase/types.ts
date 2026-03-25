@@ -18,7 +18,7 @@ export type Database = {
         Row: {
           author: string | null
           category: string | null
-          content: string | null
+          content: Json | null
           created_at: string
           excerpt: string | null
           featured: boolean
@@ -38,7 +38,7 @@ export type Database = {
         Insert: {
           author?: string | null
           category?: string | null
-          content?: string | null
+          content?: Json | null
           created_at?: string
           excerpt?: string | null
           featured?: boolean
@@ -58,7 +58,7 @@ export type Database = {
         Update: {
           author?: string | null
           category?: string | null
-          content?: string | null
+          content?: Json | null
           created_at?: string
           excerpt?: string | null
           featured?: boolean
