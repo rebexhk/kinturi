@@ -293,13 +293,15 @@ export default function AdminBlogEditor() {
               <Textarea value={form.excerpt} onChange={(e) => updateField("excerpt", e.target.value)} rows={3} placeholder="Brief summary shown in listings..." />
             </FieldGroup>
 
-            {/* Block Editor */}
+            {/* Rich Text Editor */}
             <div className="space-y-1.5">
               <Label className="text-sm font-medium text-foreground">Content</Label>
               <div className="border border-border rounded-lg p-4 min-h-[300px] bg-card">
                 <BlockEditor
-                  blocks={form.content}
-                  onChange={(blocks) => updateField("content", blocks)}
+                  value={form.content}
+                  onChangeHtml={(html) => updateField("content", html)}
+                  blocks={[]}
+                  onChange={() => {}}
                 />
               </div>
             </div>
