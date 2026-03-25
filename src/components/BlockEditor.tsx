@@ -269,7 +269,6 @@ export default function BlockEditor({ blocks, onChange, value, onChangeHtml }: B
       {/* Floating toolbar that appears on text selection */}
       <BubbleMenu
         editor={editor}
-        tippyOptions={{ duration: 150, placement: "top" }}
         className="bg-card border border-border rounded-lg shadow-lg py-1 px-1 flex items-center gap-0.5"
       >
         {/* Text type / heading toggles */}
