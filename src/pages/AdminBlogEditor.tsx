@@ -20,7 +20,7 @@ interface BlogForm {
   status: string;
   featured: boolean;
   excerpt: string;
-  content: ContentBlock[];
+  content: string;
   hero_image_url: string;
   hero_image_alt: string;
   author: string;
