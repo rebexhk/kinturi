@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAdminApi } from "@/hooks/useAdminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, LogOut, Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
@@ -17,12 +18,23 @@ interface RetreatListItem {
   updated_at: string;
 }
 
+interface BlogListItem {
+  id: string;
+  title: string;
+  status: string;
+  category: string;
+  author: string;
+  updated_at: string;
+}
+
 export default function AdminDashboard() {
   const { isAdmin, logout } = useAdmin();
   const navigate = useNavigate();
   const { adminFetch } = useAdminApi();
   const [retreats, setRetreats] = useState<RetreatListItem[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogListItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [blogLoading, setBlogLoading] = useState(true);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -30,6 +42,7 @@ export default function AdminDashboard() {
       return;
     }
     fetchRetreats();
+    fetchBlogPosts();
   }, [isAdmin]);
 
   const fetchRetreats = async () => {
@@ -43,6 +56,17 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchBlogPosts = async () => {
+    try {
+      const data = await adminFetch("admin-blog");
+      setBlogPosts(data);
+    } catch (err) {
+      toast.error("Failed to load blog posts");
+    } finally {
+      setBlogLoading(false);
+    }
+  };
+
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
     try {
@@ -51,6 +75,17 @@ export default function AdminDashboard() {
       fetchRetreats();
     } catch {
       toast.error("Failed to delete retreat");
+    }
+  };
+
+  const handleDeleteBlog = async (id: string, title: string) => {
+    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    try {
+      await adminFetch(`admin-blog?id=${id}`, { method: "DELETE" });
+      toast.success("Blog post deleted");
+      fetchBlogPosts();
+    } catch {
+      toast.error("Failed to delete blog post");
     }
   };
 
@@ -68,6 +103,20 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleToggleBlogStatus = async (post: BlogListItem) => {
+    const newStatus = post.status === "published" ? "draft" : "published";
+    try {
+      await adminFetch("admin-blog", {
+        method: "PUT",
+        body: JSON.stringify({ id: post.id, status: newStatus }),
+      });
+      toast.success(`Blog post ${newStatus === "published" ? "published" : "unpublished"}`);
+      fetchBlogPosts();
+    } catch {
+      toast.error("Failed to update status");
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -77,86 +126,131 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar */}
       <header className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link to="/" className="font-serif text-xl text-foreground">Kinturi</Link>
           <span className="text-muted-foreground text-sm">/ Admin CMS</span>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
-            <Plus className="w-4 h-4 mr-1" /> New Retreat
-          </Button>
           <Button variant="outline" size="sm" onClick={handleLogout}>
             <LogOut className="w-4 h-4 mr-1" /> Sign Out
           </Button>
         </div>
       </header>
 
-      {/* Content */}
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <h1 className="font-serif text-3xl text-foreground mb-8">Retreat Listings</h1>
+        <Tabs defaultValue="retreats" className="space-y-6">
+          <TabsList className="grid grid-cols-2 w-64">
+            <TabsTrigger value="retreats">Retreats</TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
+          </TabsList>
 
-        {loading ? (
-          <div className="text-muted-foreground">Loading retreats...</div>
-        ) : retreats.length === 0 ? (
-          <div className="text-center py-20 border border-dashed border-border rounded-lg">
-            <p className="text-muted-foreground mb-4">No retreats yet</p>
-            <Button variant="sage" onClick={() => navigate("/admin/retreat/new")}>
-              <Plus className="w-4 h-4 mr-1" /> Create Your First Retreat
-            </Button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {retreats.map((retreat) => (
-              <div
-                key={retreat.id}
-                className="bg-card border border-border rounded-lg p-5 flex items-center justify-between hover:shadow-soft transition-shadow"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-1">
-                    <h3 className="font-medium text-foreground truncate">{retreat.title}</h3>
-                    <Badge variant={retreat.status === "published" ? "default" : "secondary"}>
-                      {retreat.status}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {retreat.location} · {retreat.type} · {retreat.price}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 ml-4 shrink-0">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleToggleStatus(retreat)}
-                    title={retreat.status === "published" ? "Unpublish" : "Publish"}
-                  >
-                    {retreat.status === "published" ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => navigate(`/admin/retreat/${retreat.id}`)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(retreat.id, retreat.title)}
-                    className="text-destructive hover:text-destructive"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+          {/* RETREATS TAB */}
+          <TabsContent value="retreats">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="font-serif text-3xl text-foreground">Retreat Listings</h1>
+              <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
+                <Plus className="w-4 h-4 mr-1" /> New Retreat
+              </Button>
+            </div>
+
+            {loading ? (
+              <div className="text-muted-foreground">Loading retreats...</div>
+            ) : retreats.length === 0 ? (
+              <div className="text-center py-20 border border-dashed border-border rounded-lg">
+                <p className="text-muted-foreground mb-4">No retreats yet</p>
+                <Button variant="sage" onClick={() => navigate("/admin/retreat/new")}>
+                  <Plus className="w-4 h-4 mr-1" /> Create Your First Retreat
+                </Button>
               </div>
-            ))}
-          </div>
-        )}
+            ) : (
+              <div className="space-y-3">
+                {retreats.map((retreat) => (
+                  <div
+                    key={retreat.id}
+                    className="bg-card border border-border rounded-lg p-5 flex items-center justify-between hover:shadow-soft transition-shadow"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-medium text-foreground truncate">{retreat.title}</h3>
+                        <Badge variant={retreat.status === "published" ? "default" : "secondary"}>
+                          {retreat.status}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {retreat.location} · {retreat.type} · {retreat.price}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 ml-4 shrink-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleToggleStatus(retreat)} title={retreat.status === "published" ? "Unpublish" : "Publish"}>
+                        {retreat.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => navigate(`/admin/retreat/${retreat.id}`)}>
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(retreat.id, retreat.title)} className="text-destructive hover:text-destructive">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* BLOG TAB */}
+          <TabsContent value="blog">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="font-serif text-3xl text-foreground">Blog Posts</h1>
+              <Button variant="sage" size="sm" onClick={() => navigate("/admin/blog/new")}>
+                <Plus className="w-4 h-4 mr-1" /> New Blog Post
+              </Button>
+            </div>
+
+            {blogLoading ? (
+              <div className="text-muted-foreground">Loading blog posts...</div>
+            ) : blogPosts.length === 0 ? (
+              <div className="text-center py-20 border border-dashed border-border rounded-lg">
+                <p className="text-muted-foreground mb-4">No blog posts yet</p>
+                <Button variant="sage" onClick={() => navigate("/admin/blog/new")}>
+                  <Plus className="w-4 h-4 mr-1" /> Create Your First Blog Post
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {blogPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-card border border-border rounded-lg p-5 flex items-center justify-between hover:shadow-soft transition-shadow"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-medium text-foreground truncate">{post.title}</h3>
+                        <Badge variant={post.status === "published" ? "default" : "secondary"}>
+                          {post.status}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {post.category || "Uncategorized"} {post.author ? `· ${post.author}` : ""}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 ml-4 shrink-0">
+                      <Button variant="ghost" size="sm" onClick={() => handleToggleBlogStatus(post)} title={post.status === "published" ? "Unpublish" : "Publish"}>
+                        {post.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => navigate(`/admin/blog/${post.id}`)}>
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDeleteBlog(post.id, post.title)} className="text-destructive hover:text-destructive">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
