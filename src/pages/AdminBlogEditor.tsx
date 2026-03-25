@@ -121,17 +121,29 @@ export default function AdminBlogEditor() {
       });
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
-      // Handle legacy string content by converting to a paragraph block
-      let contentBlocks: ContentBlock[] = [];
-      if (Array.isArray(data.content)) {
-        contentBlocks = data.content;
-      } else if (typeof data.content === "string" && data.content) {
-        contentBlocks = [{ id: "migrated-1", type: "paragraph", content: data.content }];
+      // Handle content - could be HTML string, legacy blocks array, or plain string
+      let contentHtml = "";
+      if (typeof data.content === "string") {
+        contentHtml = data.content;
+      } else if (Array.isArray(data.content)) {
+        // Legacy block format - convert to HTML
+        contentHtml = data.content.map((b: any) => {
+          switch (b.type) {
+            case "heading1": return `<h1>${b.content}</h1>`;
+            case "heading2": return `<h2>${b.content}</h2>`;
+            case "heading3": return `<h3>${b.content}</h3>`;
+            case "image": return `<img src="${b.content}" alt="${b.alt || ""}" />`;
+            case "quote": return `<blockquote><p>${b.content}</p></blockquote>`;
+            case "list": return `<ul>${(b.items || []).map((i: string) => `<li>${i}</li>`).join("")}</ul>`;
+            case "divider": return `<hr />`;
+            default: return `<p>${b.content}</p>`;
+          }
+        }).join("");
       }
       const loaded: BlogForm = {
         ...emptyForm,
         ...data,
-        content: contentBlocks,
+        content: contentHtml,
         tags: data.tags || [],
         seo_keywords: data.seo_keywords || [],
         published_at: data.published_at || "",
