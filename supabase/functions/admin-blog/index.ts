@@ -57,6 +57,10 @@ serve(async (req) => {
 
     if (method === 'POST') {
       const body = await req.json();
+      // Wrap HTML content string as valid JSON for the jsonb column
+      if (typeof body.content === 'string') {
+        body.content = body.content;
+      }
       const { data, error } = await supabase
         .from('blog_posts')
         .insert(body)
@@ -72,6 +76,9 @@ serve(async (req) => {
     if (method === 'PUT') {
       const body = await req.json();
       const { id, ...updates } = body;
+      if (typeof updates.content === 'string') {
+        updates.content = updates.content;
+      }
       const { data, error } = await supabase
         .from('blog_posts')
         .update(updates)
