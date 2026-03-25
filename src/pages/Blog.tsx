@@ -1,46 +1,34 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-retreat.jpg";
-
-const blogPosts = [
-  {
-    id: 1,
-    title: "The Benefits of Reformer Pilates: A Complete Guide",
-    excerpt: "Discover why reformer Pilates has become one of the most effective forms of mind-body exercise and how it can transform your practice.",
-    date: "January 20, 2026",
-    category: "Wellness",
-    image: heroImage,
-  },
-  {
-    id: 2,
-    title: "5 Questions to Ask Before Booking a Pilates Retreat",
-    excerpt: "Make the most of your retreat investment by knowing exactly what to look for and what questions to ask organisers.",
-    date: "January 15, 2026",
-    category: "Tips",
-    image: heroImage,
-  },
-  {
-    id: 3,
-    title: "Mat vs. Reformer: Which Pilates Practice is Right for You?",
-    excerpt: "Both forms offer unique benefits. Learn the differences to choose the practice that aligns with your goals.",
-    date: "January 10, 2026",
-    category: "Education",
-    image: heroImage,
-  },
-  {
-    id: 4,
-    title: "How to Prepare for Your First Pilates Retreat",
-    excerpt: "From packing essentials to mindset tips, here's everything you need to know before your wellness journey begins.",
-    date: "January 5, 2026",
-    category: "Tips",
-    image: heroImage,
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Blog() {
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ["blog-posts"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("id, title, slug, excerpt, category, hero_image_url, hero_image_alt, author, published_at, tags")
+        .eq("status", "published")
+        .order("published_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const formatDate = (dateStr: string | null) => {
+    if (!dateStr) return "";
+    return new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   return (
     <Layout>
-      {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">Journal</h1>
@@ -50,38 +38,63 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Blog Grid */}
       <section className="section-padding bg-background">
         <div className="container-page">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {blogPosts.map((post) => (
-              <article
-                key={post.id}
-                className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300"
-              >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 lg:p-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                      {post.category}
-                    </span>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-small">{post.date}</span>
+          {isLoading ? (
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="rounded-lg overflow-hidden">
+                  <Skeleton className="aspect-[16/10] w-full" />
+                  <div className="p-6 space-y-3">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-full" />
                   </div>
-                  <h2 className="heading-card text-foreground mb-3 group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h2>
-                  <p className="text-body">{post.excerpt}</p>
                 </div>
-              </article>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : !posts?.length ? (
+            <p className="text-center text-muted-foreground py-16">No posts yet — check back soon.</p>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {posts.map((post) => (
+                <Link
+                  to={`/blog/${post.slug}`}
+                  key={post.id}
+                  className="group bg-card rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300"
+                >
+                  {post.hero_image_url && (
+                    <div className="aspect-[16/10] overflow-hidden">
+                      <img
+                        src={post.hero_image_url}
+                        alt={post.hero_image_alt || post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6 lg:p-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      {post.category && (
+                        <span className="text-xs tracking-wide uppercase text-primary font-medium">
+                          {post.category}
+                        </span>
+                      )}
+                      {post.category && post.published_at && (
+                        <span className="text-muted-foreground">·</span>
+                      )}
+                      {post.published_at && (
+                        <span className="text-small">{formatDate(post.published_at)}</span>
+                      )}
+                    </div>
+                    <h2 className="heading-card text-foreground mb-3 group-hover:text-primary transition-colors">
+                      {post.title}
+                    </h2>
+                    {post.excerpt && <p className="text-body">{post.excerpt}</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </Layout>
