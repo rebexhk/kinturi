@@ -223,12 +223,18 @@ export default function AdminBlogEditor() {
     try {
       const ext = file.name.split(".").pop();
       const path = `blog/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const { error } = await supabase.storage.from("retreat-images").upload(path, file);
+      const { error } = await supabase.storage.from("retreat-images").upload(path, file, {
+        cacheControl: '3600',
+        upsert: false,
+      });
       if (error) throw error;
       const { data: urlData } = supabase.storage.from("retreat-images").getPublicUrl(path);
-      updateField("hero_image_url", urlData.publicUrl);
-      toast.success("Image uploaded!");
+      const publicUrl = urlData.publicUrl;
+      console.log("Hero image uploaded:", publicUrl);
+      updateField("hero_image_url", publicUrl);
+      toast.success("Hero image uploaded! Don't forget to Save.");
     } catch (err: any) {
+      console.error("Hero image upload failed:", err);
       toast.error("Upload failed: " + err.message);
     } finally {
       setUploading(false);
