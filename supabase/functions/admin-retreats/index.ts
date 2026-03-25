@@ -59,6 +59,11 @@ serve(async (req) => {
     // POST - create retreat
     if (method === 'POST') {
       const body = await req.json();
+      // Auto-extract country from location
+      if (body.location && (!body.country || body.country === '')) {
+        const parts = body.location.split(',');
+        body.country = parts[parts.length - 1].trim();
+      }
       const { data, error } = await supabase
         .from('retreats')
         .insert(body)
@@ -74,6 +79,10 @@ serve(async (req) => {
     // PUT - update retreat
     if (method === 'PUT') {
       const body = await req.json();
+      // Auto-extract country from location
+      if (body.location && (!body.country || body.country === '')) {
+        body.country = body.location.split(',').pop()?.trim() || '';
+      }
       const { id, ...updates } = body;
       const { data, error } = await supabase
         .from('retreats')
