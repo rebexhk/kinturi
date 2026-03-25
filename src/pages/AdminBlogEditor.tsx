@@ -191,16 +191,14 @@ export default function AdminBlogEditor() {
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
-      const res = await fetch(`${baseUrl}/admin-blog`, {
+      const res = await adminFetch("admin-blog", {
         method: isNew ? "POST" : "PUT",
-        headers: { "Content-Type": "application/json", "x-admin-token": token || "" },
         body: JSON.stringify(payload),
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "Request failed" }));
-        throw new Error(err.error || "Request failed");
+      if (!res) {
+        throw new Error("Request failed");
       }
       toast.success(isNew ? "Blog post created!" : "Blog post updated!");
       setOriginalForm({ ...form });
