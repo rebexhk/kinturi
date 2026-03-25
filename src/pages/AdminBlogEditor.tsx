@@ -98,7 +98,7 @@ export default function AdminBlogEditor() {
   const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { token } = useAdminApi();
+  const { token, adminFetch } = useAdminApi();
   const isNew = id === "new";
   const [form, setForm] = useState<BlogForm>(emptyForm);
   const [originalForm, setOriginalForm] = useState<BlogForm | null>(null);
