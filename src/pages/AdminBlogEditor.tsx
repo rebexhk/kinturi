@@ -116,11 +116,7 @@ export default function AdminBlogEditor() {
 
   const loadPost = async (postId: string) => {
     try {
-      const res = await fetch(`${baseUrl}/admin-blog?id=${postId}`, {
-        headers: { "Content-Type": "application/json", "x-admin-token": token || "" },
-      });
-      if (!res.ok) throw new Error("Failed to load");
-      const data = await res.json();
+      const data = await adminFetch(`admin-blog?id=${postId}`);
       // Handle content - could be HTML string, legacy blocks array, or plain string
       let contentHtml = "";
       if (typeof data.content === "string") {
