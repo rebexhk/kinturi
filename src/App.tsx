@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRetreatEditor from "./pages/AdminRetreatEditor";
+import AdminBlogEditor from "./pages/AdminBlogEditor";
 
 const queryClient = new QueryClient();
 
