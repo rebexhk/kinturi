@@ -15,6 +15,7 @@ export function useAdminApi() {
     options: RequestInit = {}
   ) => {
     const res = await fetch(`${baseUrl}/${functionName}`, {
+      method: options.method || "GET",
       ...options,
       headers: {
         "Content-Type": "application/json",
@@ -22,10 +23,12 @@ export function useAdminApi() {
         ...options.headers,
       },
     });
+
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: "Request failed" }));
       throw new Error(err.error || "Request failed");
     }
+
     return res.json();
   };
 

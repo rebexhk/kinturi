@@ -98,7 +98,7 @@ export default function AdminBlogEditor() {
   const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { token } = useAdminApi();
+  const { token, adminFetch } = useAdminApi();
   const isNew = id === "new";
   const [form, setForm] = useState<BlogForm>(emptyForm);
   const [originalForm, setOriginalForm] = useState<BlogForm | null>(null);
@@ -116,11 +116,7 @@ export default function AdminBlogEditor() {
 
   const loadPost = async (postId: string) => {
     try {
-      const res = await fetch(`${baseUrl}/admin-blog?id=${postId}`, {
-        headers: { "Content-Type": "application/json", "x-admin-token": token || "" },
-      });
-      if (!res.ok) throw new Error("Failed to load");
-      const data = await res.json();
+      const data = await adminFetch(`admin-blog?id=${postId}`);
       // Handle content - could be HTML string, legacy blocks array, or plain string
       let contentHtml = "";
       if (typeof data.content === "string") {
@@ -195,16 +191,14 @@ export default function AdminBlogEditor() {
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
-      const res = await fetch(`${baseUrl}/admin-blog`, {
+      const res = await adminFetch("admin-blog", {
         method: isNew ? "POST" : "PUT",
-        headers: { "Content-Type": "application/json", "x-admin-token": token || "" },
         body: JSON.stringify(payload),
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "Request failed" }));
-        throw new Error(err.error || "Request failed");
+      if (!res) {
+        throw new Error("Request failed");
       }
       toast.success(isNew ? "Blog post created!" : "Blog post updated!");
       setOriginalForm({ ...form });
