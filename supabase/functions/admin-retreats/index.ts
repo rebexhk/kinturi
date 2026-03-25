@@ -79,6 +79,10 @@ serve(async (req) => {
     // PUT - update retreat
     if (method === 'PUT') {
       const body = await req.json();
+      // Auto-extract country from location
+      if (body.location && (!body.country || body.country === '')) {
+        body.country = body.location.split(',').pop()?.trim() || '';
+      }
       const { id, ...updates } = body;
       const { data, error } = await supabase
         .from('retreats')
