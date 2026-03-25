@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import BlockEditor, { ContentBlock } from "@/components/BlockEditor";
 
 interface BlogForm {
   title: string;
@@ -19,7 +20,7 @@ interface BlogForm {
   status: string;
   featured: boolean;
   excerpt: string;
-  content: string;
+  content: ContentBlock[];
   hero_image_url: string;
   hero_image_alt: string;
   author: string;
@@ -33,7 +34,7 @@ interface BlogForm {
 
 const emptyForm: BlogForm = {
   title: "", slug: "", status: "draft", featured: false,
-  excerpt: "", content: "", hero_image_url: "", hero_image_alt: "",
+  excerpt: "", content: [], hero_image_url: "", hero_image_alt: "",
   author: "", category: "", tags: [],
   seo_title: "", seo_description: "", seo_keywords: [],
   published_at: "",
@@ -120,9 +121,17 @@ export default function AdminBlogEditor() {
       });
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
+      // Handle legacy string content by converting to a paragraph block
+      let contentBlocks: ContentBlock[] = [];
+      if (Array.isArray(data.content)) {
+        contentBlocks = data.content;
+      } else if (typeof data.content === "string" && data.content) {
+        contentBlocks = [{ id: "migrated-1", type: "paragraph", content: data.content }];
+      }
       const loaded: BlogForm = {
         ...emptyForm,
         ...data,
+        content: contentBlocks,
         tags: data.tags || [],
         seo_keywords: data.seo_keywords || [],
         published_at: data.published_at || "",
@@ -271,9 +280,18 @@ export default function AdminBlogEditor() {
             <FieldGroup label="Excerpt">
               <Textarea value={form.excerpt} onChange={(e) => updateField("excerpt", e.target.value)} rows={3} placeholder="Brief summary shown in listings..." />
             </FieldGroup>
-            <FieldGroup label="Content">
-              <Textarea value={form.content} onChange={(e) => updateField("content", e.target.value)} rows={15} placeholder="Full blog post content..." />
-            </FieldGroup>
+
+            {/* Block Editor */}
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium text-foreground">Content</Label>
+              <div className="border border-border rounded-lg p-4 min-h-[300px] bg-card">
+                <BlockEditor
+                  blocks={form.content}
+                  onChange={(blocks) => updateField("content", blocks)}
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <FieldGroup label="Author">
                 <Input value={form.author} onChange={(e) => updateField("author", e.target.value)} placeholder="Author name" />
