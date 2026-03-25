@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import BlockEditor, { ContentBlock } from "@/components/BlockEditor";
+import BlockEditor from "@/components/BlockEditor";
 
 interface BlogForm {
   title: string;
@@ -20,7 +20,7 @@ interface BlogForm {
   status: string;
   featured: boolean;
   excerpt: string;
-  content: ContentBlock[];
+  content: string;
   hero_image_url: string;
   hero_image_alt: string;
   author: string;
@@ -34,7 +34,7 @@ interface BlogForm {
 
 const emptyForm: BlogForm = {
   title: "", slug: "", status: "draft", featured: false,
-  excerpt: "", content: [], hero_image_url: "", hero_image_alt: "",
+  excerpt: "", content: "", hero_image_url: "", hero_image_alt: "",
   author: "", category: "", tags: [],
   seo_title: "", seo_description: "", seo_keywords: [],
   published_at: "",
@@ -121,17 +121,29 @@ export default function AdminBlogEditor() {
       });
       if (!res.ok) throw new Error("Failed to load");
       const data = await res.json();
-      // Handle legacy string content by converting to a paragraph block
-      let contentBlocks: ContentBlock[] = [];
-      if (Array.isArray(data.content)) {
-        contentBlocks = data.content;
-      } else if (typeof data.content === "string" && data.content) {
-        contentBlocks = [{ id: "migrated-1", type: "paragraph", content: data.content }];
+      // Handle content - could be HTML string, legacy blocks array, or plain string
+      let contentHtml = "";
+      if (typeof data.content === "string") {
+        contentHtml = data.content;
+      } else if (Array.isArray(data.content)) {
+        // Legacy block format - convert to HTML
+        contentHtml = data.content.map((b: any) => {
+          switch (b.type) {
+            case "heading1": return `<h1>${b.content}</h1>`;
+            case "heading2": return `<h2>${b.content}</h2>`;
+            case "heading3": return `<h3>${b.content}</h3>`;
+            case "image": return `<img src="${b.content}" alt="${b.alt || ""}" />`;
+            case "quote": return `<blockquote><p>${b.content}</p></blockquote>`;
+            case "list": return `<ul>${(b.items || []).map((i: string) => `<li>${i}</li>`).join("")}</ul>`;
+            case "divider": return `<hr />`;
+            default: return `<p>${b.content}</p>`;
+          }
+        }).join("");
       }
       const loaded: BlogForm = {
         ...emptyForm,
         ...data,
-        content: contentBlocks,
+        content: contentHtml,
         tags: data.tags || [],
         seo_keywords: data.seo_keywords || [],
         published_at: data.published_at || "",
@@ -281,13 +293,15 @@ export default function AdminBlogEditor() {
               <Textarea value={form.excerpt} onChange={(e) => updateField("excerpt", e.target.value)} rows={3} placeholder="Brief summary shown in listings..." />
             </FieldGroup>
 
-            {/* Block Editor */}
+            {/* Rich Text Editor */}
             <div className="space-y-1.5">
               <Label className="text-sm font-medium text-foreground">Content</Label>
               <div className="border border-border rounded-lg p-4 min-h-[300px] bg-card">
                 <BlockEditor
-                  blocks={form.content}
-                  onChange={(blocks) => updateField("content", blocks)}
+                  value={form.content}
+                  onChangeHtml={(html) => updateField("content", html)}
+                  blocks={[]}
+                  onChange={() => {}}
                 />
               </div>
             </div>
