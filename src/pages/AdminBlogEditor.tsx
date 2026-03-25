@@ -34,7 +34,7 @@ interface BlogForm {
 
 const emptyForm: BlogForm = {
   title: "", slug: "", status: "draft", featured: false,
-  excerpt: "", content: [], hero_image_url: "", hero_image_alt: "",
+  excerpt: "", content: "", hero_image_url: "", hero_image_alt: "",
   author: "", category: "", tags: [],
   seo_title: "", seo_description: "", seo_keywords: [],
   published_at: "",
