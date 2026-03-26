@@ -28,7 +28,7 @@ export function useAdminApi() {
     const { data, error } = await supabase.functions.invoke(
       queryString ? `${functionName}?${queryString}` : functionName,
       {
-        method,
+        method: method as "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
         headers: {
           "x-admin-token": token || "",
         },
