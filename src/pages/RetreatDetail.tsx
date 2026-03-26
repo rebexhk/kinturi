@@ -280,11 +280,11 @@ export default function RetreatDetail() {
                   )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
                   <div className="space-y-4">
-                    {retreat.accommodation.options.map((option, index) => (
+                    {retreat.accommodation.options.map((option: any, index) => (
                       <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 border border-border rounded-lg">
                         <div>
-                          <p className="font-medium text-foreground">{option.type}</p>
-                          <p className="text-sm text-muted-foreground">{option.description}</p>
+                          <p className="font-medium text-foreground">{option.type || option.name}</p>
+                          {option.description && <p className="text-sm text-muted-foreground">{option.description}</p>}
                         </div>
                         <span className="font-serif text-lg text-foreground">{option.price}</span>
                       </div>
