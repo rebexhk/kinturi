@@ -32,7 +32,7 @@ interface RetreatData {
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
-  menu: { description: string; highlights: string[] };
+  menu: { description: string; highlights: string[]; meals: Array<{ name: string; description: string }> };
   facilities: string[];
   schedule: Array<{ time: string; activity: string }>;
 }
