@@ -99,6 +99,8 @@ export default function RetreatDetail() {
         const inst = (data.instructor as any) || {};
         const accom = (data.accommodation as any) || {};
         const menuData = (data.menu as any) || {};
+        const menuMeals = Array.isArray(menuData.meals) ? menuData.meals : [];
+        const menuHighlights = Array.isArray(menuData.highlights) ? menuData.highlights : [];
         setRetreat({
           ...data,
           hero_image_alt: (data as any).hero_image_alt || null,
@@ -113,7 +115,7 @@ export default function RetreatDetail() {
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
-          menu: { description: menuData.description || "", highlights: Array.isArray(menuData.highlights) ? menuData.highlights : [] },
+          menu: { description: menuData.description || "", highlights: menuHighlights, meals: menuMeals },
           facilities: data.facilities || [],
           schedule: Array.isArray(data.schedule) ? data.schedule as any : [],
         });
