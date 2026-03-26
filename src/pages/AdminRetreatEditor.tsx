@@ -36,7 +36,7 @@ interface RetreatForm {
   dining_image_urls: string[];
   dining_image_alts: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
-  instructor: { name: string; bio: string; certifications: string[] };
+  instructor: { name: string; bio: string; certifications: string[]; photo_url: string };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
