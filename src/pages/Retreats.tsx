@@ -30,6 +30,7 @@ export default function Retreats() {
   const [loading, setLoading] = useState(true);
   const [activeType, setActiveType] = useState<string | null>(null);
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
+  const [reviewStats, setReviewStats] = useState<ReviewStats>({});
 
   useEffect(() => {
     const fetchRetreats = async () => {
