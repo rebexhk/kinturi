@@ -296,7 +296,7 @@ export default function RetreatDetail() {
               )}
 
               {/* Dining */}
-              {retreat.menu.description && (
+              {(retreat.menu.description || retreat.menu.meals.length > 0 || retreat.menu.highlights.length > 0) && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
                     <Utensils className="w-6 h-6 text-primary" />Dining
@@ -306,15 +306,27 @@ export default function RetreatDetail() {
                       <ScrollGallery images={retreat.dining_image_urls} alts={retreat.dining_image_alts} label="Dining" />
                     </div>
                   )}
-                  <p className="text-body mb-4">{retreat.menu.description}</p>
-                  <ul className="space-y-2">
-                    {retreat.menu.highlights.map((item, index) => (
-                      <li key={index} className="flex items-start gap-3 text-body">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  {retreat.menu.description && <p className="text-body mb-4">{retreat.menu.description}</p>}
+                  {retreat.menu.meals.length > 0 && (
+                    <div className="space-y-3 mb-4">
+                      {retreat.menu.meals.map((meal, index) => (
+                        <div key={index} className="p-4 bg-secondary rounded-lg">
+                          <p className="font-medium text-foreground">{meal.name}</p>
+                          <p className="text-sm text-muted-foreground">{meal.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {retreat.menu.highlights.length > 0 && (
+                    <ul className="space-y-2">
+                      {retreat.menu.highlights.map((item, index) => (
+                        <li key={index} className="flex items-start gap-3 text-body">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
 
