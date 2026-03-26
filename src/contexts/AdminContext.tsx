@@ -22,18 +22,12 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const login = async (password: string): Promise<boolean> => {
     try {
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const url = projectId
-        ? `https://${projectId}.supabase.co/functions/v1/admin-auth`
-        : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-auth`;
-      
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+      const { data, error } = await supabase.functions.invoke('admin-auth', {
+        method: 'POST',
+        body: { password },
       });
-      const data = await res.json();
-      if (data.success && data.token) {
+      if (error) return false;
+      if (data?.success && data?.token) {
         setToken(data.token);
         sessionStorage.setItem("admin_token", data.token);
         return true;
