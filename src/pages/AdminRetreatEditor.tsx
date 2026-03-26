@@ -629,6 +629,8 @@ function FieldGroup({ label, children }: { label: string; children: React.ReactN
 // Reusable list editor (for arrays of strings)
 function ListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (items: string[]) => void }) {
   const [newItem, setNewItem] = useState("");
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkText, setBulkText] = useState("");
 
   const addItem = () => {
     if (!newItem.trim()) return;
@@ -636,9 +638,26 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
     setNewItem("");
   };
 
+  const applyBulk = () => {
+    const parsed = bulkText
+      .split("\n")
+      .map((line) => line.replace(/^[-–—•*]\s*/, "").trim())
+      .filter(Boolean);
+    if (parsed.length) {
+      onChange([...items, ...parsed]);
+      setBulkText("");
+      setBulkMode(false);
+    }
+  };
+
   return (
     <div className="border border-border rounded-lg p-5 space-y-3">
-      <Label className="text-sm font-medium text-foreground">{label}</Label>
+      <div className="flex items-center justify-between">
+        <Label className="text-sm font-medium text-foreground">{label}</Label>
+        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => setBulkMode(!bulkMode)}>
+          {bulkMode ? "Single mode" : "Bulk paste"}
+        </Button>
+      </div>
       <div className="space-y-2">
         {items.map((item, i) => (
           <div key={i} className="flex items-center gap-2">
@@ -653,12 +672,26 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
           </div>
         ))}
       </div>
-      <div className="flex gap-2">
-        <Input value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder={`Add to ${label.toLowerCase()}...`} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addItem())} className="flex-1" />
-        <Button variant="outline" size="sm" onClick={addItem} disabled={!newItem.trim()}>
-          <Plus className="w-3 h-3" />
-        </Button>
-      </div>
+      {bulkMode ? (
+        <div className="space-y-2">
+          <Textarea
+            value={bulkText}
+            onChange={(e) => setBulkText(e.target.value)}
+            placeholder={`Paste multiple items, one per line:\n- Item one\n- Item two\n- Item three`}
+            rows={5}
+          />
+          <Button variant="outline" size="sm" onClick={applyBulk} disabled={!bulkText.trim()}>
+            Add all
+          </Button>
+        </div>
+      ) : (
+        <div className="flex gap-2">
+          <Input value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder={`Add to ${label.toLowerCase()}...`} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addItem())} className="flex-1" />
+          <Button variant="outline" size="sm" onClick={addItem} disabled={!newItem.trim()}>
+            <Plus className="w-3 h-3" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
