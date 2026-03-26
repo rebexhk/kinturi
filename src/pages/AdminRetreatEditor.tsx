@@ -58,7 +58,7 @@ const emptyForm: RetreatForm = {
   gallery_image_urls: [], gallery_image_alts: [],
   accommodation_image_urls: [], accommodation_image_alts: [],
   dining_image_urls: [], dining_image_alts: [],
-  dates: [], instructor: { name: "", bio: "", certifications: [] },
+  dates: [], instructor: { name: "", bio: "", certifications: [], photo_url: "" },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
   facilities: [], schedule: [],
