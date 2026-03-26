@@ -600,7 +600,6 @@ function FieldGroup({ label, children }: { label: string; children: React.ReactN
 function ListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (items: string[]) => void }) {
   const [newItem, setNewItem] = useState("");
   const [bulkMode, setBulkMode] = useState(false);
-  const [bulkText, setBulkText] = useState("");
 
   const addItem = () => {
     if (!newItem.trim()) return;
@@ -608,17 +607,14 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
     setNewItem("");
   };
 
-  const applyBulk = () => {
-    const parsed = bulkText
+  const parseBulkItems = (value: string) => {
+    return value
       .split("\n")
       .map((line) => line.replace(/^[-–—•*]\s*/, "").trim())
       .filter(Boolean);
-    if (parsed.length) {
-      onChange([...items, ...parsed]);
-      setBulkText("");
-      setBulkMode(false);
-    }
   };
+
+  const bulkValue = items.join("\n");
 
   return (
     <div className="border border-border rounded-lg p-5 space-y-3">
@@ -645,14 +641,14 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
       {bulkMode ? (
         <div className="space-y-2">
           <Textarea
-            value={bulkText}
-            onChange={(e) => setBulkText(e.target.value)}
+            value={bulkValue}
+            onChange={(e) => onChange(parseBulkItems(e.target.value))}
             placeholder={`Paste multiple items, one per line:\n- Item one\n- Item two\n- Item three`}
             rows={5}
           />
-          <Button variant="outline" size="sm" onClick={applyBulk} disabled={!bulkText.trim()}>
-            Add all
-          </Button>
+          <p className="text-xs text-muted-foreground">
+            One line per item — bullets and dashes are cleaned automatically.
+          </p>
         </div>
       ) : (
         <div className="flex gap-2">
