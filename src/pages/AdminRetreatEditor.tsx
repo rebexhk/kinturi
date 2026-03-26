@@ -165,53 +165,23 @@ export default function AdminRetreatEditor() {
         payload = changes;
       }
       
-      const url = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/admin-retreats`;
+      const { data, error } = await supabase.functions.invoke('admin-retreats', {
+        method: isNew ? "POST" : "PUT",
+        headers: {
+          "x-admin-token": token || "",
+        },
+        body: payload,
+      });
       
-      // Retry up to 3 times on network failures
-      let lastError: Error | null = null;
-      for (let attempt = 0; attempt < 3; attempt++) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 30000);
-          
-          const response = await fetch(url, {
-            method: isNew ? "POST" : "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "x-admin-token": token || "",
-            },
-            body: JSON.stringify(payload),
-            signal: controller.signal,
-          });
-          
-          clearTimeout(timeoutId);
-          
-          if (!response.ok) {
-            const err = await response.json().catch(() => ({ error: "Request failed" }));
-            throw new Error(err.error || "Request failed");
-          }
-          
-          const savedData = await response.json();
-          toast.success(isNew ? "Retreat created!" : "Retreat updated!");
-          // Update originalForm so subsequent saves only send new changes
-          setOriginalForm({ ...form });
-          if (isNew) {
-            navigate("/admin");
-          }
-          return;
-        } catch (err: any) {
-          lastError = err;
-          if (err.name === 'AbortError') {
-            console.log(`[save] Attempt ${attempt + 1} timed out, retrying...`);
-          } else if (err.message === 'Failed to fetch') {
-            console.log(`[save] Attempt ${attempt + 1} network error, retrying...`);
-            await new Promise(r => setTimeout(r, 1000));
-          } else {
-            throw err; // Non-network error, don't retry
-          }
-        }
+      if (error) {
+        throw new Error(error.message || "Request failed");
       }
-      throw lastError || new Error("Failed to save after retries");
+      
+      toast.success(isNew ? "Retreat created!" : "Retreat updated!");
+      setOriginalForm({ ...form });
+      if (isNew) {
+        navigate("/admin");
+      }
     } catch (err: any) {
       console.error("[save] error:", err);
       toast.error(err.message || "Failed to save");
