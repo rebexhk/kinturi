@@ -32,7 +32,7 @@ interface RetreatData {
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
-  menu: { description: string; highlights: string[] };
+  menu: { description: string; highlights: string[]; meals: Array<{ name: string; description: string }> };
   facilities: string[];
   schedule: Array<{ time: string; activity: string }>;
 }
@@ -99,6 +99,8 @@ export default function RetreatDetail() {
         const inst = (data.instructor as any) || {};
         const accom = (data.accommodation as any) || {};
         const menuData = (data.menu as any) || {};
+        const menuMeals = Array.isArray(menuData.meals) ? menuData.meals : [];
+        const menuHighlights = Array.isArray(menuData.highlights) ? menuData.highlights : [];
         setRetreat({
           ...data,
           hero_image_alt: (data as any).hero_image_alt || null,
@@ -113,7 +115,7 @@ export default function RetreatDetail() {
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
-          menu: { description: menuData.description || "", highlights: Array.isArray(menuData.highlights) ? menuData.highlights : [] },
+          menu: { description: menuData.description || "", highlights: menuHighlights, meals: menuMeals },
           facilities: data.facilities || [],
           schedule: Array.isArray(data.schedule) ? data.schedule as any : [],
         });
@@ -280,11 +282,11 @@ export default function RetreatDetail() {
                   )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
                   <div className="space-y-4">
-                    {retreat.accommodation.options.map((option, index) => (
+                    {retreat.accommodation.options.map((option: any, index) => (
                       <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 border border-border rounded-lg">
                         <div>
-                          <p className="font-medium text-foreground">{option.type}</p>
-                          <p className="text-sm text-muted-foreground">{option.description}</p>
+                          <p className="font-medium text-foreground">{option.type || option.name}</p>
+                          {option.description && <p className="text-sm text-muted-foreground">{option.description}</p>}
                         </div>
                         <span className="font-serif text-lg text-foreground">{option.price}</span>
                       </div>
@@ -294,7 +296,7 @@ export default function RetreatDetail() {
               )}
 
               {/* Dining */}
-              {retreat.menu.description && (
+              {(retreat.menu.description || retreat.menu.meals.length > 0 || retreat.menu.highlights.length > 0) && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
                     <Utensils className="w-6 h-6 text-primary" />Dining
@@ -304,15 +306,27 @@ export default function RetreatDetail() {
                       <ScrollGallery images={retreat.dining_image_urls} alts={retreat.dining_image_alts} label="Dining" />
                     </div>
                   )}
-                  <p className="text-body mb-4">{retreat.menu.description}</p>
-                  <ul className="space-y-2">
-                    {retreat.menu.highlights.map((item, index) => (
-                      <li key={index} className="flex items-start gap-3 text-body">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  {retreat.menu.description && <p className="text-body mb-4">{retreat.menu.description}</p>}
+                  {retreat.menu.meals.length > 0 && (
+                    <div className="space-y-3 mb-4">
+                      {retreat.menu.meals.map((meal, index) => (
+                        <div key={index} className="p-4 bg-secondary rounded-lg">
+                          <p className="font-medium text-foreground">{meal.name}</p>
+                          <p className="text-sm text-muted-foreground">{meal.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {retreat.menu.highlights.length > 0 && (
+                    <ul className="space-y-2">
+                      {retreat.menu.highlights.map((item, index) => (
+                        <li key={index} className="flex items-start gap-3 text-body">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
 
@@ -320,14 +334,40 @@ export default function RetreatDetail() {
               {retreat.schedule.length > 0 && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6">Sample Daily Schedule</h2>
-                  <div className="space-y-3">
-                    {retreat.schedule.map((item, index) => (
-                      <div key={index} className="flex gap-4 py-2 border-b border-border last:border-0">
-                        <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
-                        <span className="text-body">{item.activity}</span>
+                  {(() => {
+                    const first = retreat.schedule[0] as any;
+                    // Nested format: [{day, activities: [{time, activity}]}]
+                    if (first?.day && Array.isArray(first?.activities)) {
+                      return (
+                        <div className="space-y-8">
+                          {retreat.schedule.map((dayBlock: any, di) => (
+                            <div key={di}>
+                              <h3 className="font-serif text-lg text-foreground mb-3">{dayBlock.day}</h3>
+                              <div className="space-y-3">
+                                {dayBlock.activities.map((item: any, ai: number) => (
+                                  <div key={ai} className="flex gap-4 py-2 border-b border-border last:border-0">
+                                    <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
+                                    <span className="text-body">{item.activity}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    // Flat format: [{time, activity}]
+                    return (
+                      <div className="space-y-3">
+                        {retreat.schedule.map((item, index) => (
+                          <div key={index} className="flex gap-4 py-2 border-b border-border last:border-0">
+                            <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
+                            <span className="text-body">{item.activity}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })()}
                 </div>
               )}
 
