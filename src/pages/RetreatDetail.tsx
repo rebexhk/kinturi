@@ -245,8 +245,17 @@ export default function RetreatDetail() {
                     <Heart className="w-6 h-6 text-primary" />Your Instructor
                   </h2>
                   <div className="bg-secondary rounded-lg p-6">
-                    <h3 className="font-serif text-xl text-foreground mb-3">{retreat.instructor.name}</h3>
-                    <p className="text-body mb-4">{retreat.instructor.bio}</p>
+                    <div className="flex items-start gap-5">
+                      {retreat.instructor.photo_url && (
+                        <img
+                          src={retreat.instructor.photo_url}
+                          alt={retreat.instructor.name}
+                          className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h3 className="font-serif text-xl text-foreground mb-3">{retreat.instructor.name}</h3>
+                        <p className="text-body mb-4">{retreat.instructor.bio}</p>
                     <div className="flex flex-wrap gap-2">
                       {retreat.instructor.certifications.map((cert, index) => (
                         <span key={index} className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">{cert}</span>
