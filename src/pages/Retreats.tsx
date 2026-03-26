@@ -206,7 +206,12 @@ export default function Retreats() {
                     <h3 className="heading-card text-foreground mb-2">
                       {retreat.title}
                     </h3>
-                    <p className="text-small mb-4">{retreat.location}</p>
+                    <p className="text-small mb-2">{retreat.location}</p>
+                    {reviewStats[retreat.id] && (
+                      <div className="mb-3">
+                        <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
+                      </div>
+                    )}
                     <p className="text-body mb-6 line-clamp-3">{retreat.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="font-serif text-lg text-foreground">{retreat.price}</span>
