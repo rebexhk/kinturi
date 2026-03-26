@@ -260,9 +260,9 @@ export default function RetreatDetail() {
                       {retreat.instructor.certifications.map((cert, index) => (
                         <span key={index} className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">{cert}</span>
                       ))}
+                      </div>
                     </div>
                   </div>
-                </div>
               )}
 
               {/* Accommodation */}

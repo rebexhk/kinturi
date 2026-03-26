@@ -356,6 +356,48 @@ export default function AdminRetreatEditor() {
               <FieldGroup label="Bio">
                 <Textarea value={form.instructor.bio} onChange={(e) => updateField("instructor", { ...form.instructor, bio: e.target.value })} rows={3} />
               </FieldGroup>
+              <FieldGroup label="Photo">
+                <div className="flex items-center gap-4">
+                  {form.instructor.photo_url && (
+                    <img src={form.instructor.photo_url} alt={form.instructor.name} className="w-16 h-16 rounded-full object-cover" />
+                  )}
+                  <div className="flex-1">
+                    <label className="inline-flex items-center gap-2 px-3 py-2 bg-secondary rounded-md cursor-pointer hover:bg-muted transition-colors text-sm">
+                      <Upload className="w-4 h-4" />
+                      {uploading ? "Uploading..." : "Upload Photo"}
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        disabled={uploading}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          setUploading(true);
+                          try {
+                            const ext = file.name.split(".").pop();
+                            const path = `instructors/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+                            const { error } = await supabase.storage.from("retreat-images").upload(path, file);
+                            if (error) throw error;
+                            const { data: urlData } = supabase.storage.from("retreat-images").getPublicUrl(path);
+                            updateField("instructor", { ...form.instructor, photo_url: urlData.publicUrl });
+                            toast.success("Instructor photo uploaded");
+                          } catch (err: any) {
+                            toast.error("Upload failed: " + err.message);
+                          } finally {
+                            setUploading(false);
+                          }
+                        }}
+                      />
+                    </label>
+                    {form.instructor.photo_url && (
+                      <Button variant="ghost" size="sm" className="text-destructive ml-2" onClick={() => updateField("instructor", { ...form.instructor, photo_url: "" })}>
+                        <X className="w-3 h-3 mr-1" /> Remove
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </FieldGroup>
               <ListEditor label="Certifications" items={form.instructor.certifications} onChange={(items) => updateField("instructor", { ...form.instructor, certifications: items })} />
             </div>
           </TabsContent>
