@@ -5,6 +5,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ReviewSummary } from "@/components/ReviewSummary";
 import heroImage from "@/assets/hero-cover.jpg";
 
 interface FeaturedRetreat {
