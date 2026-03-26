@@ -18,13 +18,10 @@ export default function About() {
       <section className="section-padding bg-background">
         <div className="container-page">
           <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-8">Our Story</h2>
+            <h2 className="heading-section text-foreground mb-8">Why Kinturi?</h2>
             <div className="space-y-6 text-body text-lg">
               <p>
-                Kinturi exists for the people who come back from holiday feeling better than when they left. 
-                We believe movement is the best way to recharge - and that it doesn't have to mean 
-                punishing yourself. It means finding your rhythm somewhere beautiful, pushing 
-                yourself in good company, and earning every moment of rest.
+                Kinturi is designed for the kind of holiday-goer that gets bored sitting on a beach for more than 30 minutes. You work hard all year, often sitting behind a desk for hundreds of hours, so when it's time to take a holiday you want to also catch up on your fitness and wellness too. Combining beautiful destinations, quality fitness instruction and world-class cuisine, we're all about enjoying the good things in life (and feeling like you've earnt it!)
               </p>
               <p>
                 Every retreat in our collection is hand-picked. We visit, we vet, and we only 
