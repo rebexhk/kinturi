@@ -5,6 +5,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ReviewSummary } from "@/components/ReviewSummary";
 import heroImage from "@/assets/hero-cover.jpg";
 
 interface FeaturedRetreat {
@@ -19,18 +20,34 @@ interface FeaturedRetreat {
 
 export default function Index() {
   const [featuredRetreats, setFeaturedRetreats] = useState<FeaturedRetreat[]>([]);
+  const [reviewStats, setReviewStats] = useState<Record<string, { avg: number; count: number }>>({});
 
   useEffect(() => {
-    const fetchFeatured = async () => {
-      const { data } = await supabase
-        .from("retreats")
-        .select("id, title, slug, location, duration, type, hero_image_url")
-        .eq("status", "published")
-        .eq("featured", true)
-        .limit(6);
-      if (data) setFeaturedRetreats(data);
+    const fetchData = async () => {
+      const [retreatsRes, reviewsRes] = await Promise.all([
+        supabase
+          .from("retreats")
+          .select("id, title, slug, location, duration, type, hero_image_url")
+          .eq("status", "published")
+          .eq("featured", true)
+          .limit(6),
+        supabase.from("reviews").select("retreat_id, rating"),
+      ]);
+      if (retreatsRes.data) setFeaturedRetreats(retreatsRes.data);
+      if (reviewsRes.data) {
+        const stats: Record<string, { avg: number; count: number }> = {};
+        reviewsRes.data.forEach((r: any) => {
+          if (!stats[r.retreat_id]) stats[r.retreat_id] = { avg: 0, count: 0 };
+          stats[r.retreat_id].count++;
+          stats[r.retreat_id].avg += r.rating;
+        });
+        Object.keys(stats).forEach((id) => {
+          stats[id].avg = stats[id].avg / stats[id].count;
+        });
+        setReviewStats(stats);
+      }
     };
-    fetchFeatured();
+    fetchData();
   }, []);
 
   return (
@@ -150,9 +167,12 @@ export default function Index() {
                     <h3 className="heading-card text-foreground mt-2 mb-2 group-hover:text-primary transition-colors">
                       {retreat.title}
                     </h3>
-                    <p className="text-small">
+                    <p className="text-small mb-1">
                       {retreat.location} · {retreat.duration}
                     </p>
+                    {reviewStats[retreat.id] && (
+                      <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
+                    )}
                   </div>
                 </Link>
               ))}

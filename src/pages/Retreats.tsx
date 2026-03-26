@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReviewSummary } from "@/components/ReviewSummary";
 
 interface Retreat {
   id: string;
@@ -20,26 +21,50 @@ interface Retreat {
   tags: string[] | null;
 }
 
+interface ReviewStats {
+  [retreatId: string]: { avg: number; count: number };
+}
+
 export default function Retreats() {
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeType, setActiveType] = useState<string | null>(null);
   const [activeCountry, setActiveCountry] = useState<string | null>(null);
+  const [reviewStats, setReviewStats] = useState<ReviewStats>({});
 
   useEffect(() => {
-    const fetchRetreats = async () => {
-      const { data, error } = await supabase
-        .from("retreats")
-        .select("id, title, slug, location, country, duration, type, description, price, hero_image_url, hero_image_alt, tags")
-        .eq("status", "published")
-        .order("created_at", { ascending: false });
+    const fetchData = async () => {
+      const [retreatsRes, reviewsRes] = await Promise.all([
+        supabase
+          .from("retreats")
+          .select("id, title, slug, location, country, duration, type, description, price, hero_image_url, hero_image_alt, tags")
+          .eq("status", "published")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("reviews")
+          .select("retreat_id, rating"),
+      ]);
 
-      if (!error && data) {
-        setRetreats(data);
+      if (!retreatsRes.error && retreatsRes.data) {
+        setRetreats(retreatsRes.data);
       }
+
+      if (!reviewsRes.error && reviewsRes.data) {
+        const stats: ReviewStats = {};
+        reviewsRes.data.forEach((r: any) => {
+          if (!stats[r.retreat_id]) stats[r.retreat_id] = { avg: 0, count: 0 };
+          stats[r.retreat_id].count++;
+          stats[r.retreat_id].avg += r.rating;
+        });
+        Object.keys(stats).forEach((id) => {
+          stats[id].avg = stats[id].avg / stats[id].count;
+        });
+        setReviewStats(stats);
+      }
+
       setLoading(false);
     };
-    fetchRetreats();
+    fetchData();
   }, []);
 
   const allTypes = useMemo(() => {
@@ -181,7 +206,12 @@ export default function Retreats() {
                     <h3 className="heading-card text-foreground mb-2">
                       {retreat.title}
                     </h3>
-                    <p className="text-small mb-4">{retreat.location}</p>
+                    <p className="text-small mb-2">{retreat.location}</p>
+                    {reviewStats[retreat.id] && (
+                      <div className="mb-3">
+                        <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
+                      </div>
+                    )}
                     <p className="text-body mb-6 line-clamp-3">{retreat.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="font-serif text-lg text-foreground">{retreat.price}</span>
