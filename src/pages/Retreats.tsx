@@ -33,19 +33,38 @@ export default function Retreats() {
   const [reviewStats, setReviewStats] = useState<ReviewStats>({});
 
   useEffect(() => {
-    const fetchRetreats = async () => {
-      const { data, error } = await supabase
-        .from("retreats")
-        .select("id, title, slug, location, country, duration, type, description, price, hero_image_url, hero_image_alt, tags")
-        .eq("status", "published")
-        .order("created_at", { ascending: false });
+    const fetchData = async () => {
+      const [retreatsRes, reviewsRes] = await Promise.all([
+        supabase
+          .from("retreats")
+          .select("id, title, slug, location, country, duration, type, description, price, hero_image_url, hero_image_alt, tags")
+          .eq("status", "published")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("reviews")
+          .select("retreat_id, rating"),
+      ]);
 
-      if (!error && data) {
-        setRetreats(data);
+      if (!retreatsRes.error && retreatsRes.data) {
+        setRetreats(retreatsRes.data);
       }
+
+      if (!reviewsRes.error && reviewsRes.data) {
+        const stats: ReviewStats = {};
+        reviewsRes.data.forEach((r: any) => {
+          if (!stats[r.retreat_id]) stats[r.retreat_id] = { avg: 0, count: 0 };
+          stats[r.retreat_id].count++;
+          stats[r.retreat_id].avg += r.rating;
+        });
+        Object.keys(stats).forEach((id) => {
+          stats[id].avg = stats[id].avg / stats[id].count;
+        });
+        setReviewStats(stats);
+      }
+
       setLoading(false);
     };
-    fetchRetreats();
+    fetchData();
   }, []);
 
   const allTypes = useMemo(() => {
