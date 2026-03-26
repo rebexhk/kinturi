@@ -320,14 +320,40 @@ export default function RetreatDetail() {
               {retreat.schedule.length > 0 && (
                 <div>
                   <h2 className="heading-section text-foreground mb-6">Sample Daily Schedule</h2>
-                  <div className="space-y-3">
-                    {retreat.schedule.map((item, index) => (
-                      <div key={index} className="flex gap-4 py-2 border-b border-border last:border-0">
-                        <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
-                        <span className="text-body">{item.activity}</span>
+                  {(() => {
+                    const first = retreat.schedule[0] as any;
+                    // Nested format: [{day, activities: [{time, activity}]}]
+                    if (first?.day && Array.isArray(first?.activities)) {
+                      return (
+                        <div className="space-y-8">
+                          {retreat.schedule.map((dayBlock: any, di) => (
+                            <div key={di}>
+                              <h3 className="font-serif text-lg text-foreground mb-3">{dayBlock.day}</h3>
+                              <div className="space-y-3">
+                                {dayBlock.activities.map((item: any, ai: number) => (
+                                  <div key={ai} className="flex gap-4 py-2 border-b border-border last:border-0">
+                                    <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
+                                    <span className="text-body">{item.activity}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    // Flat format: [{time, activity}]
+                    return (
+                      <div className="space-y-3">
+                        {retreat.schedule.map((item, index) => (
+                          <div key={index} className="flex gap-4 py-2 border-b border-border last:border-0">
+                            <span className="text-primary font-medium w-16 flex-shrink-0">{item.time}</span>
+                            <span className="text-body">{item.activity}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })()}
                 </div>
               )}
 
