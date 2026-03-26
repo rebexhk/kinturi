@@ -139,6 +139,12 @@ export default function AdminDashboard() {
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="mb-6">
+          <Button variant="outline" size="sm" onClick={() => navigate("/admin/reviews")}>
+            <MessageSquare className="w-4 h-4 mr-1" /> Manage Reviews
+          </Button>
+        </div>
+
         <Tabs defaultValue="retreats" className="space-y-6">
           <TabsList className="grid grid-cols-2 w-64">
             <TabsTrigger value="retreats">Retreats</TabsTrigger>

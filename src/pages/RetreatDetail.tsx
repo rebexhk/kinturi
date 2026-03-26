@@ -319,6 +319,9 @@ export default function RetreatDetail() {
                   </div>
                 </div>
               )}
+
+              {/* Reviews */}
+              <RetreatReviews retreatId={retreat.id} />
             </div>
 
             {/* Sidebar */}
