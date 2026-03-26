@@ -28,7 +28,7 @@ interface RetreatData {
   group_size: string | null;
   level: string | null;
   dates: Array<{ start: string; end: string; availability: string }>;
-  instructor: { name: string; bio: string; certifications: string[] };
+  instructor: { name: string; bio: string; certifications: string[]; photo_url?: string };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
