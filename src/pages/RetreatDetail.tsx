@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { RetreatReviews } from "@/components/RetreatReviews";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface RetreatData {
@@ -318,6 +319,9 @@ export default function RetreatDetail() {
                   </div>
                 </div>
               )}
+
+              {/* Reviews */}
+              <RetreatReviews retreatId={retreat.id} />
             </div>
 
             {/* Sidebar */}

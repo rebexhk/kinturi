@@ -215,6 +215,47 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          admin_reply: string | null
+          comment: string
+          created_at: string
+          id: string
+          rating: number
+          retreat_id: string
+          reviewer_name: string
+          status: string
+        }
+        Insert: {
+          admin_reply?: string | null
+          comment?: string
+          created_at?: string
+          id?: string
+          rating: number
+          retreat_id: string
+          reviewer_name: string
+          status?: string
+        }
+        Update: {
+          admin_reply?: string | null
+          comment?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          retreat_id?: string
+          reviewer_name?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
