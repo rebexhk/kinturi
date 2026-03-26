@@ -167,9 +167,12 @@ export default function Index() {
                     <h3 className="heading-card text-foreground mt-2 mb-2 group-hover:text-primary transition-colors">
                       {retreat.title}
                     </h3>
-                    <p className="text-small">
+                    <p className="text-small mb-1">
                       {retreat.location} · {retreat.duration}
                     </p>
+                    {reviewStats[retreat.id] && (
+                      <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
+                    )}
                   </div>
                 </Link>
               ))}
