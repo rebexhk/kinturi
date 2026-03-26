@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ReviewSummary } from "@/components/ReviewSummary";
 
 interface Retreat {
   id: string;
@@ -18,6 +19,10 @@ interface Retreat {
   hero_image_url: string | null;
   hero_image_alt: string | null;
   tags: string[] | null;
+}
+
+interface ReviewStats {
+  [retreatId: string]: { avg: number; count: number };
 }
 
 export default function Retreats() {
