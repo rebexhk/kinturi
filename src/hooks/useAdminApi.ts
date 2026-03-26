@@ -1,36 +1,47 @@
 import { useAdmin } from "@/contexts/AdminContext";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Hook to make authenticated requests to admin edge functions
+ * Uses supabase.functions.invoke to avoid preview fetch proxy issues
  */
 export function useAdminApi() {
   const { token } = useAdmin();
-  
-  const baseUrl = import.meta.env.VITE_SUPABASE_PROJECT_ID
-    ? `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1`
-    : `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
 
   const adminFetch = async (
-    functionName: string,
+    functionNameWithParams: string,
     options: RequestInit = {}
   ) => {
-    const res = await fetch(`${baseUrl}/${functionName}`, {
-      method: options.method || "GET",
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        "x-admin-token": token || "",
-        ...options.headers,
-      },
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: "Request failed" }));
-      throw new Error(err.error || "Request failed");
+    // Split "admin-retreats?id=xxx" into function name and query string
+    const [functionName, queryString] = functionNameWithParams.split("?");
+    
+    // For GET/DELETE with query params, append them to the function path
+    const method = (options.method || "GET") as string;
+    
+    // Build the body - parse if it's a string
+    let body: any = undefined;
+    if (options.body) {
+      body = typeof options.body === "string" ? JSON.parse(options.body) : options.body;
     }
 
-    return res.json();
+    // Use supabase.functions.invoke which goes through the SDK and avoids proxy issues
+    const { data, error } = await supabase.functions.invoke(
+      queryString ? `${functionName}?${queryString}` : functionName,
+      {
+        method,
+        headers: {
+          "x-admin-token": token || "",
+        },
+        body: method === "GET" || method === "DELETE" ? undefined : body,
+      }
+    );
+
+    if (error) {
+      throw new Error(error.message || "Request failed");
+    }
+
+    return data;
   };
 
-  return { adminFetch, baseUrl, token };
+  return { adminFetch, token };
 }
