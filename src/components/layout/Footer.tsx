@@ -21,7 +21,10 @@ const footerLinks = {
     name: "Contact",
     href: "/contact"
   }],
-  hosts: []
+  hosts: [{
+    name: "Contact",
+    href: "/contact"
+  }]
 };
 export function Footer() {
   return <footer className="bg-secondary border-t border-border">
