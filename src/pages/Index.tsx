@@ -75,6 +75,55 @@ export default function Index() {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="section-padding bg-secondary">
+        <div className="container-page">
+          <div className="text-center mb-16">
+            <h2 className="heading-section text-foreground mb-4 animate-fade-in-up">
+              How It Works
+            </h2>
+            <p className="text-body text-lg max-w-2xl mx-auto">
+              Finding your perfect active retreat is simple
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-10 lg:gap-16 max-w-5xl mx-auto">
+            {[
+              {
+                step: "01",
+                title: "Browse & Discover",
+                description:
+                  "Explore our curated collection of fitness-focused retreats across the world's most beautiful destinations.",
+              },
+              {
+                step: "02",
+                title: "Choose Your Experience",
+                description:
+                  "Filter by activity type, location and duration to find the retreat that fits your goals and schedule.",
+              },
+              {
+                step: "03",
+                title: "Book & Go",
+                description:
+                  "Get in touch to reserve your spot. We'll handle the details so you can focus on showing up and switching off.",
+              },
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <span className="font-serif text-5xl font-light text-primary/30 block mb-4">
+                  {item.step}
+                </span>
+                <h3 className="font-serif text-xl font-medium text-foreground mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-body leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Retreats */}
       {featuredRetreats.length > 0 && (
         <section className="section-padding bg-secondary">
