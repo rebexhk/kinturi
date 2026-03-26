@@ -109,7 +109,7 @@ export default function RetreatDetail() {
           dining_image_urls: (data as any).dining_image_urls || [],
           dining_image_alts: (data as any).dining_image_alts || [],
           dates: Array.isArray(data.dates) ? data.dates as any : [],
-          instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [] },
+          instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [], photo_url: inst.photo_url || "" },
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
