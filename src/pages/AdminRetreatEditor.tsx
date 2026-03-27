@@ -107,7 +107,6 @@ export default function AdminRetreatEditor() {
         facilities: data.facilities || [],
         schedule: data.schedule || [],
         seo_keywords: data.seo_keywords || [],
-        categories: data.categories || [],
         tags: data.tags || [],
       };
       setForm(loaded);
