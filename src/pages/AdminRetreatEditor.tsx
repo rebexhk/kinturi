@@ -61,7 +61,7 @@ const emptyForm: RetreatForm = {
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
   facilities: [], schedule: [],
-  seo_title: "", seo_description: "", seo_keywords: [], categories: [], tags: [],
+  seo_title: "", seo_description: "", seo_keywords: [], tags: [],
 };
 
 function slugify(text: string) {
