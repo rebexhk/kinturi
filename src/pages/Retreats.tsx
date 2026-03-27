@@ -69,7 +69,7 @@ export default function Retreats() {
 
   const allTypes = useMemo(() => {
     const set = new Set<string>();
-    retreats.forEach((r) => { if (r.type) set.add(r.type); });
+    retreats.forEach((r) => { (r.type || []).forEach((t) => set.add(t)); });
     return Array.from(set).sort();
   }, [retreats]);
 
