@@ -22,7 +22,7 @@ interface RetreatForm {
   country: string;
   address: string;
   duration: string;
-  type: string;
+  type: string[];
   description: string;
   price: string;
   group_size: string;
