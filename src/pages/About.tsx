@@ -41,7 +41,8 @@ export default function About() {
                 className="w-full md:w-48 lg:w-56 rounded-lg object-cover aspect-[4/5] flex-shrink-0"
               />
               <div>
-                <h3 className="font-serif text-2xl text-foreground mb-6">About the Founder</h3>
+                <h3 className="font-serif text-2xl text-foreground mb-1">About the Founder</h3>
+                <p className="text-muted-foreground text-sm mb-6">Rebecca Keiller</p>
                 <div className="space-y-4 text-body text-lg">
                   <p>
                     Kinturi was founded by someone who knows the feeling of counting down the days to a holiday, only to come back feeling like they need another one. After years of seeking out retreats that combined genuine fitness with beautiful destinations and great food — and struggling to find them — Kinturi was born.
