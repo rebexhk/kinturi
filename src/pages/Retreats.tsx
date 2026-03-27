@@ -81,7 +81,7 @@ export default function Retreats() {
 
   const filtered = useMemo(() => {
     return retreats.filter((r) => {
-      if (activeType && r.type !== activeType) return false;
+      if (activeType && !(r.type || []).includes(activeType)) return false;
       if (activeCountry && r.country !== activeCountry) return false;
       return true;
     });
