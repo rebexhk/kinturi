@@ -136,7 +136,7 @@ export default function AdminRetreatEditor() {
   };
 
   const handleSave = async () => {
-    if (!form.title || !form.location || !form.duration || !form.type || !form.description || !form.price) {
+    if (!form.title || !form.location || !form.duration || !form.type.length || !form.description || !form.price) {
       toast.error("Please fill in all required fields");
       return;
     }
