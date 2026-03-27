@@ -14,7 +14,7 @@ interface FeaturedRetreat {
   slug: string;
   location: string;
   duration: string;
-  type: string;
+  type: string[];
   hero_image_url: string | null;
 }
 
