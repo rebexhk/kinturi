@@ -101,7 +101,6 @@ export type Database = {
           accommodation_image_alts: string[] | null
           accommodation_image_urls: string[]
           address: string | null
-          categories: string[] | null
           country: string
           created_at: string
           dates: Json | null
@@ -132,7 +131,7 @@ export type Database = {
           status: string
           tags: string[] | null
           title: string
-          type: string
+          type: string[]
           updated_at: string
         }
         Insert: {
@@ -140,7 +139,6 @@ export type Database = {
           accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
           address?: string | null
-          categories?: string[] | null
           country?: string
           created_at?: string
           dates?: Json | null
@@ -171,7 +169,7 @@ export type Database = {
           status?: string
           tags?: string[] | null
           title: string
-          type: string
+          type?: string[]
           updated_at?: string
         }
         Update: {
@@ -179,7 +177,6 @@ export type Database = {
           accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
           address?: string | null
-          categories?: string[] | null
           country?: string
           created_at?: string
           dates?: Json | null
@@ -210,7 +207,7 @@ export type Database = {
           status?: string
           tags?: string[] | null
           title?: string
-          type?: string
+          type?: string[]
           updated_at?: string
         }
         Relationships: []
