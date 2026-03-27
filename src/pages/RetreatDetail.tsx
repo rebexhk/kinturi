@@ -14,7 +14,7 @@ interface RetreatData {
   location: string;
   address: string | null;
   duration: string;
-  type: string;
+  type: string[];
   description: string;
   price: string;
   hero_image_url: string | null;
