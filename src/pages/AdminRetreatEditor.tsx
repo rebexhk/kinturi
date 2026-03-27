@@ -295,13 +295,19 @@ export default function AdminRetreatEditor() {
                 <Input value={form.address} onChange={(e) => updateField("address", e.target.value)} placeholder="e.g. Langley Manor, Burford" />
               </FieldGroup>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <FieldGroup label="Type *">
-                <Input value={form.type} onChange={(e) => updateField("type", e.target.value)} placeholder="e.g. Mat & Reformer Pilates" />
-              </FieldGroup>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <ListEditor label="Type *" items={form.type} onChange={(items) => updateField("type", items)} />
+              </div>
               <FieldGroup label="Duration *">
                 <Input value={form.duration} onChange={(e) => updateField("duration", e.target.value)} placeholder="e.g. 5 nights" />
               </FieldGroup>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <FieldGroup label="Price *">
+                <Input value={form.price} onChange={(e) => updateField("price", e.target.value)} placeholder="e.g. From £1,850" />
+              </FieldGroup>
+            </div>
               <FieldGroup label="Price *">
                 <Input value={form.price} onChange={(e) => updateField("price", e.target.value)} placeholder="e.g. From £1,850" />
               </FieldGroup>
