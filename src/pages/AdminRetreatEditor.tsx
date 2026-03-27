@@ -473,8 +473,7 @@ export default function AdminRetreatEditor() {
             <ListEditor label="What's Included" items={form.inclusions} onChange={(items) => updateField("inclusions", items)} />
             <ListEditor label="Not Included" items={form.not_included} onChange={(items) => updateField("not_included", items)} />
             <ListEditor label="Facilities" items={form.facilities} onChange={(items) => updateField("facilities", items)} />
-            <ListEditor label="Categories" items={form.categories} onChange={(items) => updateField("categories", items)} />
-            <ListEditor label="Tags" items={form.tags} onChange={(items) => updateField("tags", items)} />
+            <ListEditor label="Internal Notes / Tags" items={form.tags} onChange={(items) => updateField("tags", items)} />
           </TabsContent>
 
           {/* MEDIA TAB */}
