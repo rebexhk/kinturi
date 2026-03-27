@@ -172,9 +172,11 @@ export default function RetreatDetail() {
               <ChevronLeft className="w-4 h-4" />
               Back to Retreats
             </Link>
-            <span className="inline-block px-3 py-1 bg-primary/90 text-primary-foreground text-sm rounded-full mb-4">
-              {retreat.type}
-            </span>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {(retreat.type || []).map((t, i) => (
+                <span key={i} className="inline-block px-3 py-1 bg-primary/90 text-primary-foreground text-sm rounded-full">{t}</span>
+              ))}
+            </div>
             <h1 className="heading-display text-white mb-4">{retreat.title}</h1>
             <div className="flex flex-wrap items-center gap-6 text-white/90">
               <span className="flex items-center gap-2"><MapPin className="w-4 h-4" />{retreat.location}</span>

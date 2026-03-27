@@ -162,7 +162,7 @@ export default function Index() {
                   </div>
                   <div className="p-6">
                     <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                      {retreat.type}
+                      {(retreat.type || []).join(" · ")}
                     </span>
                     <h3 className="heading-card text-foreground mt-2 mb-2 group-hover:text-primary transition-colors">
                       {retreat.title}

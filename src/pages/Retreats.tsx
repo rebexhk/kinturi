@@ -198,7 +198,7 @@ export default function Retreats() {
                   <div className="p-6 lg:p-8">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                        {retreat.type}
+                        {(retreat.type || []).join(" · ")}
                       </span>
                       <span className="text-muted-foreground">·</span>
                       <span className="text-small">{retreat.duration}</span>
