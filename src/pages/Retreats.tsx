@@ -13,7 +13,7 @@ interface Retreat {
   location: string;
   country: string;
   duration: string;
-  type: string;
+  type: string[];
   description: string;
   price: string;
   hero_image_url: string | null;
@@ -69,7 +69,7 @@ export default function Retreats() {
 
   const allTypes = useMemo(() => {
     const set = new Set<string>();
-    retreats.forEach((r) => { if (r.type) set.add(r.type); });
+    retreats.forEach((r) => { (r.type || []).forEach((t) => set.add(t)); });
     return Array.from(set).sort();
   }, [retreats]);
 
@@ -81,7 +81,7 @@ export default function Retreats() {
 
   const filtered = useMemo(() => {
     return retreats.filter((r) => {
-      if (activeType && r.type !== activeType) return false;
+      if (activeType && !(r.type || []).includes(activeType)) return false;
       if (activeCountry && r.country !== activeCountry) return false;
       return true;
     });
@@ -198,7 +198,7 @@ export default function Retreats() {
                   <div className="p-6 lg:p-8">
                     <div className="flex items-center gap-3 mb-3">
                       <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                        {retreat.type}
+                        {(retreat.type || []).join(" · ")}
                       </span>
                       <span className="text-muted-foreground">·</span>
                       <span className="text-small">{retreat.duration}</span>

@@ -22,7 +22,7 @@ interface RetreatForm {
   country: string;
   address: string;
   duration: string;
-  type: string;
+  type: string[];
   description: string;
   price: string;
   group_size: string;
@@ -47,13 +47,12 @@ interface RetreatForm {
   seo_title: string;
   seo_description: string;
   seo_keywords: string[];
-  categories: string[];
   tags: string[];
 }
 
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", country: "", address: "",
-  duration: "", type: "", description: "", price: "", group_size: "", level: "",
+  duration: "", type: [], description: "", price: "", group_size: "", level: "",
   hero_image_url: "", hero_image_alt: "",
   gallery_image_urls: [], gallery_image_alts: [],
   accommodation_image_urls: [], accommodation_image_alts: [],
@@ -62,7 +61,7 @@ const emptyForm: RetreatForm = {
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], menu: { description: "", highlights: [] },
   facilities: [], schedule: [],
-  seo_title: "", seo_description: "", seo_keywords: [], categories: [], tags: [],
+  seo_title: "", seo_description: "", seo_keywords: [], tags: [],
 };
 
 function slugify(text: string) {
@@ -99,6 +98,7 @@ export default function AdminRetreatEditor() {
         dining_image_alts: data.dining_image_alts || [],
         hero_image_alt: data.hero_image_alt || "",
         country: data.country || (data.location ? data.location.split(",").map((s: string) => s.trim()).pop() || "" : ""),
+        type: Array.isArray(data.type) ? data.type : data.type ? [data.type] : [],
         dates: data.dates || [],
         instructor: data.instructor || emptyForm.instructor,
         accommodation: data.accommodation || emptyForm.accommodation,
@@ -108,7 +108,6 @@ export default function AdminRetreatEditor() {
         facilities: data.facilities || [],
         schedule: data.schedule || [],
         seo_keywords: data.seo_keywords || [],
-        categories: data.categories || [],
         tags: data.tags || [],
       };
       setForm(loaded);
@@ -138,7 +137,7 @@ export default function AdminRetreatEditor() {
   };
 
   const handleSave = async () => {
-    if (!form.title || !form.location || !form.duration || !form.type || !form.description || !form.price) {
+    if (!form.title || !form.location || !form.duration || !form.type.length || !form.description || !form.price) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -297,13 +296,15 @@ export default function AdminRetreatEditor() {
                 <Input value={form.address} onChange={(e) => updateField("address", e.target.value)} placeholder="e.g. Langley Manor, Burford" />
               </FieldGroup>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-              <FieldGroup label="Type *">
-                <Input value={form.type} onChange={(e) => updateField("type", e.target.value)} placeholder="e.g. Mat & Reformer Pilates" />
-              </FieldGroup>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <ListEditor label="Type *" items={form.type} onChange={(items) => updateField("type", items)} />
+              </div>
               <FieldGroup label="Duration *">
                 <Input value={form.duration} onChange={(e) => updateField("duration", e.target.value)} placeholder="e.g. 5 nights" />
               </FieldGroup>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <FieldGroup label="Price *">
                 <Input value={form.price} onChange={(e) => updateField("price", e.target.value)} placeholder="e.g. From £1,850" />
               </FieldGroup>
@@ -469,8 +470,7 @@ export default function AdminRetreatEditor() {
             <ListEditor label="What's Included" items={form.inclusions} onChange={(items) => updateField("inclusions", items)} />
             <ListEditor label="Not Included" items={form.not_included} onChange={(items) => updateField("not_included", items)} />
             <ListEditor label="Facilities" items={form.facilities} onChange={(items) => updateField("facilities", items)} />
-            <ListEditor label="Categories" items={form.categories} onChange={(items) => updateField("categories", items)} />
-            <ListEditor label="Tags" items={form.tags} onChange={(items) => updateField("tags", items)} />
+            <ListEditor label="Internal Notes / Tags" items={form.tags} onChange={(items) => updateField("tags", items)} />
           </TabsContent>
 
           {/* MEDIA TAB */}
