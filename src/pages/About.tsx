@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import founderImg from "@/assets/founder-portrait.jpg";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -30,15 +31,25 @@ export default function About() {
             </div>
 
             {/* About the Founder */}
-            <div className="mt-16 pt-16 border-t border-border">
-              <h3 className="font-serif text-2xl text-foreground mb-6">About the Founder</h3>
-              <div className="space-y-4 text-body text-lg">
-                <p>
-                  Kinturi was founded by someone who knows the feeling of counting down the days to a holiday, only to come back feeling like they need another one. After years of seeking out retreats that combined genuine fitness with beautiful destinations and great food — and struggling to find them — Kinturi was born.
-                </p>
-                <p>
-                  The idea is simple: curate the kind of active holidays that leave you feeling better than when you arrived. No fluff, no filler — just quality movement, incredible locations, and meals worth talking about.
-                </p>
+            <div className="mt-16 pt-16 border-t border-border flex flex-col md:flex-row gap-8 items-start">
+              <img
+                src={founderImg}
+                alt="Kinturi founder"
+                loading="lazy"
+                width={640}
+                height={800}
+                className="w-full md:w-48 lg:w-56 rounded-lg object-cover aspect-[4/5] flex-shrink-0"
+              />
+              <div>
+                <h3 className="font-serif text-2xl text-foreground mb-6">About the Founder</h3>
+                <div className="space-y-4 text-body text-lg">
+                  <p>
+                    Kinturi was founded by someone who knows the feeling of counting down the days to a holiday, only to come back feeling like they need another one. After years of seeking out retreats that combined genuine fitness with beautiful destinations and great food — and struggling to find them — Kinturi was born.
+                  </p>
+                  <p>
+                    The idea is simple: curate the kind of active holidays that leave you feeling better than when you arrived. No fluff, no filler — just quality movement, incredible locations, and meals worth talking about.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
