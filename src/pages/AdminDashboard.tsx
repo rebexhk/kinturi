@@ -185,9 +185,26 @@ export default function AdminDashboard() {
           <TabsContent value="retreats">
             <div className="flex items-center justify-between mb-6">
               <h1 className="font-serif text-3xl text-foreground">Retreat Listings</h1>
-              <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
-                <Plus className="w-4 h-4 mr-1" /> New Retreat
-              </Button>
+              <div className="flex items-center gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv"
+                  className="hidden"
+                  onChange={handleCSVImport}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={importing}
+                >
+                  <Upload className="w-4 h-4 mr-1" /> {importing ? "Importing..." : "Import CSV"}
+                </Button>
+                <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
+                  <Plus className="w-4 h-4 mr-1" /> New Retreat
+                </Button>
+              </div>
             </div>
 
             {loading ? (
