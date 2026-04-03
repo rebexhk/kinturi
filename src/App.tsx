@@ -18,6 +18,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminRetreatEditor from "./pages/AdminRetreatEditor";
 import AdminBlogEditor from "./pages/AdminBlogEditor";
 import AdminReviews from "./pages/AdminReviews";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import Unsubscribe from "./pages/Unsubscribe";
 
 const queryClient = new QueryClient();
 
