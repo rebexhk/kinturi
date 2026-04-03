@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex items-center gap-2 ml-4 shrink-0">
                       <Button variant="ghost" size="sm" onClick={() => handleToggleStatus(retreat)} title={retreat.status === "published" ? "Unpublish" : "Publish"}>
-                        {retreat.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {retreat.status === "published" ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </Button>
                       <Button variant="ghost" size="sm" onClick={() => navigate(`/admin/retreat/${retreat.id}`)}>
                         <Edit className="w-4 h-4" />
