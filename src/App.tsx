@@ -18,6 +18,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminRetreatEditor from "./pages/AdminRetreatEditor";
 import AdminBlogEditor from "./pages/AdminBlogEditor";
 import AdminReviews from "./pages/AdminReviews";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import Unsubscribe from "./pages/Unsubscribe";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/admin/retreat/:id" element={<AdminRetreatEditor />} />
             <Route path="/admin/blog/:id" element={<AdminBlogEditor />} />
             <Route path="/admin/reviews" element={<AdminReviews />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/unsubscribe" element={<Unsubscribe />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

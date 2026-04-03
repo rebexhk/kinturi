@@ -83,14 +83,22 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border flex items-center justify-between">
+        {/* Legal */}
+        <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-small">
             © {new Date().getFullYear()} Kinturi. All rights reserved.
           </p>
-          <Link to="/admin-login" className="text-muted-foreground/40 hover:text-muted-foreground transition-colors" aria-label="Admin">
-            <Settings className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/privacy-policy" className="text-small hover:text-foreground transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-conditions" className="text-small hover:text-foreground transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link to="/admin-login" className="text-muted-foreground/40 hover:text-muted-foreground transition-colors" aria-label="Admin">
+              <Settings className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </footer>;
