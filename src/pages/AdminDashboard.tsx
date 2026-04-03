@@ -289,7 +289,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex items-center gap-2 ml-4 shrink-0">
                       <Button variant="ghost" size="sm" onClick={() => handleToggleBlogStatus(post)} title={post.status === "published" ? "Unpublish" : "Publish"}>
-                        {post.status === "published" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {post.status === "published" ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                       </Button>
                       <Button variant="ghost" size="sm" onClick={() => navigate(`/admin/blog/${post.id}`)}>
                         <Edit className="w-4 h-4" />
