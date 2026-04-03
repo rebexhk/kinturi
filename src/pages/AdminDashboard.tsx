@@ -36,6 +36,8 @@ export default function AdminDashboard() {
   const [blogPosts, setBlogPosts] = useState<BlogListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [blogLoading, setBlogLoading] = useState(true);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isAdmin) {
