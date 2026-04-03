@@ -106,6 +106,33 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCSVImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImporting(true);
+    try {
+      const csvText = await file.text();
+      const result = await adminFetch("admin-import-retreats", {
+        method: "POST",
+        body: JSON.stringify({ csv: csvText }),
+      });
+      if (result.errors?.length > 0) {
+        toast.warning(`Imported ${result.inserted}/${result.total} retreats. ${result.errors.length} error(s).`, {
+          description: result.errors.slice(0, 3).join('\n'),
+          duration: 8000,
+        });
+      } else {
+        toast.success(`Successfully imported ${result.inserted} retreat(s)`);
+      }
+      fetchRetreats();
+    } catch (err: any) {
+      toast.error(err.message || "CSV import failed");
+    } finally {
+      setImporting(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleToggleBlogStatus = async (post: BlogListItem) => {
     const newStatus = post.status === "published" ? "draft" : "published";
     try {
