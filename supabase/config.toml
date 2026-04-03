@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.admin-reviews]
 verify_jwt = false
+
+[functions.admin-newsletter-unsubscribe]
+verify_jwt = false
