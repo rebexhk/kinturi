@@ -5,7 +5,8 @@ import { useAdminApi } from "@/hooks/useAdminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare } from "lucide-react";
+import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload } from "lucide-react";
+import { useRef } from "react";
 import { toast } from "sonner";
 
 interface RetreatListItem {
