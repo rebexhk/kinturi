@@ -80,7 +80,7 @@ export default function TermsConditions() {
           <section>
             <h2 className="font-serif text-xl text-foreground mb-3">10. Governing Law</h2>
             <p className="text-sm leading-relaxed">
-              These terms are governed by and construed in accordance with the laws of Scotland. Any disputes will be subject to the exclusive jurisdiction of the Scottish courts.
+              These terms are governed by and construed in accordance with the laws of the Netherlands. Any disputes will be subject to the exclusive jurisdiction of the Dutch courts.
             </p>
           </section>
 
