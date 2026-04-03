@@ -5,7 +5,8 @@ import { useAdminApi } from "@/hooks/useAdminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare } from "lucide-react";
+import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload } from "lucide-react";
+import { useRef } from "react";
 import { toast } from "sonner";
 
 interface RetreatListItem {
@@ -35,6 +36,8 @@ export default function AdminDashboard() {
   const [blogPosts, setBlogPosts] = useState<BlogListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [blogLoading, setBlogLoading] = useState(true);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -103,6 +106,33 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleCSVImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImporting(true);
+    try {
+      const csvText = await file.text();
+      const result = await adminFetch("admin-import-retreats", {
+        method: "POST",
+        body: JSON.stringify({ csv: csvText }),
+      });
+      if (result.errors?.length > 0) {
+        toast.warning(`Imported ${result.inserted}/${result.total} retreats. ${result.errors.length} error(s).`, {
+          description: result.errors.slice(0, 3).join('\n'),
+          duration: 8000,
+        });
+      } else {
+        toast.success(`Successfully imported ${result.inserted} retreat(s)`);
+      }
+      fetchRetreats();
+    } catch (err: any) {
+      toast.error(err.message || "CSV import failed");
+    } finally {
+      setImporting(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleToggleBlogStatus = async (post: BlogListItem) => {
     const newStatus = post.status === "published" ? "draft" : "published";
     try {
@@ -155,9 +185,26 @@ export default function AdminDashboard() {
           <TabsContent value="retreats">
             <div className="flex items-center justify-between mb-6">
               <h1 className="font-serif text-3xl text-foreground">Retreat Listings</h1>
-              <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
-                <Plus className="w-4 h-4 mr-1" /> New Retreat
-              </Button>
+              <div className="flex items-center gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv"
+                  className="hidden"
+                  onChange={handleCSVImport}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={importing}
+                >
+                  <Upload className="w-4 h-4 mr-1" /> {importing ? "Importing..." : "Import CSV"}
+                </Button>
+                <Button variant="sage" size="sm" onClick={() => navigate("/admin/retreat/new")}>
+                  <Plus className="w-4 h-4 mr-1" /> New Retreat
+                </Button>
+              </div>
             </div>
 
             {loading ? (
