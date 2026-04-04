@@ -2,25 +2,21 @@
 
 ## Problem
 
-The country filter tags don't appear on the Retreats page because the `country` column in the database is empty for all retreats, even though the `location` field contains country information (e.g. "Byron Bay, Australia").
+Both the "How It Works" and "Featured Retreats" sections use `bg-secondary`, making them visually merge into one large block. Combined with generous `section-padding` (py-16 to py-32), the result feels spacious but undifferentiated.
 
-The frontend code already supports both Type and Location filter rows — so this is a data + backend issue, not a frontend one.
+## Proposed Changes
 
-## Plan
+**File: `src/pages/Index.tsx`**
 
-### 1. Backfill existing retreat country data
-Run a database migration to extract the country from the `location` field for all existing retreats where `country` is empty. The country is the last comma-separated segment of the location string (e.g. "Tuscany, Italy" → "Italy").
+1. **Change the "How It Works" background to `bg-background`** (cream/white) so it visually continues from the Intro section above, creating a natural flow. The Featured Retreats section keeps `bg-secondary` (the contrasting tone), giving a clear visual break between the two.
 
-```sql
-UPDATE retreats
-SET country = TRIM(SPLIT_PART(location, ',', ARRAY_LENGTH(STRING_TO_ARRAY(location, ','), 1)))
-WHERE country = '' OR country IS NULL;
-```
+2. **Add a subtle divider or visual separator** between the two sections. Options:
+   - A thin horizontal rule in the sage/primary color
+   - Or simply rely on the background color contrast (cleaner approach)
 
-### 2. Ensure the admin editor saves the country on create/update
-Check the `admin-retreats` edge function and `AdminRetreatEditor` to confirm that when a retreat is saved, the country is automatically extracted from the location field and stored. If not, add that logic (as described in the memory note about retreat listing logic).
+3. **Reduce spacing between the two sections** by applying tighter bottom padding on "How It Works" and tighter top padding on "Featured Retreats" — e.g., override to `pb-12 md:pb-16` and `pt-12 md:pt-16` respectively, while keeping outer edges at the standard `section-padding`.
 
----
+This creates a rhythm of: **Intro (cream) → How It Works (cream, tighter bottom) → Featured Retreats (secondary, tighter top) → Newsletter**.
 
-After these two changes, the Location filter row will appear on the Retreats page showing "Australia" and "Italy" as filter options — no frontend changes needed.
+The alternating background colors provide clear section delineation without needing extra whitespace.
 
