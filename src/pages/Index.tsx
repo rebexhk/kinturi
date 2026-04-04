@@ -143,7 +143,7 @@ export default function Index() {
 
       {/* Featured Retreats */}
       {featuredRetreats.length > 0 && (
-        <section className="section-padding bg-secondary">
+        <section className="pt-12 md:pt-16 pb-16 md:pb-24 bg-secondary">
           <div className="container-page">
             <div className="text-center mb-12">
               <h2 className="heading-section text-foreground mb-4">Featured Retreats</h2>
