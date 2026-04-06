@@ -108,7 +108,7 @@ function DatesSection({ dates }: { dates: { start: string; end: string; availabi
   );
 }
 
-
+export default function RetreatDetail() {
   const { id } = useParams();
   const [retreat, setRetreat] = useState<RetreatData | null>(null);
   const [loading, setLoading] = useState(true);
