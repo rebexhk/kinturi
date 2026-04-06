@@ -79,8 +79,36 @@ function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: 
     </div>
   );
 }
+function DatesSection({ dates }: { dates: { start: string; end: string; availability: string }[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? dates : dates.slice(0, 4);
+  const hasMore = dates.length > 4;
 
-export default function RetreatDetail() {
+  return (
+    <div className="space-y-4">
+      {visible.map((date, index) => (
+        <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 bg-secondary rounded-lg">
+          <div>
+            <p className="font-medium text-foreground">{date.start} – {date.end}</p>
+            <p className="text-sm text-muted-foreground">{date.availability}</p>
+          </div>
+          <Button variant="sage-outline" size="sm" asChild><Link to="/contact">Enquire</Link></Button>
+        </div>
+      ))}
+      {hasMore && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors mx-auto"
+        >
+          {showAll ? "Show less" : `View ${dates.length - 4} more dates`}
+          <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`} />
+        </button>
+      )}
+    </div>
+  );
+}
+
+
   const { id } = useParams();
   const [retreat, setRetreat] = useState<RetreatData | null>(null);
   const [loading, setLoading] = useState(true);
