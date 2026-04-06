@@ -144,6 +144,7 @@ export default function RetreatDetail() {
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
+          kinturi_take: data.kinturi_take || [],
           menu: { description: menuData.description || "", highlights: menuHighlights, meals: menuMeals },
           facilities: data.facilities || [],
           schedule: Array.isArray(data.schedule) ? data.schedule as any : [],
