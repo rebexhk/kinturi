@@ -1,0 +1,1 @@
+ALTER TABLE public.retreats ADD COLUMN kinturi_take text[] DEFAULT '{}'::text[];

@@ -118,6 +118,7 @@ export type Database = {
           id: string
           inclusions: string[] | null
           instructor: Json | null
+          kinturi_take: string[] | null
           level: string | null
           location: string
           menu: Json | null
@@ -156,6 +157,7 @@ export type Database = {
           id?: string
           inclusions?: string[] | null
           instructor?: Json | null
+          kinturi_take?: string[] | null
           level?: string | null
           location: string
           menu?: Json | null
@@ -194,6 +196,7 @@ export type Database = {
           id?: string
           inclusions?: string[] | null
           instructor?: Json | null
+          kinturi_take?: string[] | null
           level?: string | null
           location?: string
           menu?: Json | null
