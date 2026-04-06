@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RetreatReviews } from "@/components/RetreatReviews";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -75,6 +75,34 @@ function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: 
             <ChevronRight className="w-4 h-4 text-foreground" />
           </button>
         </>
+      )}
+    </div>
+  );
+}
+function DatesSection({ dates }: { dates: { start: string; end: string; availability: string }[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? dates : dates.slice(0, 4);
+  const hasMore = dates.length > 4;
+
+  return (
+    <div className="space-y-4">
+      {visible.map((date, index) => (
+        <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 bg-secondary rounded-lg">
+          <div>
+            <p className="font-medium text-foreground">{date.start} – {date.end}</p>
+            <p className="text-sm text-muted-foreground">{date.availability}</p>
+          </div>
+          <Button variant="sage-outline" size="sm" asChild><Link to="/contact">Enquire</Link></Button>
+        </div>
+      ))}
+      {hasMore && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors mx-auto"
+        >
+          {showAll ? "Show less" : `View ${dates.length - 4} more dates`}
+          <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? "rotate-180" : ""}`} />
+        </button>
       )}
     </div>
   );
@@ -228,17 +256,7 @@ export default function RetreatDetail() {
                   <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
                     <Calendar className="w-6 h-6 text-primary" />Available Dates
                   </h2>
-                  <div className="space-y-4">
-                    {retreat.dates.map((date, index) => (
-                      <div key={index} className="flex flex-wrap items-center justify-between gap-4 p-4 bg-secondary rounded-lg">
-                        <div>
-                          <p className="font-medium text-foreground">{date.start} – {date.end}</p>
-                          <p className="text-sm text-muted-foreground">{date.availability}</p>
-                        </div>
-                        <Button variant="sage-outline" size="sm" asChild><Link to="/contact">Enquire</Link></Button>
-                      </div>
-                    ))}
-                  </div>
+                  <DatesSection dates={retreat.dates} />
                 </div>
               )}
 
