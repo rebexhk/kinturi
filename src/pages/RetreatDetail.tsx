@@ -35,6 +35,7 @@ interface RetreatData {
   menu: { description: string; highlights: string[]; meals: Array<{ name: string; description: string }> };
   facilities: string[];
   schedule: Array<{ time: string; activity: string }>;
+  kinturi_take: string[];
 }
 
 function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: string[]; label: string }) {
@@ -249,6 +250,23 @@ export default function RetreatDetail() {
                 <p className="text-body text-lg leading-relaxed">{retreat.description}</p>
                 {retreat.level && <p className="mt-4 text-primary font-medium">{retreat.level}</p>}
               </div>
+
+              {/* Kinturi's Take */}
+              {retreat.kinturi_take.length > 0 && (
+                <div className="bg-secondary rounded-2xl p-6 md:p-8 border border-primary/10">
+                  <h2 className="heading-section text-foreground mb-4 flex items-center gap-3">
+                    <Heart className="w-6 h-6 text-primary" />Kinturi's Take
+                  </h2>
+                  <ul className="space-y-3">
+                    {retreat.kinturi_take.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3 text-body">
+                        <span className="mt-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Dates */}
               {retreat.dates.length > 0 && (

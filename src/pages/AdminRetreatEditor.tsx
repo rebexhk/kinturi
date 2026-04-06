@@ -40,6 +40,7 @@ interface RetreatForm {
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
+  kinturi_take: string[];
   menu: { description: string; highlights: string[] };
   facilities: string[];
   schedule: Array<{ time: string; activity: string }>;
@@ -59,7 +60,7 @@ const emptyForm: RetreatForm = {
   dining_image_urls: [], dining_image_alts: [],
   dates: [], instructor: { name: "", bio: "", certifications: [], photo_url: "" },
   accommodation: { description: "", options: [] },
-  inclusions: [], not_included: [], menu: { description: "", highlights: [] },
+  inclusions: [], not_included: [], kinturi_take: [], menu: { description: "", highlights: [] },
   facilities: [], schedule: [],
   seo_title: "", seo_description: "", seo_keywords: [], tags: [],
 };
@@ -104,6 +105,7 @@ export default function AdminRetreatEditor() {
         accommodation: data.accommodation || emptyForm.accommodation,
         inclusions: data.inclusions || [],
         not_included: data.not_included || [],
+        kinturi_take: data.kinturi_take || [],
         menu: data.menu || emptyForm.menu,
         facilities: data.facilities || [],
         schedule: data.schedule || [],
@@ -467,6 +469,7 @@ export default function AdminRetreatEditor() {
               <ListEditor label="Menu Highlights" items={form.menu.highlights || []} onChange={(items) => updateField("menu", { ...form.menu, highlights: items })} />
             </div>
 
+            <ListEditor label="Kinturi's Take" items={form.kinturi_take} onChange={(items) => updateField("kinturi_take", items)} />
             <ListEditor label="What's Included" items={form.inclusions} onChange={(items) => updateField("inclusions", items)} />
             <ListEditor label="Not Included" items={form.not_included} onChange={(items) => updateField("not_included", items)} />
             <ListEditor label="Facilities" items={form.facilities} onChange={(items) => updateField("facilities", items)} />
