@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
 import { Settings } from "lucide-react";
 const footerLinks = {
-  explore: [{
-    name: "All Retreats",
-    href: "/retreats"
-  }, {
-    name: "Mat Pilates",
-    href: "/retreats?type=mat"
-  }, {
-    name: "Reformer Pilates",
-    href: "/retreats?type=reformer"
-  }],
+  explore: [
+    { name: "All Retreats", href: "/retreats" },
+    { name: "Yoga Retreats", href: "/retreats?type=Yoga" },
+    { name: "Pilates Retreats", href: "/retreats?type=Pilates" },
+    { name: "Surf Retreats", href: "/retreats?type=Surf" },
+    { name: "Hiking Retreats", href: "/retreats?type=Hiking" },
+    { name: "Fitness Retreats", href: "/retreats?type=Fitness" },
+    { name: "Adventure Retreats", href: "/retreats?type=Adventure" },
+  ],
   company: [{
     name: "About Us",
     href: "/about"
