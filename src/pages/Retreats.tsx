@@ -1,10 +1,17 @@
 import { useState, useEffect, useMemo } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewSummary } from "@/components/ReviewSummary";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Retreat {
   id: string;
@@ -28,9 +35,12 @@ interface ReviewStats {
 export default function Retreats() {
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeType, setActiveType] = useState<string | null>(null);
-  const [activeCountry, setActiveCountry] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [reviewStats, setReviewStats] = useState<ReviewStats>({});
+
+  const activeCountry = searchParams.get("country") || null;
+  const activeCity = searchParams.get("city") || null;
+  const activeType = searchParams.get("type") || null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,11 +77,10 @@ export default function Retreats() {
     fetchData();
   }, []);
 
-  const allTypes = useMemo(() => {
-    const set = new Set<string>();
-    retreats.forEach((r) => { (r.type || []).forEach((t) => set.add(t)); });
-    return Array.from(set).sort();
-  }, [retreats]);
+  // Extract city from location string (first part before comma)
+  const getCity = (location: string) => {
+    return location.split(",")[0].trim();
+  };
 
   const allCountries = useMemo(() => {
     const set = new Set<string>();
@@ -79,13 +88,47 @@ export default function Retreats() {
     return Array.from(set).sort();
   }, [retreats]);
 
+  // Cities filtered by selected country
+  const availableCities = useMemo(() => {
+    const set = new Set<string>();
+    retreats
+      .filter((r) => !activeCountry || r.country === activeCountry)
+      .forEach((r) => set.add(getCity(r.location)));
+    return Array.from(set).sort();
+  }, [retreats, activeCountry]);
+
+  // Types filtered by selected country + city
+  const availableTypes = useMemo(() => {
+    const set = new Set<string>();
+    retreats
+      .filter((r) => {
+        if (activeCountry && r.country !== activeCountry) return false;
+        if (activeCity && getCity(r.location) !== activeCity) return false;
+        return true;
+      })
+      .forEach((r) => (r.type || []).forEach((t) => set.add(t)));
+    return Array.from(set).sort();
+  }, [retreats, activeCountry, activeCity]);
+
   const filtered = useMemo(() => {
     return retreats.filter((r) => {
-      if (activeType && !(r.type || []).includes(activeType)) return false;
       if (activeCountry && r.country !== activeCountry) return false;
+      if (activeCity && getCity(r.location) !== activeCity) return false;
+      if (activeType && !(r.type || []).includes(activeType)) return false;
       return true;
     });
-  }, [retreats, activeType, activeCountry]);
+  }, [retreats, activeCountry, activeCity, activeType]);
+
+  const updateFilter = (key: string, value: string | null, resetKeys: string[] = []) => {
+    const next = new URLSearchParams(searchParams);
+    if (value) {
+      next.set(key, value);
+    } else {
+      next.delete(key);
+    }
+    resetKeys.forEach((k) => next.delete(k));
+    setSearchParams(next, { replace: true });
+  };
 
   return (
     <Layout>
@@ -100,56 +143,70 @@ export default function Retreats() {
       </section>
 
       {/* Filters */}
-      {(allTypes.length > 0 || allCountries.length > 0) && (
-        <section className="py-8 border-b border-border bg-background">
-          <div className="container-page space-y-4">
-            {allTypes.length > 0 && (
-              <div className="flex flex-wrap gap-3 justify-center">
-                <span className="text-sm font-medium text-muted-foreground self-center mr-1">Type:</span>
-                <Button
-                  variant={activeType === null ? "sage" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveType(null)}
-                >
-                  All
-                </Button>
-                {allTypes.map((type) => (
-                  <Button
-                    key={type}
-                    variant={activeType === type ? "sage" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveType(type)}
-                  >
-                    {type}
-                  </Button>
+      <section className="py-8 border-b border-border bg-background">
+        <div className="container-page">
+          <div className="flex flex-wrap items-center gap-4 justify-center">
+            {/* Country */}
+            <Select
+              value={activeCountry || "__all__"}
+              onValueChange={(v) => updateFilter("country", v === "__all__" ? null : v, ["city", "type"])}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Countries" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__all__">All Countries</SelectItem>
+                {allCountries.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
                 ))}
-              </div>
-            )}
-            {allCountries.length > 0 && (
-              <div className="flex flex-wrap gap-3 justify-center">
-                <span className="text-sm font-medium text-muted-foreground self-center mr-1">Location:</span>
-                <Button
-                  variant={activeCountry === null ? "sage" : "outline"}
-                  size="sm"
-                  onClick={() => setActiveCountry(null)}
-                >
-                  All
-                </Button>
-                {allCountries.map((country) => (
-                  <Button
-                    key={country}
-                    variant={activeCountry === country ? "sage" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveCountry(country)}
-                  >
-                    {country}
-                  </Button>
+              </SelectContent>
+            </Select>
+
+            {/* City */}
+            <Select
+              value={activeCity || "__all__"}
+              onValueChange={(v) => updateFilter("city", v === "__all__" ? null : v, ["type"])}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Cities" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__all__">All Cities</SelectItem>
+                {availableCities.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
                 ))}
-              </div>
+              </SelectContent>
+            </Select>
+
+            {/* Type */}
+            <Select
+              value={activeType || "__all__"}
+              onValueChange={(v) => updateFilter("type", v === "__all__" ? null : v, [])}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__all__">All Types</SelectItem>
+                {availableTypes.map((t) => (
+                  <SelectItem key={t} value={t}>{t}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {(activeCountry || activeCity || activeType) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchParams({}, { replace: true })}
+                className="text-muted-foreground"
+              >
+                Clear all
+              </Button>
             )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Retreat Grid */}
       <section className="section-padding bg-background">
@@ -171,7 +228,7 @@ export default function Retreats() {
           ) : filtered.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-body text-lg text-muted-foreground">
-                {(activeType || activeCountry) ? "No retreats match the selected filters." : "No retreats available yet. Check back soon!"}
+                {(activeType || activeCountry || activeCity) ? "No retreats match the selected filters." : "No retreats available yet. Check back soon!"}
               </p>
             </div>
           ) : (
