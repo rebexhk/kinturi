@@ -252,22 +252,6 @@ export default function RetreatDetail() {
                 {retreat.level && <p className="mt-4 text-primary font-medium">{retreat.level}</p>}
               </div>
 
-              {/* Kinturi's Take */}
-              {retreat.kinturi_take.length > 0 && (
-                <div className="bg-secondary rounded-2xl p-6 md:p-8 border border-primary/10">
-                  <h2 className="heading-section text-foreground mb-4 flex items-center gap-3">
-                    <Heart className="w-6 h-6 text-primary" />Kinturi's Take
-                  </h2>
-                  <ul className="space-y-3">
-                    {retreat.kinturi_take.map((point, i) => (
-                      <li key={i} className="flex items-start gap-3 text-body">
-                        <span className="mt-1.5 w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
               {/* Dates */}
               {retreat.dates.length > 0 && (
@@ -416,6 +400,22 @@ export default function RetreatDetail() {
 
             {/* Sidebar */}
             <div className="space-y-8">
+              {/* Kinturi's Take */}
+              {retreat.kinturi_take.length > 0 && (
+                <div className="bg-secondary rounded-2xl p-6 border border-primary/10">
+                  <h3 className="heading-card text-foreground mb-4 flex items-center gap-3">
+                    <Heart className="w-5 h-5 text-primary" />Kinturi's Take
+                  </h3>
+                  <ul className="space-y-3">
+                    {retreat.kinturi_take.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3 text-body text-sm">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {retreat.facilities.length > 0 && (
                 <div className="bg-secondary rounded-lg p-6">
                   <h3 className="heading-card text-foreground mb-4 flex items-center gap-2">
