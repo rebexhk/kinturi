@@ -241,6 +241,38 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Filters */}
+            {!loading && retreats.length > 0 && (
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Select value={filterCountry || "__all__"} onValueChange={(v) => { setFilterCountry(v === "__all__" ? "" : v); setFilterCity(""); setFilterType(""); }}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Countries" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Countries</SelectItem>
+                    {countries.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={filterCity || "__all__"} onValueChange={(v) => { setFilterCity(v === "__all__" ? "" : v); setFilterType(""); }}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Cities" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Cities</SelectItem>
+                    {cities.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={filterType || "__all__"} onValueChange={(v) => setFilterType(v === "__all__" ? "" : v)}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Types" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Types</SelectItem>
+                    {types.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                {hasActiveFilters && (
+                  <Button variant="ghost" size="sm" onClick={clearFilters}>
+                    <X className="w-4 h-4 mr-1" /> Clear all
+                  </Button>
+                )}
+              </div>
+            )}
+
             {loading ? (
               <div className="text-muted-foreground">Loading retreats...</div>
             ) : retreats.length === 0 ? (
@@ -252,7 +284,7 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="space-y-3">
-                {retreats.map((retreat) => (
+                {filteredRetreats.map((retreat) => (
                   <div
                     key={retreat.id}
                     className="bg-card border border-border rounded-lg p-5 flex items-center justify-between hover:shadow-soft transition-shadow"
