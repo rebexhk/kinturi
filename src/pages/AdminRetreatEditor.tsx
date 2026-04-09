@@ -34,6 +34,7 @@ interface RetreatForm {
   gallery_image_alts: string[];
   accommodation_image_urls: string[];
   accommodation_image_alts: string[];
+  accommodation_image_labels: string[];
   dining_image_urls: string[];
   dining_image_alts: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
@@ -57,7 +58,7 @@ const emptyForm: RetreatForm = {
   duration: "", type: [], description: "", price: "", accommodation_label: "", group_size: "", level: "",
   hero_image_url: "", hero_image_alt: "",
   gallery_image_urls: [], gallery_image_alts: [],
-  accommodation_image_urls: [], accommodation_image_alts: [],
+  accommodation_image_urls: [], accommodation_image_alts: [], accommodation_image_labels: [],
   dining_image_urls: [], dining_image_alts: [],
   dates: [], instructor: { name: "", bio: "", certifications: [], photo_url: "" },
   accommodation: { description: "", options: [] },
@@ -96,6 +97,7 @@ export default function AdminRetreatEditor() {
         gallery_image_alts: data.gallery_image_alts || [],
         accommodation_image_urls: data.accommodation_image_urls || [],
         accommodation_image_alts: data.accommodation_image_alts || [],
+        accommodation_image_labels: data.accommodation_image_labels || [],
         dining_image_urls: data.dining_image_urls || [],
         dining_image_alts: data.dining_image_alts || [],
         hero_image_alt: data.hero_image_alt || "",
@@ -522,8 +524,10 @@ export default function AdminRetreatEditor() {
               title="Accommodation Images"
               urls={form.accommodation_image_urls}
               alts={form.accommodation_image_alts}
+              labels={form.accommodation_image_labels}
               onUrlsChange={(urls) => updateField("accommodation_image_urls", urls)}
               onAltsChange={(alts) => updateField("accommodation_image_alts", alts)}
+              onLabelsChange={(labels) => updateField("accommodation_image_labels", labels)}
               onUpload={(e) => handleImageUpload(e, "accommodation")}
               uploading={uploading}
             />
@@ -670,18 +674,21 @@ function ListEditor({ label, items, onChange }: { label: string; items: string[]
 }
 
 // Reusable image gallery editor with alt text support
-function ImageGalleryEditor({ title, urls, alts, onUrlsChange, onAltsChange, onUpload, uploading }: {
+function ImageGalleryEditor({ title, urls, alts, labels, onUrlsChange, onAltsChange, onLabelsChange, onUpload, uploading }: {
   title: string;
   urls: string[];
   alts: string[];
+  labels?: string[];
   onUrlsChange: (urls: string[]) => void;
   onAltsChange: (alts: string[]) => void;
+  onLabelsChange?: (labels: string[]) => void;
   onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploading: boolean;
 }) {
   const removeImage = (index: number) => {
     onUrlsChange(urls.filter((_, j) => j !== index));
     onAltsChange(alts.filter((_, j) => j !== index));
+    if (labels && onLabelsChange) onLabelsChange(labels.filter((_, j) => j !== index));
   };
 
   const updateAlt = (index: number, value: string) => {
@@ -689,6 +696,14 @@ function ImageGalleryEditor({ title, urls, alts, onUrlsChange, onAltsChange, onU
     while (updated.length <= index) updated.push("");
     updated[index] = value;
     onAltsChange(updated);
+  };
+
+  const updateLabel = (index: number, value: string) => {
+    if (!labels || !onLabelsChange) return;
+    const updated = [...labels];
+    while (updated.length <= index) updated.push("");
+    updated[index] = value;
+    onLabelsChange(updated);
   };
 
   return (
@@ -703,7 +718,16 @@ function ImageGalleryEditor({ title, urls, alts, onUrlsChange, onAltsChange, onU
                 <X className="w-3 h-3" />
               </Button>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 space-y-2">
+              {labels && onLabelsChange && (
+                <FieldGroup label="Label (e.g. Deluxe Double)">
+                  <Input
+                    value={labels[i] || ""}
+                    onChange={(e) => updateLabel(i, e.target.value)}
+                    placeholder="Room type or name shown on image"
+                  />
+                </FieldGroup>
+              )}
               <FieldGroup label="Alt Text (SEO)">
                 <Input
                   value={alts[i] || ""}
