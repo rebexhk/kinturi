@@ -58,7 +58,7 @@ export default function AdminDashboard() {
     let filtered = retreats;
     if (filterCountry) filtered = filtered.filter(r => r.country === filterCountry);
     if (filterCity) filtered = filtered.filter(r => r.location?.split(",")[0]?.trim() === filterCity);
-    const allTypes = filtered.flatMap(r => r.type ? r.type.split(",").map(t => t.trim()) : []);
+    const allTypes = filtered.flatMap(r => Array.isArray(r.type) ? r.type : []);
     return [...new Set(allTypes)].sort();
   }, [retreats, filterCountry, filterCity]);
 
