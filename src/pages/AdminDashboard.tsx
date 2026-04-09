@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useNavigate, Link } from "react-router-dom";
 import { useAdminApi } from "@/hooks/useAdminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload, X } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +14,7 @@ interface RetreatListItem {
   id: string;
   title: string;
   location: string;
+  country: string;
   status: string;
   type: string;
   price: string;
@@ -38,6 +40,38 @@ export default function AdminDashboard() {
   const [blogLoading, setBlogLoading] = useState(true);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [filterCountry, setFilterCountry] = useState<string>("");
+  const [filterCity, setFilterCity] = useState<string>("");
+  const [filterType, setFilterType] = useState<string>("");
+
+  const countries = useMemo(() => 
+    [...new Set(retreats.map(r => r.country).filter(Boolean))].sort(),
+    [retreats]
+  );
+
+  const cities = useMemo(() => {
+    const filtered = filterCountry ? retreats.filter(r => r.country === filterCountry) : retreats;
+    return [...new Set(filtered.map(r => r.location?.split(",")[0]?.trim()).filter(Boolean))].sort();
+  }, [retreats, filterCountry]);
+
+  const types = useMemo(() => {
+    let filtered = retreats;
+    if (filterCountry) filtered = filtered.filter(r => r.country === filterCountry);
+    if (filterCity) filtered = filtered.filter(r => r.location?.split(",")[0]?.trim() === filterCity);
+    const allTypes = filtered.flatMap(r => r.type ? r.type.split(",").map(t => t.trim()) : []);
+    return [...new Set(allTypes)].sort();
+  }, [retreats, filterCountry, filterCity]);
+
+  const filteredRetreats = useMemo(() => {
+    let result = retreats;
+    if (filterCountry) result = result.filter(r => r.country === filterCountry);
+    if (filterCity) result = result.filter(r => r.location?.split(",")[0]?.trim() === filterCity);
+    if (filterType) result = result.filter(r => r.type?.includes(filterType));
+    return result;
+  }, [retreats, filterCountry, filterCity, filterType]);
+
+  const hasActiveFilters = filterCountry || filterCity || filterType;
+  const clearFilters = () => { setFilterCountry(""); setFilterCity(""); setFilterType(""); };
 
   useEffect(() => {
     if (!isAdmin) {
@@ -207,6 +241,38 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            {/* Filters */}
+            {!loading && retreats.length > 0 && (
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Select value={filterCountry || "__all__"} onValueChange={(v) => { setFilterCountry(v === "__all__" ? "" : v); setFilterCity(""); setFilterType(""); }}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Countries" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Countries</SelectItem>
+                    {countries.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={filterCity || "__all__"} onValueChange={(v) => { setFilterCity(v === "__all__" ? "" : v); setFilterType(""); }}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Cities" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Cities</SelectItem>
+                    {cities.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={filterType || "__all__"} onValueChange={(v) => setFilterType(v === "__all__" ? "" : v)}>
+                  <SelectTrigger className="w-[160px]"><SelectValue placeholder="All Types" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All Types</SelectItem>
+                    {types.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                {hasActiveFilters && (
+                  <Button variant="ghost" size="sm" onClick={clearFilters}>
+                    <X className="w-4 h-4 mr-1" /> Clear all
+                  </Button>
+                )}
+              </div>
+            )}
+
             {loading ? (
               <div className="text-muted-foreground">Loading retreats...</div>
             ) : retreats.length === 0 ? (
@@ -218,7 +284,7 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="space-y-3">
-                {retreats.map((retreat) => (
+                {filteredRetreats.map((retreat) => (
                   <div
                     key={retreat.id}
                     className="bg-card border border-border rounded-lg p-5 flex items-center justify-between hover:shadow-soft transition-shadow"
