@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useAdmin } from "@/contexts/AdminContext";
 import { useNavigate, Link } from "react-router-dom";
 import { useAdminApi } from "@/hooks/useAdminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload, X } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +14,7 @@ interface RetreatListItem {
   id: string;
   title: string;
   location: string;
+  country: string;
   status: string;
   type: string;
   price: string;
