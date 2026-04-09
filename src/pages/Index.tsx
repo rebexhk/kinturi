@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowRight, ChevronDown, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ReviewSummary } from "@/components/ReviewSummary";
 import heroImage from "@/assets/hero-cover.jpg";
@@ -19,6 +20,8 @@ interface FeaturedRetreat {
 }
 
 export default function Index() {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [featuredRetreats, setFeaturedRetreats] = useState<FeaturedRetreat[]>([]);
   const [reviewStats, setReviewStats] = useState<Record<string, { avg: number; count: number }>>({});
 
@@ -75,6 +78,34 @@ export default function Index() {
               <Link to="/contact">Request to Book</Link>
             </Button>
           </div>
+
+          {/* AI Search Bar */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim().length >= 3) {
+                navigate(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
+              }
+            }}
+            className="mt-8 max-w-2xl mx-auto w-full"
+          >
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/50" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="I'm looking for a crossfit retreat somewhere warm with great food..."
+                className="pl-12 pr-24 h-14 text-base rounded-full bg-white/15 backdrop-blur-md border-white/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-white/30"
+              />
+              <Button
+                type="submit"
+                size="sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+              >
+                Search
+              </Button>
+            </div>
+          </form>
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-delay-2">
