@@ -311,7 +311,7 @@ export default function RetreatDetail() {
                   </h2>
                   {retreat.accommodation_image_urls.length > 0 && (
                     <div className="mb-6">
-                      <ScrollGallery images={retreat.accommodation_image_urls} alts={retreat.accommodation_image_alts} label="Accommodation" />
+                      <ScrollGallery images={retreat.accommodation_image_urls} alts={retreat.accommodation_image_alts} labels={(retreat as any).accommodation_image_labels || []} label="Accommodation" />
                     </div>
                   )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
