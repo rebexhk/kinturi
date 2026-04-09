@@ -38,7 +38,7 @@ interface RetreatData {
   kinturi_take: string[];
 }
 
-function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: string[]; label: string }) {
+function ScrollGallery({ images, alts = [], labels = [], label }: { images: string[]; alts?: string[]; labels?: string[]; label: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -53,12 +53,18 @@ function ScrollGallery({ images, alts = [], label }: { images: string[]; alts?: 
     <div className="relative group">
       <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
         {images.map((url, i) => (
-          <img
-            key={i}
-            src={url}
-            alt={alts[i] || `${label} ${i + 1}`}
-            className="w-72 h-48 object-cover rounded-lg flex-shrink-0 snap-start"
-          />
+          <div key={i} className="relative flex-shrink-0 snap-start">
+            <img
+              src={url}
+              alt={alts[i] || `${label} ${i + 1}`}
+              className="w-72 h-48 object-cover rounded-lg"
+            />
+            {labels[i] && (
+              <span className="absolute bottom-2 left-2 bg-background/85 backdrop-blur-sm text-foreground text-xs font-medium px-2.5 py-1 rounded-md shadow-sm">
+                {labels[i]}
+              </span>
+            )}
+          </div>
         ))}
       </div>
       {images.length > 2 && (
@@ -305,7 +311,7 @@ export default function RetreatDetail() {
                   </h2>
                   {retreat.accommodation_image_urls.length > 0 && (
                     <div className="mb-6">
-                      <ScrollGallery images={retreat.accommodation_image_urls} alts={retreat.accommodation_image_alts} label="Accommodation" />
+                      <ScrollGallery images={retreat.accommodation_image_urls} alts={retreat.accommodation_image_alts} labels={(retreat as any).accommodation_image_labels || []} label="Accommodation" />
                     </div>
                   )}
                   <p className="text-body mb-6">{retreat.accommodation.description}</p>
