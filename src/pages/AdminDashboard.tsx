@@ -40,6 +40,38 @@ export default function AdminDashboard() {
   const [blogLoading, setBlogLoading] = useState(true);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [filterCountry, setFilterCountry] = useState<string>("");
+  const [filterCity, setFilterCity] = useState<string>("");
+  const [filterType, setFilterType] = useState<string>("");
+
+  const countries = useMemo(() => 
+    [...new Set(retreats.map(r => r.country).filter(Boolean))].sort(),
+    [retreats]
+  );
+
+  const cities = useMemo(() => {
+    const filtered = filterCountry ? retreats.filter(r => r.country === filterCountry) : retreats;
+    return [...new Set(filtered.map(r => r.location?.split(",")[0]?.trim()).filter(Boolean))].sort();
+  }, [retreats, filterCountry]);
+
+  const types = useMemo(() => {
+    let filtered = retreats;
+    if (filterCountry) filtered = filtered.filter(r => r.country === filterCountry);
+    if (filterCity) filtered = filtered.filter(r => r.location?.split(",")[0]?.trim() === filterCity);
+    const allTypes = filtered.flatMap(r => r.type ? r.type.split(",").map(t => t.trim()) : []);
+    return [...new Set(allTypes)].sort();
+  }, [retreats, filterCountry, filterCity]);
+
+  const filteredRetreats = useMemo(() => {
+    let result = retreats;
+    if (filterCountry) result = result.filter(r => r.country === filterCountry);
+    if (filterCity) result = result.filter(r => r.location?.split(",")[0]?.trim() === filterCity);
+    if (filterType) result = result.filter(r => r.type?.includes(filterType));
+    return result;
+  }, [retreats, filterCountry, filterCity, filterType]);
+
+  const hasActiveFilters = filterCountry || filterCity || filterType;
+  const clearFilters = () => { setFilterCountry(""); setFilterCity(""); setFilterType(""); };
 
   useEffect(() => {
     if (!isAdmin) {
