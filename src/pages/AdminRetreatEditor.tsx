@@ -25,6 +25,7 @@ interface RetreatForm {
   type: string[];
   description: string;
   price: string;
+  accommodation_label: string;
   group_size: string;
   level: string;
   hero_image_url: string;
@@ -53,7 +54,7 @@ interface RetreatForm {
 
 const emptyForm: RetreatForm = {
   title: "", slug: "", status: "draft", featured: false, location: "", country: "", address: "",
-  duration: "", type: [], description: "", price: "", group_size: "", level: "",
+  duration: "", type: [], description: "", price: "", accommodation_label: "", group_size: "", level: "",
   hero_image_url: "", hero_image_alt: "",
   gallery_image_urls: [], gallery_image_alts: [],
   accommodation_image_urls: [], accommodation_image_alts: [],
@@ -309,6 +310,9 @@ export default function AdminRetreatEditor() {
             <div className="grid grid-cols-2 gap-4">
               <FieldGroup label="Price *">
                 <Input value={form.price} onChange={(e) => updateField("price", e.target.value)} placeholder="e.g. From £1,850" />
+              </FieldGroup>
+              <FieldGroup label="Accommodation Label">
+                <Input value={form.accommodation_label} onChange={(e) => updateField("accommodation_label", e.target.value)} placeholder="e.g. Deluxe Double" />
               </FieldGroup>
             </div>
             <div className="grid grid-cols-2 gap-4">

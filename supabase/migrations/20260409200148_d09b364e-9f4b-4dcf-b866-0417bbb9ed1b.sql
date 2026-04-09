@@ -1,0 +1,1 @@
+ALTER TABLE public.retreats ADD COLUMN accommodation_label text DEFAULT '';

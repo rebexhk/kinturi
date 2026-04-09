@@ -100,6 +100,7 @@ export type Database = {
           accommodation: Json | null
           accommodation_image_alts: string[] | null
           accommodation_image_urls: string[]
+          accommodation_label: string | null
           address: string | null
           country: string
           created_at: string
@@ -139,6 +140,7 @@ export type Database = {
           accommodation?: Json | null
           accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
+          accommodation_label?: string | null
           address?: string | null
           country?: string
           created_at?: string
@@ -178,6 +180,7 @@ export type Database = {
           accommodation?: Json | null
           accommodation_image_alts?: string[] | null
           accommodation_image_urls?: string[]
+          accommodation_label?: string | null
           address?: string | null
           country?: string
           created_at?: string

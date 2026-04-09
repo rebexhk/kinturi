@@ -220,9 +220,14 @@ export default function RetreatDetail() {
       {/* Quick Info Bar */}
       <section className="py-6 bg-secondary border-b border-border">
         <div className="container-page flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-serif text-2xl text-foreground">{retreat.price}</span>
-            <span className="text-muted-foreground">per person</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-serif text-2xl text-foreground">{retreat.price}</span>
+              <span className="text-muted-foreground">per person</span>
+            </div>
+            {(retreat as any).accommodation_label && (
+              <p className="text-sm text-muted-foreground mt-1">{(retreat as any).accommodation_label}</p>
+            )}
           </div>
           <Button variant="sage" size="lg" asChild>
             <Link to="/contact">Request to Book</Link>
