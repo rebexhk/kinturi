@@ -25,6 +25,7 @@ interface RetreatForm {
   type: string[];
   description: string;
   price: string;
+  accommodation_label: string;
   group_size: string;
   level: string;
   hero_image_url: string;
