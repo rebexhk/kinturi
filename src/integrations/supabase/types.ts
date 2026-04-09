@@ -99,6 +99,7 @@ export type Database = {
         Row: {
           accommodation: Json | null
           accommodation_image_alts: string[] | null
+          accommodation_image_labels: string[] | null
           accommodation_image_urls: string[]
           accommodation_label: string | null
           address: string | null
@@ -139,6 +140,7 @@ export type Database = {
         Insert: {
           accommodation?: Json | null
           accommodation_image_alts?: string[] | null
+          accommodation_image_labels?: string[] | null
           accommodation_image_urls?: string[]
           accommodation_label?: string | null
           address?: string | null
@@ -179,6 +181,7 @@ export type Database = {
         Update: {
           accommodation?: Json | null
           accommodation_image_alts?: string[] | null
+          accommodation_image_labels?: string[] | null
           accommodation_image_urls?: string[]
           accommodation_label?: string | null
           address?: string | null

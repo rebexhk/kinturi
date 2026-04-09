@@ -1,0 +1,1 @@
+ALTER TABLE public.retreats ADD COLUMN accommodation_image_labels text[] DEFAULT '{}'::text[];
