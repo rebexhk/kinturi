@@ -136,7 +136,12 @@ export default function Index() {
             </div>
           </form>
 
-          {/* Demoted CTA buttons */}
+          {/* AI-powered search label */}
+          <p className="text-sm text-primary-foreground/60 tracking-wide mb-6 font-medium">
+            ✦ AI-powered search
+          </p>
+
+          {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button variant="hero" size="lg" asChild className="text-sm">
               <Link to="/retreats">
