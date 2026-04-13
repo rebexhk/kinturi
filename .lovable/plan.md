@@ -1,48 +1,42 @@
 
 
-## AI-Powered Retreat Search Feature
+## Redesign Homepage: AI Search as Primary Hero Element
 
-### What We're Building
-A search bar on the homepage (below the two hero buttons) where customers type what they're looking for in natural language. An AI analyzes their query against all published retreats and presents results on a dedicated page with top matches and alternatives.
+### Overview
+Restructure the homepage hero to position the AI search bar as the centrepiece, add an animated placeholder, insert a new "See It In Action" section, and update Step 1 of How It Works.
 
-### Architecture
+### Changes — `src/pages/Index.tsx` only
 
-```text
-User types query → Edge Function → Lovable AI (Gemini Flash)
-                                      ↓
-                          Fetches all published retreats
-                          from DB, scores them against query
-                                      ↓
-                          Returns ranked results as JSON
-                                      ↓
-                   /search-results page displays matches
-```
+**1. Hero Section Restructure**
+- Change headline to "Describe your dream retreat. Our AI finds it."
+- Change subtitle to "Tell us what you're looking for — we'll find the retreat that fits you perfectly."
+- Reorder elements: headline → subtitle → "✦ AI-powered search" label → search bar → CTA buttons
+- Make search bar wider (`max-w-3xl`), taller (`h-16`), more visually prominent with stronger backdrop blur and border
+- Add a `Sparkles` icon (from lucide-react) to the left inside the search bar, next to the existing `Search` icon on the right
+- Demote CTA buttons: use smaller `size="lg"` or `size="default"`, secondary styling, placed below the search bar
 
-### Changes
+**2. Animated Placeholder Text**
+- Add a `useEffect` + `useState` that cycles through 4 placeholder strings every 3 seconds
+- Placeholders: the four examples specified
+- Use a controlled placeholder prop on the Input that updates on the interval
 
-**1. New Edge Function: `supabase/functions/ai-retreat-search/index.ts`**
-- Accepts `{ query: string }` via POST
-- Fetches all published retreats from DB (title, location, country, type, description, facilities, inclusions, menu, accommodation, duration, price, slug)
-- Sends retreat data + user query to Lovable AI (google/gemini-3-flash-preview) with a system prompt instructing it to rank retreats by relevance
-- Uses tool calling to return structured JSON: `{ topMatches: [...], alternatives: [...] }` with retreat slugs, match reasons, and relevance scores
-- Returns results to client
+**3. "✦ AI-powered search" Label**
+- Small text label directly above the search bar, styled with `text-sm text-primary-foreground/60 tracking-wide`
 
-**2. New Page: `src/pages/SearchResults.tsx`**
-- Receives the search query via URL search params
-- Calls the edge function on mount, shows a loading state with a friendly message
-- Displays top match(es) as prominent cards with AI-generated "why this matches" explanation
-- Shows alternative suggestions below in a smaller card grid
-- Each card links to the retreat detail page
-- Includes a "Search again" option
+**4. New "See It In Action" Section**
+- Insert between hero and "Wellness Through Movement" (Intro) section
+- Heading: "Search that actually understands you"
+- Subheading: "Not just keywords — describe your ideal trip and our AI does the rest."
+- Static mockup: a styled input showing "Solo yoga retreat in Europe, warm weather, beginner-friendly" (non-interactive)
+- Below it: 2–3 sample result cards matching existing retreat card styling, each with retreat name, location, and a "Matched because: ..." line in muted text
 
-**3. Update `src/pages/Index.tsx`**
-- Add a search bar component below the two hero buttons (still inside the hero overlay)
-- Styled as a wide input with a search icon and placeholder text: *"I'm looking for a crossfit retreat somewhere warm with great food..."*
-- On submit, navigates to `/search-results?q=<encoded query>`
+**5. How It Works — Step 1 Update**
+- Title: "Describe What You Want"
+- Description: "Just tell our AI what you're looking for in plain English — activity type, mood, budget, destination, travel dates. It understands natural language and finds retreats that actually fit you."
 
-**4. New Route in `src/App.tsx`**
-- Add `/search-results` route pointing to `SearchResults`
-
-### No database changes needed
-All retreat data is already queryable via the existing `retreats` table and RLS policies.
+### Technical Details
+- All changes in `src/pages/Index.tsx`
+- New lucide-react imports: `Sparkles` (or `Wand2`)
+- Animated placeholder uses `setInterval` in a `useEffect` with cleanup
+- No database or backend changes needed
 
