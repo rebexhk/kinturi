@@ -123,7 +123,7 @@ export default function Index() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={PLACEHOLDERS[placeholderIdx]}
-                className="pl-12 pr-28 h-16 text-base md:text-lg rounded-full bg-white/15 backdrop-blur-lg border-white/25 text-primary-foreground placeholder:text-primary-foreground/70 focus-visible:ring-white/30 shadow-lg"
+                className="pl-12 pr-28 h-16 text-base md:text-lg rounded-full bg-white/15 backdrop-blur-lg border-white/25 text-primary-foreground placeholder:text-primary-foreground/90 focus-visible:ring-white/30 shadow-lg"
               />
               <Button
                 type="submit"
