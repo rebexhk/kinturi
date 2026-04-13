@@ -107,11 +107,6 @@ export default function Index() {
             Tell us what you're looking for — we'll find the retreat that fits you perfectly.
           </p>
 
-          {/* AI-powered search label */}
-          <p className="text-sm text-primary-foreground/60 tracking-wide mb-3 font-medium">
-            ✦ AI-powered search
-          </p>
-
           {/* AI Search Bar */}
           <form
             onSubmit={(e) => {
@@ -120,7 +115,7 @@ export default function Index() {
                 navigate(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
               }
             }}
-            className="max-w-3xl mx-auto w-full mb-8"
+            className="max-w-3xl mx-auto w-full mb-2"
           >
             <div className="relative">
               <Sparkles className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/50" />
