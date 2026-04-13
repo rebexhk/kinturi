@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, ChevronDown, Search } from "lucide-react";
+import { ArrowRight, ChevronDown, Search, Sparkles, MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ReviewSummary } from "@/components/ReviewSummary";
 import heroImage from "@/assets/hero-cover.jpg";
@@ -19,11 +19,44 @@ interface FeaturedRetreat {
   hero_image_url: string | null;
 }
 
+const PLACEHOLDERS = [
+  "I'm looking for a crossfit retreat somewhere warm with great food...",
+  "A yoga retreat in Europe for solo travellers, under £2,000...",
+  "Something adventurous with hiking, for a group of friends...",
+  "A beginner-friendly surf trip with good nightlife nearby...",
+];
+
+const DEMO_RESULTS = [
+  {
+    title: "Algarve Reformer & Restore",
+    location: "Portugal",
+    reason: "Matched because: beginner yoga programme, warm climate, solo-traveller friendly atmosphere",
+  },
+  {
+    title: "Ibiza Strength & Sun Retreat",
+    location: "Spain",
+    reason: "Matched because: warm European destination, group-friendly, varied fitness levels welcome",
+  },
+  {
+    title: "Tuscany Wellness Escape",
+    location: "Italy",
+    reason: "Matched because: solo-friendly, Mediterranean warmth, gentle morning yoga sessions",
+  },
+];
+
 export default function Index() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [featuredRetreats, setFeaturedRetreats] = useState<FeaturedRetreat[]>([]);
   const [reviewStats, setReviewStats] = useState<Record<string, { avg: number; count: number }>>({});
+  const [placeholderIdx, setPlaceholderIdx] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIdx((prev) => (prev + 1) % PLACEHOLDERS.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,21 +96,17 @@ export default function Index() {
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in">
-          <h1 className="heading-display text-primary-foreground mb-6">
-            Find Your Perfect Active Retreat
+          <h1 className="heading-display text-primary-foreground mb-4">
+            Describe your dream retreat. Our AI finds it.
           </h1>
-          <p className="text-lg text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light md:text-2xl">Discover a curated selection of fitness-focused holidays and active escapes worldwide.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/retreats">
-                Explore Retreats
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="hero-outline" size="xl" asChild>
-              <Link to="/contact">Request to Book</Link>
-            </Button>
-          </div>
+          <p className="text-lg text-primary-foreground/90 mb-8 max-w-2xl mx-auto font-light md:text-xl">
+            Tell us what you're looking for — we'll find the retreat that fits you perfectly.
+          </p>
+
+          {/* AI-powered search label */}
+          <p className="text-sm text-primary-foreground/60 tracking-wide mb-3 font-medium">
+            ✦ AI-powered search
+          </p>
 
           {/* AI Search Bar */}
           <form
@@ -87,29 +116,88 @@ export default function Index() {
                 navigate(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
               }
             }}
-            className="mt-8 max-w-2xl mx-auto w-full"
+            className="max-w-3xl mx-auto w-full mb-8"
           >
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/50" />
+              <Sparkles className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/50" />
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="I'm looking for a crossfit retreat somewhere warm with great food..."
-                className="pl-12 pr-24 h-14 text-base rounded-full bg-white/15 backdrop-blur-md border-white/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-white/30"
+                placeholder={PLACEHOLDERS[placeholderIdx]}
+                className="pl-12 pr-28 h-16 text-base md:text-lg rounded-full bg-white/15 backdrop-blur-lg border-white/25 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:ring-white/30 shadow-lg"
               />
               <Button
                 type="submit"
                 size="sm"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/20 hover:bg-white/30 text-primary-foreground border-0 gap-1.5"
               >
+                <Search className="h-4 w-4" />
                 Search
               </Button>
             </div>
           </form>
+
+          {/* Demoted CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button variant="hero-outline" size="lg" asChild className="text-sm">
+              <Link to="/retreats">
+                Explore Retreats
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button variant="hero-outline" size="lg" asChild className="text-sm">
+              <Link to="/contact">Request to Book</Link>
+            </Button>
+          </div>
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-delay-2">
           <ChevronDown className="h-6 w-6 text-primary-foreground/60 animate-bounce" />
+        </div>
+      </section>
+
+      {/* See It In Action Section */}
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container-page max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="heading-section text-foreground mb-4 animate-fade-in-up">
+              Search that actually understands you
+            </h2>
+            <p className="text-body text-lg max-w-2xl mx-auto">
+              Not just keywords — describe your ideal trip and our AI does the rest.
+            </p>
+          </div>
+
+          {/* Static mockup */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <Sparkles className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <div className="pl-12 pr-6 h-14 flex items-center rounded-full bg-background border border-border text-foreground text-base shadow-sm">
+                Solo yoga retreat in Europe, warm weather, beginner-friendly
+              </div>
+            </div>
+          </div>
+
+          {/* Sample result cards */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {DEMO_RESULTS.map((result) => (
+              <div
+                key={result.title}
+                className="bg-background rounded-lg p-5 shadow-soft border border-border"
+              >
+                <h4 className="font-serif text-base font-medium text-foreground mb-1">
+                  {result.title}
+                </h4>
+                <p className="text-small flex items-center gap-1 mb-3">
+                  <MapPin className="h-3 w-3" />
+                  {result.location}
+                </p>
+                <p className="text-xs text-primary/80 italic leading-relaxed">
+                  {result.reason}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -139,9 +227,9 @@ export default function Index() {
             {[
               {
                 step: "01",
-                title: "Browse & Discover",
+                title: "Describe What You Want",
                 description:
-                  "Explore our curated collection of fitness-focused retreats across the world's most beautiful destinations.",
+                  "Just tell our AI what you're looking for in plain English — activity type, mood, budget, destination, travel dates. It understands natural language and finds retreats that actually fit you.",
               },
               {
                 step: "02",
