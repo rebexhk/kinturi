@@ -96,10 +96,14 @@ export default function Index() {
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in">
-          <h1 className="heading-display text-primary-foreground mb-4">
-            Describe your dream retreat. Our AI finds it.
+          <h1 className="heading-display text-primary-foreground mb-6">
+            Find Your Perfect Active Retreat
           </h1>
-          <p className="text-lg text-primary-foreground/90 mb-8 max-w-2xl mx-auto font-light md:text-xl">
+          <p className="text-lg text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light md:text-2xl">
+            Discover a curated selection of fitness-focused holidays and active escapes worldwide.
+          </p>
+
+          <p className="text-base text-primary-foreground/80 mb-2 max-w-2xl mx-auto font-light">
             Tell us what you're looking for — we'll find the retreat that fits you perfectly.
           </p>
 
@@ -124,7 +128,7 @@ export default function Index() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={PLACEHOLDERS[placeholderIdx]}
-                className="pl-12 pr-28 h-16 text-base md:text-lg rounded-full bg-white/15 backdrop-blur-lg border-white/25 text-primary-foreground placeholder:text-primary-foreground/40 focus-visible:ring-white/30 shadow-lg"
+                className="pl-12 pr-28 h-16 text-base md:text-lg rounded-full bg-white/15 backdrop-blur-lg border-white/25 text-primary-foreground placeholder:text-primary-foreground/70 focus-visible:ring-white/30 shadow-lg"
               />
               <Button
                 type="submit"
@@ -139,7 +143,7 @@ export default function Index() {
 
           {/* Demoted CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button variant="hero-outline" size="lg" asChild className="text-sm">
+            <Button variant="hero" size="lg" asChild className="text-sm">
               <Link to="/retreats">
                 Explore Retreats
                 <ArrowRight className="ml-2 h-4 w-4" />
