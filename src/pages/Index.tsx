@@ -155,7 +155,7 @@ export default function Index() {
       <section className="pt-16 md:pt-24 pb-8 md:pb-10 bg-background">
         <div className="container-page text-center max-w-3xl mx-auto">
           <h2 className="heading-section text-foreground mb-6 animate-fade-in-up">
-            Wellness Through Movement
+            Recharge Through Movement
           </h2>
           <p className="text-body text-lg leading-relaxed">
             Kinturi is for anyone who considers staying active part of the holiday, not a compromise on it. Who find just as much pleasure in a morning hike or well-programmed fitness class as relaxing by the pool or in a long dinner with local wine afterwards.
