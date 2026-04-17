@@ -22,56 +22,62 @@ export default function About() {
         </div>
       </section>
 
-      {/* Section 1 — The Why */}
+      {/* Section 1 — The Why (text + portrait image) */}
       <section className="section-padding bg-background">
         <div className="container-page">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-8">The Why</h2>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="space-y-6 text-body text-lg">
+              <h2 className="heading-section text-foreground mb-4">The Why</h2>
               <p>Kinturi was born out of a simple frustration.</p>
               <p>
                 After hours spent searching for the kind of holidays we like (active escapes that don't skimp on quality and setting), it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around too much silence and calm for our liking. And the gap between the two (genuinely exceptional movement experiences in places worth travelling to) was almost impossible to find in one place.
               </p>
               <p>So we built it.</p>
             </div>
+            <div className="order-first md:order-last">
+              <img
+                src={aboutMovementImg}
+                alt="Group of hikers with backpacks walking a forest trail toward a rocky peak"
+                width={800}
+                height={1000}
+                loading="lazy"
+                className="w-full h-[400px] md:h-[560px] object-cover rounded-sm shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Atmospheric image */}
-      <section className="bg-background">
-        <div className="w-full">
-          <img
-            src={aboutMovementImg}
-            alt="Group of hikers with backpacks walking a forest trail toward a rocky peak"
-            width={1600}
-            height={1000}
-            loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
-          />
-        </div>
-      </section>
-
-      {/* Atmospheric image — Tuscan villa */}
+      {/* Cinematic full-width break — Tuscan villa */}
       <section className="bg-background">
         <div className="w-full">
           <img
             src={aboutVillaImg}
             alt="Aerial view of a stone villa with pool nestled in the rolling hills of the Tuscan countryside"
             width={1600}
-            height={1000}
+            height={900}
             loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
+            className="w-full h-[45vh] md:h-[65vh] object-cover"
           />
         </div>
       </section>
 
-      {/* Section 2 — Who We Serve */}
+      {/* Section 2 — Who We Serve (image left + text right) */}
       <section className="section-padding bg-secondary">
         <div className="container-page">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-8">Who We Serve</h2>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <img
+                src={aboutYogaImg}
+                alt="Group practising downward dog yoga poses on mats on an outdoor wooden deck, framed by green foliage"
+                width={800}
+                height={1000}
+                loading="lazy"
+                className="w-full h-[400px] md:h-[560px] object-cover rounded-sm shadow-lg"
+              />
+            </div>
             <div className="space-y-6 text-body text-lg">
+              <h2 className="heading-section text-foreground mb-4">Who We Serve</h2>
               <p>
                 Kinturi is for travellers who consider staying active part of the holiday, not a compromise on it.
               </p>
@@ -86,26 +92,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* Atmospheric image — earned rest */}
-      <section className="bg-background">
-        <div className="w-full">
-          <img
-            src={aboutCheersImg}
-            alt="Friends clinking glasses of white wine in the sunshine after a day of activity"
-            width={1600}
-            height={1000}
-            loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
-          />
-        </div>
-      </section>
-
-      {/* Section 3 — Value Proposition */}
+      {/* Section 3 — Built on Quality (text left + image right) */}
       <section className="section-padding bg-background">
         <div className="container-page">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-8">Built on Quality</h2>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="space-y-6 text-body text-lg">
+              <h2 className="heading-section text-foreground mb-4">Built on Quality</h2>
               <p>
                 Every retreat in the Kinturi collection is personally researched and vetted against one brief: it has to be genuinely exceptional.
               </p>
@@ -116,25 +108,21 @@ export default function About() {
                 The result is a collection built entirely on quality. Curated by a team with over a decade of experience in the travel industry who know the difference between a retreat that looks good on a website and one that delivers in person.
               </p>
             </div>
+            <div className="order-first md:order-last">
+              <img
+                src={aboutCheersImg}
+                alt="Friends clinking glasses of white wine in the sunshine after a day of activity"
+                width={800}
+                height={1000}
+                loading="lazy"
+                className="w-full h-[400px] md:h-[560px] object-cover rounded-sm shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Atmospheric image — yoga */}
-      <section className="bg-background">
-        <div className="w-full">
-          <img
-            src={aboutYogaImg}
-            alt="Group practising downward dog yoga poses on mats on an outdoor wooden deck, framed by green foliage"
-            width={1600}
-            height={1000}
-            loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
-          />
-        </div>
-      </section>
 
-      {/* Section 4 — CTA */}
       <section className="section-padding bg-secondary">
         <div className="container-page text-center">
           <h2 className="heading-section text-foreground mb-6">
