@@ -1,42 +1,29 @@
 
+## Plan: About page header + CTA separation
 
-## Redesign Homepage: AI Search as Primary Hero Element
+### 1. Header restructure (`src/pages/About.tsx`, lines 11–17)
+- Change `<h1>` text to **"About Kinturi"**.
+- Add a subheading `<p>` directly below containing the moved text: *"We find the world's best active retreats. You just have to show up."*
+- Style the subheading with a serif/lead treatment that matches the existing aesthetic (e.g. `font-serif text-xl md:text-2xl text-muted-foreground italic max-w-3xl mx-auto`) so it visually reads as a tagline rather than a second headline.
 
-### Overview
-Restructure the homepage hero to position the AI search bar as the centrepiece, add an animated placeholder, insert a new "See It In Action" section, and update Step 1 of How It Works.
+### 2. Separate the CTA from the Newsletter section
+The "Ready to move?" CTA (`bg-primary`) and `NewsletterSignup` (also `bg-primary`) currently bleed together into one giant blue block. Options to fix:
 
-### Changes — `src/pages/Index.tsx` only
+**Chosen approach:** Swap the CTA section's background to the cream/secondary tone so it visually breaks from the blue newsletter block while preserving the existing two-section structure.
+- Section 4 CTA → change `bg-primary` to `bg-secondary` (cream).
+- Update text colours: `text-primary-foreground` → `text-foreground`, and the muted paragraph → `text-muted-foreground`.
+- Update buttons from `variant="hero-outline"` (designed for dark backgrounds) to a light-background variant — `variant="default"` for "Browse Retreats" (primary sage CTA) and `variant="outline"` for "Sign Up to The Kinturi Edit".
+- Newsletter section below remains untouched (still blue), giving a clear cream → blue visual break.
 
-**1. Hero Section Restructure**
-- Change headline to "Describe your dream retreat. Our AI finds it."
-- Change subtitle to "Tell us what you're looking for — we'll find the retreat that fits you perfectly."
-- Reorder elements: headline → subtitle → "✦ AI-powered search" label → search bar → CTA buttons
-- Make search bar wider (`max-w-3xl`), taller (`h-16`), more visually prominent with stronger backdrop blur and border
-- Add a `Sparkles` icon (from lucide-react) to the left inside the search bar, next to the existing `Search` icon on the right
-- Demote CTA buttons: use smaller `size="lg"` or `size="default"`, secondary styling, placed below the search bar
+### Result
+```
+[bg-secondary]  About Kinturi  +  tagline subheading
+[bg-background] The Why
+[image]
+[bg-secondary] Who We Serve
+[bg-background] Built on Quality
+[bg-secondary] Ready to move?  (CTA — now cream)
+[bg-primary]   Newsletter signup (blue)
+```
 
-**2. Animated Placeholder Text**
-- Add a `useEffect` + `useState` that cycles through 4 placeholder strings every 3 seconds
-- Placeholders: the four examples specified
-- Use a controlled placeholder prop on the Input that updates on the interval
-
-**3. "✦ AI-powered search" Label**
-- Small text label directly above the search bar, styled with `text-sm text-primary-foreground/60 tracking-wide`
-
-**4. New "See It In Action" Section**
-- Insert between hero and "Wellness Through Movement" (Intro) section
-- Heading: "Search that actually understands you"
-- Subheading: "Not just keywords — describe your ideal trip and our AI does the rest."
-- Static mockup: a styled input showing "Solo yoga retreat in Europe, warm weather, beginner-friendly" (non-interactive)
-- Below it: 2–3 sample result cards matching existing retreat card styling, each with retreat name, location, and a "Matched because: ..." line in muted text
-
-**5. How It Works — Step 1 Update**
-- Title: "Describe What You Want"
-- Description: "Just tell our AI what you're looking for in plain English — activity type, mood, budget, destination, travel dates. It understands natural language and finds retreats that actually fit you."
-
-### Technical Details
-- All changes in `src/pages/Index.tsx`
-- New lucide-react imports: `Sparkles` (or `Wand2`)
-- Animated placeholder uses `setInterval` in a `useEffect` with cleanup
-- No database or backend changes needed
-
+Two adjacent blue sections become one cream + one blue, cleanly separated.
