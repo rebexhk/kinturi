@@ -160,7 +160,7 @@ export default function Index() {
           <p className="text-body text-lg leading-relaxed whitespace-pre-line">
             Kinturi is for anyone who considers staying active part of the holiday, not a compromise on it. Who find just as much pleasure in a morning hike or well-programmed fitness class as relaxing by the pool or in a long dinner with local wine afterwards.
 
-            Our collection spans the world's best active retreats, adventurous escapes, and fitness-focused holidays: handpicked for the quality of their movement, their settings, and everything that happens after the workout. Great food, quality coaching, beautiful places. Equally suited to solo travellers, couples, and groups of friends who want a holiday that gives something back.
+            Our collection spans the world's best active retreats, adventurous escapes, and fitness-focused holidays: handpicked for the quality of their movement, their settings, and everything that happens after the workout. Great food, quality coaching, beautiful places. Equally suited to solo travellers, couples, and groups of friends who want a holiday that leaves you more energised than when you started.
           </p>
         </div>
       </section>
