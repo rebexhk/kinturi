@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "@/contexts/AdminContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Retreats from "./pages/Retreats";
@@ -34,6 +35,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AdminProvider>
+          <CurrencyProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/retreats" element={<Retreats />} />
@@ -55,6 +57,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </CurrencyProvider>
         </AdminProvider>
       </BrowserRouter>
     </TooltipProvider>
