@@ -80,10 +80,10 @@ export default function Index() {
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in">
           <h1 className="heading-display text-primary-foreground mb-6">
-            Find Your Perfect Active Retreat
+            Find Your Perfect Active Escape
           </h1>
           <p className="text-lg text-primary-foreground/90 mb-10 max-w-2xl mx-auto font-light md:text-2xl">
-            Discover a curated selection of fitness-focused holidays and active escapes worldwide.
+            Discover a curated selection of fitness-focused retreats and active holidays worldwide.
           </p>
 
           {/* CTA buttons */}
