@@ -194,9 +194,9 @@ export default function Index() {
               },
               {
                 step: "03",
-                title: "Book & Go",
+                title: "Reserve Your Spot",
                 description:
-                  "Get in touch to reserve your spot. We'll check availability and handle the details so you can focus on showing up and switching off.",
+                  "We'll check availability and handle all the details for you. You'll usually pay a deposit directly to the retreat host to claim your spot.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
