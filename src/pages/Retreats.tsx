@@ -271,7 +271,7 @@ export default function Retreats() {
                     )}
                     <p className="text-body mb-6 line-clamp-3">{retreat.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="font-serif text-lg text-foreground">{retreat.price}</span>
+                      <span className="font-serif text-lg text-foreground">{convertPriceString(retreat.price, currency, rates)}</span>
                       <Button variant="sage-outline" size="sm" tabIndex={-1}>
                         View Details
                       </Button>

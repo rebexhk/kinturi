@@ -150,7 +150,7 @@ export default function SearchResults() {
                               {match.title}
                             </h3>
                             <p className="text-small mb-3">
-                              {match.location} · {match.duration} · from {match.price}
+                              {match.location} · {match.duration} · from {convertPriceString(match.price, currency, rates)}
                             </p>
                             <p className="text-body text-sm leading-relaxed">{match.reason}</p>
                             <span className="inline-flex items-center text-primary text-sm font-medium mt-4 group-hover:gap-2 transition-all">
