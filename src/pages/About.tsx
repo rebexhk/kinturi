@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import aboutMovementImg from "@/assets/about-movement.jpg";
+import aboutVillaImg from "@/assets/about-villa.jpg";
+import aboutCheersImg from "@/assets/about-cheers.jpg";
 
 export default function About() {
   return (
@@ -49,6 +51,20 @@ export default function About() {
         </div>
       </section>
 
+      {/* Atmospheric image — Tuscan villa */}
+      <section className="bg-background">
+        <div className="w-full">
+          <img
+            src={aboutVillaImg}
+            alt="Aerial view of a stone villa with pool nestled in the rolling hills of the Tuscan countryside"
+            width={1600}
+            height={1000}
+            loading="lazy"
+            className="w-full h-[50vh] md:h-[60vh] object-cover"
+          />
+        </div>
+      </section>
+
       {/* Section 2 — Who We Serve */}
       <section className="section-padding bg-secondary">
         <div className="container-page">
@@ -66,6 +82,20 @@ export default function About() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Atmospheric image — earned rest */}
+      <section className="bg-background">
+        <div className="w-full">
+          <img
+            src={aboutCheersImg}
+            alt="Friends clinking glasses of white wine in the sunshine after a day of activity"
+            width={1600}
+            height={1000}
+            loading="lazy"
+            className="w-full h-[50vh] md:h-[60vh] object-cover"
+          />
         </div>
       </section>
 
