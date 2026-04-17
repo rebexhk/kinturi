@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Search, Sparkles, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 
 interface MatchResult {
   slug: string;
@@ -29,6 +30,7 @@ interface SearchResponse {
 export default function SearchResults() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { currency, rates } = useCurrency();
   const query = searchParams.get("q") || "";
   const [results, setResults] = useState<SearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -150,7 +152,7 @@ export default function SearchResults() {
                               {match.title}
                             </h3>
                             <p className="text-small mb-3">
-                              {match.location} · {match.duration} · from {match.price}
+                              {match.location} · {match.duration} · from {convertPriceString(match.price, currency, rates)}
                             </p>
                             <p className="text-body text-sm leading-relaxed">{match.reason}</p>
                             <span className="inline-flex items-center text-primary text-sm font-medium mt-4 group-hover:gap-2 transition-all">

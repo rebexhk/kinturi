@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewSummary } from "@/components/ReviewSummary";
+import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 import {
   Select,
   SelectContent,
@@ -33,6 +34,7 @@ interface ReviewStats {
 }
 
 export default function Retreats() {
+  const { currency, rates } = useCurrency();
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -271,7 +273,7 @@ export default function Retreats() {
                     )}
                     <p className="text-body mb-6 line-clamp-3">{retreat.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="font-serif text-lg text-foreground">{retreat.price}</span>
+                      <span className="font-serif text-lg text-foreground">{convertPriceString(retreat.price, currency, rates)}</span>
                       <Button variant="sage-outline" size="sm" tabIndex={-1}>
                         View Details
                       </Button>

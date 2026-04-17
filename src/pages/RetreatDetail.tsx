@@ -6,6 +6,7 @@ import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, Chevron
 import { supabase } from "@/integrations/supabase/client";
 import { RetreatReviews } from "@/components/RetreatReviews";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 
 interface RetreatData {
   id: string;
@@ -117,6 +118,7 @@ function DatesSection({ dates }: { dates: { start: string; end: string; availabi
 
 export default function RetreatDetail() {
   const { id } = useParams();
+  const { currency, rates } = useCurrency();
   const [retreat, setRetreat] = useState<RetreatData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -228,7 +230,7 @@ export default function RetreatDetail() {
         <div className="container-page flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-serif text-2xl text-foreground">{retreat.price}</span>
+              <span className="font-serif text-2xl text-foreground">{convertPriceString(retreat.price, currency, rates)}</span>
               <span className="text-muted-foreground">per person</span>
             </div>
             {(retreat as any).accommodation_label && (
@@ -322,7 +324,7 @@ export default function RetreatDetail() {
                           <p className="font-medium text-foreground">{option.type || option.name}</p>
                           {option.description && <p className="text-sm text-muted-foreground">{option.description}</p>}
                         </div>
-                        <span className="font-serif text-lg text-foreground">{option.price}</span>
+                        <span className="font-serif text-lg text-foreground">{convertPriceString(option.price, currency, rates)}</span>
                       </div>
                     ))}
                   </div>
