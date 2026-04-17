@@ -1,7 +1,8 @@
 import { Layout } from "@/components/layout/Layout";
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
+import aboutMovementImg from "@/assets/about-movement.jpg";
 
 export default function About() {
   return (
@@ -9,82 +10,105 @@ export default function About() {
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">
-          <h1 className="heading-display text-foreground mb-6">About Kinturi</h1>
-          <p className="text-body text-lg max-w-2xl mx-auto">
-          </p>
+          <h1 className="heading-display text-foreground mb-6 max-w-4xl mx-auto">
+            We find the world's best active retreats. You just have to show up.
+          </h1>
         </div>
       </section>
 
-      {/* Story */}
+      {/* Section 1 — The Why */}
       <section className="section-padding bg-background">
         <div className="container-page">
           <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-8">Why Kinturi?</h2>
+            <h2 className="heading-section text-foreground mb-8">The Why</h2>
             <div className="space-y-6 text-body text-lg">
+              <p>Kinturi was born out of a simple frustration.</p>
               <p>
-                Kinturi is designed for the kind of holiday-goer that gets bored sitting on a beach for more than 30 minutes. You work hard all year, often sitting behind a desk for hundreds of hours, so when it's time to take a holiday you want to also catch up on your fitness and wellness too. Combining beautiful destinations, quality fitness instruction and world-class cuisine, we're all about enjoying the good things in life (and feeling like you've earnt it!)
+                After years working in the travel industry, it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around silence. And the gap between the two – genuinely exceptional movement experiences in places worth travelling to – was almost impossible to find in one place.
               </p>
-              <p>
-                Every retreat in our collection is hand-picked. We visit, we vet, and we only 
-                list what we'd book ourselves.
-              </p>
+              <p>So we built it.</p>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Values */}
+      {/* Atmospheric image */}
+      <section className="bg-background">
+        <div className="w-full">
+          <img
+            src={aboutMovementImg}
+            alt="Runner on a coastal cliff path at golden hour"
+            width={1600}
+            height={1000}
+            loading="lazy"
+            className="w-full h-[50vh] md:h-[60vh] object-cover"
+          />
+        </div>
+      </section>
+
+      {/* Section 2 — Who We Serve */}
       <section className="section-padding bg-secondary">
         <div className="container-page">
           <div className="max-w-3xl mx-auto">
-            <h2 className="heading-section text-foreground mb-12 text-center">What We Value</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-sage-light rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">🌿</span>
-                </div>
-                <h3 className="font-serif text-xl text-foreground mb-2">Authenticity</h3>
-                <p className="text-small">
-                  We partner with passionate instructors who bring genuine expertise and care to their teaching.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-sage-light rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">✨</span>
-                </div>
-                <h3 className="font-serif text-xl text-foreground mb-2">Quality</h3>
-                <p className="text-small">
-                  Every retreat meets our standards for instruction, accommodation, and overall experience.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-sage-light rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">🤝</span>
-                </div>
-                <h3 className="font-serif text-xl text-foreground mb-2">Connection</h3>
-                <p className="text-small">
-                  We believe in the power of community and the bonds formed through shared practice.
-                </p>
-              </div>
+            <h2 className="heading-section text-foreground mb-8">Who We Serve</h2>
+            <div className="space-y-6 text-body text-lg">
+              <p>
+                Kinturi is for travellers who consider staying active part of the holiday, not a compromise on it.
+              </p>
+              <p>
+                People who pack their trainers without thinking twice. Who find as much pleasure in a well-programmed morning session as in a long lunch with local wine afterwards. Who travel solo, with a partner, or with a group of friends – and want to come home feeling better than when they left.
+              </p>
+              <p>
+                No rigid ideology. No forced spirituality. Just movement, good food, beautiful places, and the kind of rest you actually have to earn.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Section 3 — Value Proposition */}
+      <section className="section-padding bg-background">
+        <div className="container-page">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="heading-section text-foreground mb-8">Built on Quality</h2>
+            <div className="space-y-6 text-body text-lg">
+              <p>
+                Every retreat in the Kinturi collection is personally researched and vetted against one brief: it has to be genuinely exceptional.
+              </p>
+              <p>
+                Not just the fitness programming – the setting, the food, the accommodation, the overall experience. We only list what we'd book ourselves, which means nothing makes it onto this site because it paid to be here or ticked a box on a spreadsheet.
+              </p>
+              <p>
+                The result is a collection built entirely on quality. Curated by someone with years of experience in the travel industry who knows the difference between a retreat that looks good on a website and one that delivers in person.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — CTA */}
       <section className="section-padding bg-primary">
         <div className="container-page text-center">
           <h2 className="heading-section text-primary-foreground mb-6">
-            Ready to Begin?
+            Ready to move?
           </h2>
           <p className="text-lg text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-            Explore our collection of retreats and find the experience that speaks to you.
+            Browse our collection of hand-picked active retreats, or sign up to The Kinturi Edit – our newsletter for new retreats, insider guides, and escapes worth the trip.
           </p>
-          <Button variant="hero-outline" size="lg" asChild>
-            <Link to="/retreats">View Retreats</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button variant="hero-outline" size="lg" asChild>
+              <Link to="/retreats">Browse Retreats</Link>
+            </Button>
+            <Button variant="hero-outline" size="lg" asChild>
+              <a href="#newsletter">Sign Up to The Kinturi Edit</a>
+            </Button>
+          </div>
         </div>
+      </section>
+
+      {/* Newsletter */}
+      <section id="newsletter">
+        <NewsletterSignup />
       </section>
     </Layout>
   );
