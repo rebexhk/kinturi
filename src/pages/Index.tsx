@@ -184,19 +184,19 @@ export default function Index() {
                 step: "01",
                 title: "Describe What You Want",
                 description:
-                  "Just tell our AI what you're looking for in plain English — activity type, mood, budget, destination, travel dates. It understands natural language and finds retreats that actually fit you.",
+                  "Just tell our AI what you're looking for in plain English: activity type, mood, budget, destination, travel dates. It understands natural language and finds retreats that actually fit you.",
               },
               {
                 step: "02",
                 title: "Choose Your Experience",
                 description:
-                  "Filter by activity type, location and duration to find the retreat that fits your goals and schedule.",
+                  "You can also filter by activity type, location and duration to find the retreat that fits your goals and schedule.",
               },
               {
                 step: "03",
                 title: "Book & Go",
                 description:
-                  "Get in touch to reserve your spot. We'll handle the details so you can focus on showing up and switching off.",
+                  "Get in touch to reserve your spot. We'll check availability and handle the details so you can focus on showing up and switching off.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
