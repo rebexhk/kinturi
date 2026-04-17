@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { Settings } from "lucide-react";
+import { useCurrency, type Currency, CURRENCY_SYMBOLS } from "@/contexts/CurrencyContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 const footerLinks = {
   explore: [
     { name: "All Retreats", href: "/retreats" },
@@ -26,6 +28,7 @@ const footerLinks = {
   }]
 };
 export function Footer() {
+  const { currency, setCurrency } = useCurrency();
   return <footer className="bg-secondary border-t border-border">
       <div className="container-page py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
@@ -88,6 +91,21 @@ export function Footer() {
             © {new Date().getFullYear()} Kinturi. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <label htmlFor="currency-select" className="text-small">Currency</label>
+              <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
+                <SelectTrigger id="currency-select" className="h-8 w-[110px] text-small">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(["GBP", "EUR", "USD"] as Currency[]).map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {CURRENCY_SYMBOLS[c]} {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <Link to="/privacy-policy" className="text-small hover:text-foreground transition-colors">
               Privacy Policy
             </Link>
