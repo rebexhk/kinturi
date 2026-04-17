@@ -37,7 +37,7 @@ export default function About() {
         <div className="w-full">
           <img
             src={aboutMovementImg}
-            alt="Two surfers walking along a rocky beach at dusk"
+            alt="Group of hikers with backpacks walking a forest trail toward a rocky peak"
             width={1600}
             height={1000}
             loading="lazy"
