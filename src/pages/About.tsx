@@ -5,6 +5,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import aboutMovementImg from "@/assets/about-movement.jpg";
 import aboutVillaImg from "@/assets/about-villa.jpg";
 import aboutCheersImg from "@/assets/about-cheers.jpg";
+import aboutYogaImg from "@/assets/about-yoga.jpg";
 
 export default function About() {
   return (
@@ -116,6 +117,20 @@ export default function About() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Atmospheric image — yoga */}
+      <section className="bg-background">
+        <div className="w-full">
+          <img
+            src={aboutYogaImg}
+            alt="Group practising downward dog yoga poses on mats on an outdoor wooden deck, framed by green foliage"
+            width={1600}
+            height={1000}
+            loading="lazy"
+            className="w-full h-[50vh] md:h-[60vh] object-cover"
+          />
         </div>
       </section>
 
