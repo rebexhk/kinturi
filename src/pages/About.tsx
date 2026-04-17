@@ -13,7 +13,7 @@ export default function About() {
           <h1 className="heading-display text-foreground mb-6 max-w-4xl mx-auto">
             About Kinturi
           </h1>
-          <p className="font-serif italic text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-body text-lg text-muted-foreground max-w-3xl mx-auto">
             We find the world's best active retreats. You just have to show up.
           </p>
         </div>
