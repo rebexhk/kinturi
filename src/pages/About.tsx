@@ -27,7 +27,7 @@ export default function About() {
             <div className="space-y-6 text-body text-lg">
               <p>Kinturi was born out of a simple frustration.</p>
               <p>
-                After years working in the travel industry, it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around silence. And the gap between the two – genuinely exceptional movement experiences in places worth travelling to – was almost impossible to find in one place.
+                After hours spent searching for the kind of holidays we like (active escapes that don't skimp on quality and setting), it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around silence. And the gap between the two (genuinely exceptional movement experiences in places worth travelling to) was almost impossible to find in one place.
               </p>
               <p>So we built it.</p>
             </div>
@@ -82,7 +82,7 @@ export default function About() {
                 Not just the fitness programming – the setting, the food, the accommodation, the overall experience. We only list what we'd book ourselves, which means nothing makes it onto this site because it paid to be here or ticked a box on a spreadsheet.
               </p>
               <p>
-                The result is a collection built entirely on quality. Curated by someone with years of experience in the travel industry who knows the difference between a retreat that looks good on a website and one that delivers in person.
+                The result is a collection built entirely on quality. Curated by a team with over a decade of experience in the travel industry who know the difference between a retreat that looks good on a website and one that delivers in person.
               </p>
             </div>
           </div>
