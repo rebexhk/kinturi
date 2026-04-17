@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import founderImg from "@/assets/founder-portrait.jpg";
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
