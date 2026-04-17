@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewSummary } from "@/components/ReviewSummary";
+import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 import {
   Select,
   SelectContent,
@@ -33,6 +34,7 @@ interface ReviewStats {
 }
 
 export default function Retreats() {
+  const { currency, rates } = useCurrency();
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();

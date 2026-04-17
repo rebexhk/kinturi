@@ -6,6 +6,7 @@ import { Calendar, MapPin, Clock, Users, Utensils, Bed, Dumbbell, Heart, Chevron
 import { supabase } from "@/integrations/supabase/client";
 import { RetreatReviews } from "@/components/RetreatReviews";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 
 interface RetreatData {
   id: string;
@@ -117,6 +118,7 @@ function DatesSection({ dates }: { dates: { start: string; end: string; availabi
 
 export default function RetreatDetail() {
   const { id } = useParams();
+  const { currency, rates } = useCurrency();
   const [retreat, setRetreat] = useState<RetreatData | null>(null);
   const [loading, setLoading] = useState(true);
 
