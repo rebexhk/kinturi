@@ -27,7 +27,7 @@ export default function About() {
             <div className="space-y-6 text-body text-lg">
               <p>Kinturi was born out of a simple frustration.</p>
               <p>
-                After hours spent searching for the kind of holidays we like (active escapes that don't skimp on quality and setting), it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around silence. And the gap between the two (genuinely exceptional movement experiences in places worth travelling to) was almost impossible to find in one place.
+                After hours spent searching for the kind of holidays we like (active escapes that don't skimp on quality and setting), it became clear that active travellers were being underserved. The retreats that took fitness seriously rarely took the overall experience seriously. The beautiful ones too often defaulted to candles, crystals, and a schedule built around too much silence and calm for our liking. And the gap between the two (genuinely exceptional movement experiences in places worth travelling to) was almost impossible to find in one place.
               </p>
               <p>So we built it.</p>
             </div>
