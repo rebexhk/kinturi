@@ -11,8 +11,11 @@ export default function About() {
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6 max-w-4xl mx-auto">
-            We find the world's best active retreats. You just have to show up.
+            About Kinturi
           </h1>
+          <p className="font-serif italic text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            We find the world's best active retreats. You just have to show up.
+          </p>
         </div>
       </section>
 
@@ -87,19 +90,19 @@ export default function About() {
       </section>
 
       {/* Section 4 — CTA */}
-      <section className="section-padding bg-primary">
+      <section className="section-padding bg-secondary">
         <div className="container-page text-center">
-          <h2 className="heading-section text-primary-foreground mb-6">
+          <h2 className="heading-section text-foreground mb-6">
             Ready to move?
           </h2>
-          <p className="text-lg text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
             Browse our collection of hand-picked active retreats, or sign up to The Kinturi Edit – our newsletter for new retreats, insider guides, and escapes worth the trip.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="hero-outline" size="lg" asChild>
+            <Button variant="default" size="lg" asChild>
               <Link to="/retreats">Browse Retreats</Link>
             </Button>
-            <Button variant="hero-outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild>
               <a href="#newsletter">Sign Up to The Kinturi Edit</a>
             </Button>
           </div>
