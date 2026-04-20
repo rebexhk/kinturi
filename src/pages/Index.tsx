@@ -97,6 +97,23 @@ export default function Index() {
             <Button variant="hero-outline" size="lg" asChild className="text-sm">
               <Link to="/contact">Request to Book</Link>
             </Button>
+            <Button
+              variant="hero-outline"
+              size="lg"
+              asChild
+              className="text-sm"
+            >
+              <a
+                href="#ai-search"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("ai-search")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Ask Our AI
+              </a>
+            </Button>
           </div>
         </div>
 
@@ -106,7 +123,7 @@ export default function Index() {
       </section>
 
       {/* See It In Action Section — live AI search */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section id="ai-search" className="py-16 md:py-24 bg-secondary scroll-mt-24">
         <div className="container-page max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="heading-section text-foreground mb-4 animate-fade-in-up">
