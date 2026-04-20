@@ -38,7 +38,7 @@ interface RetreatForm {
   dining_image_urls: string[];
   dining_image_alts: string[];
   dates: Array<{ start: string; end: string; availability: string }>;
-  instructor: { name: string; bio: string; certifications: string[]; photo_url: string };
+  instructor: { list: Array<{ name: string; bio: string; certifications: string[]; photo_url: string }> };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
@@ -60,7 +60,7 @@ const emptyForm: RetreatForm = {
   gallery_image_urls: [], gallery_image_alts: [],
   accommodation_image_urls: [], accommodation_image_alts: [], accommodation_image_labels: [],
   dining_image_urls: [], dining_image_alts: [],
-  dates: [], instructor: { name: "", bio: "", certifications: [], photo_url: "" },
+  dates: [], instructor: { list: [] },
   accommodation: { description: "", options: [] },
   inclusions: [], not_included: [], kinturi_take: [], menu: { description: "", highlights: [] },
   facilities: [], schedule: [],
@@ -104,7 +104,16 @@ export default function AdminRetreatEditor() {
         country: data.country || (data.location ? data.location.split(",").map((s: string) => s.trim()).pop() || "" : ""),
         type: Array.isArray(data.type) ? data.type : data.type ? [data.type] : [],
         dates: data.dates || [],
-        instructor: data.instructor || emptyForm.instructor,
+        instructor: (() => {
+          const inst = data.instructor;
+          if (inst && Array.isArray(inst.list)) {
+            return { list: inst.list.map((i: any) => ({ name: i?.name || "", bio: i?.bio || "", certifications: Array.isArray(i?.certifications) ? i.certifications : [], photo_url: i?.photo_url || "" })) };
+          }
+          if (inst && (inst.name || inst.bio || inst.photo_url || (Array.isArray(inst.certifications) && inst.certifications.length))) {
+            return { list: [{ name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [], photo_url: inst.photo_url || "" }] };
+          }
+          return { list: [] };
+        })(),
         accommodation: data.accommodation || emptyForm.accommodation,
         inclusions: data.inclusions || [],
         not_included: data.not_included || [],
@@ -326,58 +335,89 @@ export default function AdminRetreatEditor() {
               </FieldGroup>
             </div>
 
-            {/* Instructor */}
+            {/* Instructors */}
             <div className="border border-border rounded-lg p-5 space-y-4">
-              <h3 className="font-medium text-foreground">Instructor</h3>
-              <FieldGroup label="Name">
-                <Input value={form.instructor.name} onChange={(e) => updateField("instructor", { ...form.instructor, name: e.target.value })} />
-              </FieldGroup>
-              <FieldGroup label="Bio">
-                <Textarea value={form.instructor.bio} onChange={(e) => updateField("instructor", { ...form.instructor, bio: e.target.value })} rows={3} />
-              </FieldGroup>
-              <FieldGroup label="Photo">
-                <div className="flex items-center gap-4">
-                  {form.instructor.photo_url && (
-                    <img src={form.instructor.photo_url} alt={form.instructor.name} className="w-16 h-16 rounded-full object-cover" />
-                  )}
-                  <div className="flex-1">
-                    <label className="inline-flex items-center gap-2 px-3 py-2 bg-secondary rounded-md cursor-pointer hover:bg-muted transition-colors text-sm">
-                      <Upload className="w-4 h-4" />
-                      {uploading ? "Uploading..." : "Upload Photo"}
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        disabled={uploading}
-                        onChange={async (e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          setUploading(true);
-                          try {
-                            const ext = file.name.split(".").pop();
-                            const path = `instructors/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-                            const { error } = await supabase.storage.from("retreat-images").upload(path, file);
-                            if (error) throw error;
-                            const { data: urlData } = supabase.storage.from("retreat-images").getPublicUrl(path);
-                            updateField("instructor", { ...form.instructor, photo_url: urlData.publicUrl });
-                            toast.success("Instructor photo uploaded");
-                          } catch (err: any) {
-                            toast.error("Upload failed: " + err.message);
-                          } finally {
-                            setUploading(false);
-                          }
-                        }}
-                      />
-                    </label>
-                    {form.instructor.photo_url && (
-                      <Button variant="ghost" size="sm" className="text-destructive ml-2" onClick={() => updateField("instructor", { ...form.instructor, photo_url: "" })}>
-                        <X className="w-3 h-3 mr-1" /> Remove
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-foreground">Instructors</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => updateField("instructor", { list: [...form.instructor.list, { name: "", bio: "", certifications: [], photo_url: "" }] })}
+                >
+                  <Plus className="w-3 h-3 mr-1" /> Add Instructor
+                </Button>
+              </div>
+              {form.instructor.list.length === 0 && (
+                <p className="text-sm text-muted-foreground">No instructors added yet.</p>
+              )}
+              {form.instructor.list.map((inst, idx) => {
+                const updateInst = (patch: Partial<typeof inst>) => {
+                  const next = form.instructor.list.map((it, i) => (i === idx ? { ...it, ...patch } : it));
+                  updateField("instructor", { list: next });
+                };
+                const removeInst = () => {
+                  updateField("instructor", { list: form.instructor.list.filter((_, i) => i !== idx) });
+                };
+                return (
+                  <div key={idx} className="border border-border rounded-lg p-4 space-y-4 bg-secondary/30">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-muted-foreground">Instructor {idx + 1}</span>
+                      <Button variant="ghost" size="sm" className="text-destructive" onClick={removeInst}>
+                        <Trash2 className="w-3 h-3 mr-1" /> Remove
                       </Button>
-                    )}
+                    </div>
+                    <FieldGroup label="Name">
+                      <Input value={inst.name} onChange={(e) => updateInst({ name: e.target.value })} />
+                    </FieldGroup>
+                    <FieldGroup label="Bio">
+                      <Textarea value={inst.bio} onChange={(e) => updateInst({ bio: e.target.value })} rows={3} />
+                    </FieldGroup>
+                    <FieldGroup label="Photo">
+                      <div className="flex items-center gap-4">
+                        {inst.photo_url && (
+                          <img src={inst.photo_url} alt={inst.name} className="w-16 h-16 rounded-full object-cover" />
+                        )}
+                        <div className="flex-1">
+                          <label className="inline-flex items-center gap-2 px-3 py-2 bg-secondary rounded-md cursor-pointer hover:bg-muted transition-colors text-sm">
+                            <Upload className="w-4 h-4" />
+                            {uploading ? "Uploading..." : "Upload Photo"}
+                            <input
+                              type="file"
+                              className="hidden"
+                              accept="image/*"
+                              disabled={uploading}
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                setUploading(true);
+                                try {
+                                  const ext = file.name.split(".").pop();
+                                  const path = `instructors/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+                                  const { error } = await supabase.storage.from("retreat-images").upload(path, file);
+                                  if (error) throw error;
+                                  const { data: urlData } = supabase.storage.from("retreat-images").getPublicUrl(path);
+                                  updateInst({ photo_url: urlData.publicUrl });
+                                  toast.success("Instructor photo uploaded");
+                                } catch (err: any) {
+                                  toast.error("Upload failed: " + err.message);
+                                } finally {
+                                  setUploading(false);
+                                }
+                              }}
+                            />
+                          </label>
+                          {inst.photo_url && (
+                            <Button variant="ghost" size="sm" className="text-destructive ml-2" onClick={() => updateInst({ photo_url: "" })}>
+                              <X className="w-3 h-3 mr-1" /> Remove
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </FieldGroup>
+                    <ListEditor label="Certifications" items={inst.certifications} onChange={(items) => updateInst({ certifications: items })} />
                   </div>
-                </div>
-              </FieldGroup>
-              <ListEditor label="Certifications" items={form.instructor.certifications} onChange={(items) => updateField("instructor", { ...form.instructor, certifications: items })} />
+                );
+              })}
             </div>
           </TabsContent>
 
