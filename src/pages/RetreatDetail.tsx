@@ -387,7 +387,7 @@ export default function RetreatDetail() {
               {/* Schedule */}
               {retreat.schedule.length > 0 && (
                 <div>
-                  <h2 className="heading-section text-foreground mb-6">Sample Daily Schedule</h2>
+                  <h2 className="heading-section text-foreground mb-6">Sample Schedule</h2>
                   {(() => {
                     const first = retreat.schedule[0] as any;
                     // Nested format: [{day, activities: [{time, activity}]}]
