@@ -342,21 +342,22 @@ export default function AdminRetreatEditor() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => updateField("instructor", { list: [...form.instructor.list, { name: "", bio: "", certifications: [], photo_url: "" }] })}
+                  onClick={() => updateField("instructor", { list: [...(form.instructor?.list || []), { name: "", bio: "", certifications: [], photo_url: "" }] })}
                 >
                   <Plus className="w-3 h-3 mr-1" /> Add Instructor
                 </Button>
               </div>
-              {form.instructor.list.length === 0 && (
+              {(form.instructor?.list || []).length === 0 && (
                 <p className="text-sm text-muted-foreground">No instructors added yet.</p>
               )}
-              {form.instructor.list.map((inst, idx) => {
+              {(form.instructor?.list || []).map((inst, idx) => {
+                const list = form.instructor?.list || [];
                 const updateInst = (patch: Partial<typeof inst>) => {
-                  const next = form.instructor.list.map((it, i) => (i === idx ? { ...it, ...patch } : it));
+                  const next = list.map((it, i) => (i === idx ? { ...it, ...patch } : it));
                   updateField("instructor", { list: next });
                 };
                 const removeInst = () => {
-                  updateField("instructor", { list: form.instructor.list.filter((_, i) => i !== idx) });
+                  updateField("instructor", { list: list.filter((_, i) => i !== idx) });
                 };
                 return (
                   <div key={idx} className="border border-border rounded-lg p-4 space-y-4 bg-secondary/30">
