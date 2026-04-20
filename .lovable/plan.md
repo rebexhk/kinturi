@@ -1,29 +1,45 @@
 
-## Plan: About page header + CTA separation
 
-### 1. Header restructure (`src/pages/About.tsx`, lines 11–17)
-- Change `<h1>` text to **"About Kinturi"**.
-- Add a subheading `<p>` directly below containing the moved text: *"We find the world's best active retreats. You just have to show up."*
-- Style the subheading with a serif/lead treatment that matches the existing aesthetic (e.g. `font-serif text-xl md:text-2xl text-muted-foreground italic max-w-3xl mx-auto`) so it visually reads as a tagline rather than a second headline.
+## Hero CTA redesign — better visual hierarchy
 
-### 2. Separate the CTA from the Newsletter section
-The "Ready to move?" CTA (`bg-primary`) and `NewsletterSignup` (also `bg-primary`) currently bleed together into one giant blue block. Options to fix:
+You're right — three buttons with one filled and two outlined reads as arbitrary. Here are three options; I'd recommend **Option A**.
 
-**Chosen approach:** Swap the CTA section's background to the cream/secondary tone so it visually breaks from the blue newsletter block while preserving the existing two-section structure.
-- Section 4 CTA → change `bg-primary` to `bg-secondary` (cream).
-- Update text colours: `text-primary-foreground` → `text-foreground`, and the muted paragraph → `text-muted-foreground`.
-- Update buttons from `variant="hero-outline"` (designed for dark backgrounds) to a light-background variant — `variant="default"` for "Browse Retreats" (primary sage CTA) and `variant="outline"` for "Sign Up to The Kinturi Edit".
-- Newsletter section below remains untouched (still blue), giving a clear cream → blue visual break.
+### Option A (recommended): Two equal CTAs + AI as a text link below
 
-### Result
-```
-[bg-secondary]  About Kinturi  +  tagline subheading
-[bg-background] The Why
-[image]
-[bg-secondary] Who We Serve
-[bg-background] Built on Quality
-[bg-secondary] Ready to move?  (CTA — now cream)
-[bg-primary]   Newsletter signup (blue)
+Treat "Explore Retreats" and "Request to Book" as the two real actions, and demote "Ask Our AI" to a tertiary inline link with a sparkle icon — visually separated, clearly different in role.
+
+```text
+[ Explore Retreats → ]   [ Request to Book ]
+
+         ✨ Or ask our AI to find it for you
 ```
 
-Two adjacent blue sections become one cream + one blue, cleanly separated.
+- Both buttons same size, "Explore Retreats" filled (primary), "Request to Book" outlined (secondary).
+- Below, centred: a small underlined text link (`text-primary-foreground/90`, hover underline) with the Sparkles icon — feels like a helpful nudge, not a third competing CTA.
+
+### Option B: AI as the hero, browse options as text links
+
+If AI search is the differentiator, lead with it:
+
+```text
+        [ ✨ Ask Our AI ]
+
+  Browse all retreats  ·  Request to book
+```
+
+- One filled primary button for AI.
+- Two underlined text links underneath separated by a dot.
+
+### Option C: Pill-grouped trio
+
+Keep three buttons but visually unify them inside a single rounded translucent "pill" container so they read as one segmented control rather than three loose buttons. Less recommended — busier and less premium.
+
+### Implementation (Option A)
+
+In `src/pages/Index.tsx` (lines 90–117), replace the CTA block with:
+
+- Flex row of two `Button`s ("Explore Retreats" `variant="hero"`, "Request to Book" `variant="hero-outline"`).
+- Below, a centred `<button>` (not `Button` component) styled as `inline-flex items-center gap-2 mt-6 text-sm text-primary-foreground/80 hover:text-primary-foreground underline underline-offset-4 decoration-primary-foreground/40 hover:decoration-primary-foreground transition` with the Sparkles icon and text *"Or ask our AI to find it for you"*. Click handler smooth-scrolls to `#ai-search` (same as current).
+
+No other files change.
+
