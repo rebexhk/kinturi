@@ -87,33 +87,28 @@ export default function Index() {
           </p>
 
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button variant="hero" size="lg" asChild className="text-sm">
-              <Link to="/retreats">
-                Explore Retreats
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="hero-outline" size="lg" asChild className="text-sm">
-              <Link to="/contact">Request to Book</Link>
-            </Button>
-            <Button
-              variant="hero-outline"
-              size="lg"
-              asChild
-              className="text-sm"
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button variant="hero" size="lg" asChild className="text-sm">
+                <Link to="/retreats">
+                  Explore Retreats
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button variant="hero-outline" size="lg" asChild className="text-sm">
+                <Link to="/contact">Request to Book</Link>
+              </Button>
+            </div>
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("ai-search")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="inline-flex items-center gap-2 text-sm text-primary-foreground/80 hover:text-primary-foreground underline underline-offset-4 decoration-primary-foreground/40 hover:decoration-primary-foreground transition"
             >
-              <a
-                href="#ai-search"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById("ai-search")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Ask Our AI
-              </a>
-            </Button>
+              <Sparkles className="h-4 w-4" />
+              Or ask our AI to find it for you
+            </button>
           </div>
         </div>
 
