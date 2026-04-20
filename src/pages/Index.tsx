@@ -110,6 +110,7 @@ export default function Index() {
               Or ask our AI to find it for you
             </button>
           </div>
+        </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in-delay-2">
           <ChevronDown className="h-6 w-6 text-primary-foreground/60 animate-bounce" />
