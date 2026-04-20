@@ -1,45 +1,28 @@
 
 
-## Hero CTA redesign — better visual hierarchy
+## Fix Newsletter Subscribe button contrast
 
-You're right — three buttons with one filled and two outlined reads as arbitrary. Here are three options; I'd recommend **Option A**.
+**Problem:** In `src/components/NewsletterSignup.tsx`, the section background is `bg-primary` (sage green) and the Subscribe button uses `variant="hero"` — which is also sage-toned, making the button nearly invisible against the background.
 
-### Option A (recommended): Two equal CTAs + AI as a text link below
+**Fix:** Change the Subscribe button to use a high-contrast cream/light fill against the sage background, so it pops as the clear call-to-action.
 
-Treat "Explore Retreats" and "Request to Book" as the two real actions, and demote "Ask Our AI" to a tertiary inline link with a sparkle icon — visually separated, clearly different in role.
+### Change
 
-```text
-[ Explore Retreats → ]   [ Request to Book ]
+In `src/components/NewsletterSignup.tsx` (the `<Button>` inside the form):
 
-         ✨ Or ask our AI to find it for you
+- Remove `variant="hero"`.
+- Use the default button with explicit overrides: cream background, charcoal text, subtle hover darken.
+- Keep the loader and arrow icon behaviour identical.
+
+```tsx
+<Button
+  type="submit"
+  disabled={loading}
+  className="shrink-0 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+>
+  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (<>Subscribe <ArrowRight className="ml-2 h-4 w-4" /></>)}
+</Button>
 ```
 
-- Both buttons same size, "Explore Retreats" filled (primary), "Request to Book" outlined (secondary).
-- Below, centred: a small underlined text link (`text-primary-foreground/90`, hover underline) with the Sparkles icon — feels like a helpful nudge, not a third competing CTA.
-
-### Option B: AI as the hero, browse options as text links
-
-If AI search is the differentiator, lead with it:
-
-```text
-        [ ✨ Ask Our AI ]
-
-  Browse all retreats  ·  Request to book
-```
-
-- One filled primary button for AI.
-- Two underlined text links underneath separated by a dot.
-
-### Option C: Pill-grouped trio
-
-Keep three buttons but visually unify them inside a single rounded translucent "pill" container so they read as one segmented control rather than three loose buttons. Less recommended — busier and less premium.
-
-### Implementation (Option A)
-
-In `src/pages/Index.tsx` (lines 90–117), replace the CTA block with:
-
-- Flex row of two `Button`s ("Explore Retreats" `variant="hero"`, "Request to Book" `variant="hero-outline"`).
-- Below, a centred `<button>` (not `Button` component) styled as `inline-flex items-center gap-2 mt-6 text-sm text-primary-foreground/80 hover:text-primary-foreground underline underline-offset-4 decoration-primary-foreground/40 hover:decoration-primary-foreground transition` with the Sparkles icon and text *"Or ask our AI to find it for you"*. Click handler smooth-scrolls to `#ai-search` (same as current).
-
-No other files change.
+This gives a cream button with charcoal/sage text on the sage section — strong contrast, on-brand, no other files touched.
 
