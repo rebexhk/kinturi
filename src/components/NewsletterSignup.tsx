@@ -55,8 +55,7 @@ export function NewsletterSignup() {
           <Button
             type="submit"
             disabled={loading}
-            variant="hero"
-            className="shrink-0"
+            className="shrink-0 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
