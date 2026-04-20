@@ -29,7 +29,7 @@ interface RetreatData {
   group_size: string | null;
   level: string | null;
   dates: Array<{ start: string; end: string; availability: string }>;
-  instructor: { name: string; bio: string; certifications: string[]; photo_url?: string };
+  instructor: { list: Array<{ name: string; bio: string; certifications: string[]; photo_url?: string }> };
   accommodation: { description: string; options: Array<{ type: string; description: string; price: string }> };
   inclusions: string[];
   not_included: string[];
@@ -148,7 +148,14 @@ export default function RetreatDetail() {
           dining_image_urls: (data as any).dining_image_urls || [],
           dining_image_alts: (data as any).dining_image_alts || [],
           dates: Array.isArray(data.dates) ? data.dates as any : [],
-          instructor: { name: inst.name || "", bio: inst.bio || "", certifications: Array.isArray(inst.certifications) ? inst.certifications : [], photo_url: inst.photo_url || "" },
+          instructor: (() => {
+            const normalize = (i: any) => ({ name: i?.name || "", bio: i?.bio || "", certifications: Array.isArray(i?.certifications) ? i.certifications : [], photo_url: i?.photo_url || "" });
+            if (inst && Array.isArray(inst.list)) return { list: inst.list.map(normalize) };
+            if (inst && (inst.name || inst.bio || inst.photo_url || (Array.isArray(inst.certifications) && inst.certifications.length))) {
+              return { list: [normalize(inst)] };
+            }
+            return { list: [] };
+          })(),
           accommodation: { description: accom.description || "", options: Array.isArray(accom.options) ? accom.options : [] },
           inclusions: data.inclusions || [],
           not_included: data.not_included || [],
@@ -276,34 +283,45 @@ export default function RetreatDetail() {
                 </div>
               )}
 
-              {/* Instructor */}
-              {retreat.instructor.name && (
-                <div>
-                  <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
-                    <Heart className="w-6 h-6 text-primary" />Your Instructor
-                  </h2>
-                  <div className="bg-secondary rounded-lg p-6">
-                    <div className="flex items-start gap-5">
-                      {retreat.instructor.photo_url && (
-                        <img
-                          src={retreat.instructor.photo_url}
-                          alt={retreat.instructor.name}
-                          className="w-20 h-20 rounded-full object-cover flex-shrink-0"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <h3 className="font-serif text-xl text-foreground mb-3">{retreat.instructor.name}</h3>
-                        <p className="text-body mb-4">{retreat.instructor.bio}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {retreat.instructor.certifications.map((cert, index) => (
-                        <span key={index} className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">{cert}</span>
+              {/* Instructors */}
+              {(() => {
+                const instructors = (retreat.instructor.list || []).filter((i) => i.name);
+                if (instructors.length === 0) return null;
+                return (
+                  <div>
+                    <h2 className="heading-section text-foreground mb-6 flex items-center gap-3">
+                      <Heart className="w-6 h-6 text-primary" />
+                      {instructors.length > 1 ? "Your Instructors" : "Your Instructor"}
+                    </h2>
+                    <div className="space-y-4">
+                      {instructors.map((inst, idx) => (
+                        <div key={idx} className="bg-secondary rounded-lg p-6">
+                          <div className="flex items-start gap-5">
+                            {inst.photo_url && (
+                              <img
+                                src={inst.photo_url}
+                                alt={inst.name}
+                                className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+                              />
+                            )}
+                            <div className="flex-1">
+                              <h3 className="font-serif text-xl text-foreground mb-3">{inst.name}</h3>
+                              {inst.bio && <p className="text-body mb-4">{inst.bio}</p>}
+                              {inst.certifications.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                  {inst.certifications.map((cert, i) => (
+                                    <span key={i} className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">{cert}</span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       ))}
-                      </div>
-                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Accommodation */}
               {retreat.accommodation.description && (
