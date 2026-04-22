@@ -1,52 +1,34 @@
 
+## Move homepage intro copy to About page
 
-## Multiple instructors per retreat
+### Goal
+Take the full homepage intro section beginning with **“Recharge Through Movement”** and the two paragraphs beneath it, remove it from the homepage, and insert it on the **About** page directly under the page title/subtitle and before the existing “The Why” section.
 
-Support multiple instructor bios on a retreat, both in the admin editor and on the public detail page. Backwards-compatible with the existing single-instructor JSONB field — no schema migration required.
+### Files to update
 
-### Data model
+#### 1) `src/pages/Index.tsx`
+- Remove the current **Intro Section** block:
+  - heading: `Recharge Through Movement`
+  - the two paragraphs below it
+- Keep the surrounding section flow intact so **How It Works** follows directly after the AI search section.
+- Review top/bottom spacing after removal so the transition into **How It Works** still feels balanced.
 
-The `retreats.instructor` column is already `jsonb`. We'll start storing an array of instructor objects in a sibling key on the same column, and read either shape:
+#### 2) `src/pages/About.tsx`
+- Add a new intro section immediately below the existing header section (`About Kinturi` + subtitle).
+- Reuse the exact homepage copy:
+  - `Recharge Through Movement`
+  - both existing paragraphs unchanged
+- Style it to match the About page rhythm:
+  - centred layout
+  - constrained width similar to the homepage intro
+  - spacing that bridges naturally into the existing “The Why” content below
+- Place it above the current first content section (`The Why`).
 
-```jsonc
-// New shape (preferred)
-{ "list": [
-    { "name": "...", "bio": "...", "certifications": [...], "photo_url": "..." },
-    { "name": "...", "bio": "...", "certifications": [...], "photo_url": "..." }
-] }
+### Content handling
+- Move the copy rather than rewriting it, so wording stays consistent across the site.
+- Since this is static page content, no database or backend changes are required.
 
-// Legacy shape (still read)
-{ "name": "...", "bio": "...", "certifications": [...], "photo_url": "..." }
-```
-
-On load (admin + public) we normalise into an array. On save we always write the new `{ list: [...] }` shape. No DB migration, no edge function changes (the existing `admin-retreats` PUT/POST already passes `instructor` through unchanged).
-
-### Admin editor — `src/pages/AdminRetreatEditor.tsx`
-
-- Change `RetreatForm.instructor` type to `{ list: Array<{ name; bio; certifications; photo_url }> }`.
-- Update `emptyForm` and `loadRetreat` normaliser: if loaded `instructor` has `list`, use it; else if it has a `name`, wrap the single object into `{ list: [single] }`; else `{ list: [] }`.
-- Replace the single "Instructor" card with a repeatable section labelled **"Instructors"**:
-  - Header row with **Add Instructor** button.
-  - Each instructor rendered as its own bordered card with: Name, Bio, Photo (upload + remove, same logic as today, scoped to that index), Certifications (`ListEditor`), and a **Remove** button (trash icon) per card.
-  - Helper functions `updateInstructor(index, patch)`, `addInstructor()`, `removeInstructor(index)` operating on `form.instructor.list`.
-- Photo upload handler reused per-card; `path` prefix stays `instructors/`.
-
-### Public detail page — `src/pages/RetreatDetail.tsx`
-
-- Change `RetreatData.instructor` to `{ list: Array<{ name; bio; certifications: string[]; photo_url?: string }> }`.
-- In the fetch normaliser, accept both shapes and produce `{ list: [...] }`.
-- Render section heading dynamically: **"Your Instructor"** if one, **"Your Instructors"** if multiple.
-- Replace the single instructor card with a `space-y-4` stack — one card per instructor using the existing card layout (photo left, name/bio/certifications right). Section is hidden when `list` is empty or all entries lack a name.
-
-### Backwards compatibility
-
-- Existing retreats with the legacy single-object `instructor` continue to display correctly (read as a 1-item list).
-- First save after editing will rewrite that retreat into the new `{ list: [...] }` shape — transparent to the user.
-- AI search edge function (`ai-retreat-search`) and any other consumers don't reference instructor fields, so no other changes needed.
-
-### Out of scope
-
-- No DB migration.
-- No CSV import changes (instructor isn't part of the CSV schema today).
-- Layout for >3 instructors uses the same vertical stack (sufficient for realistic counts; can revisit if needed).
-
+### Expected result
+- Homepage becomes tighter: hero → AI search → How It Works.
+- About page gets stronger brand framing near the top, before the founder/story content.
+- No functional changes, only page content placement and spacing adjustments.
