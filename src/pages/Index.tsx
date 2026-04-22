@@ -163,23 +163,8 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Intro Section */}
-      <section className="pt-16 md:pt-24 pb-8 md:pb-10 bg-background">
-        <div className="container-page text-center max-w-3xl mx-auto">
-          <h2 className="heading-section text-foreground mb-6 animate-fade-in-up">
-            Recharge Through Movement
-          </h2>
-          <p className="text-body text-lg leading-relaxed">
-            Kinturi is for anyone who considers staying active part of the holiday, not a compromise on it. Who find just as much pleasure in a morning hike or well-programmed fitness class as relaxing by the pool or in a long dinner with local wine afterwards.
-          </p>
-          <p className="text-body text-lg leading-relaxed mt-6">
-            Our collection spans the world's best active retreats, adventurous escapes, and fitness-focused holidays: handpicked for the quality of their movement, their settings, and everything that happens after the workout. Great food, quality coaching, beautiful places. Equally suited to solo travellers, couples, and groups of friends who want a holiday that leaves you more energised than when you started.
-          </p>
-        </div>
-      </section>
-
       {/* How It Works */}
-      <section className="pt-8 md:pt-10 pb-12 md:pb-16 bg-background">
+      <section className="pt-16 md:pt-24 pb-12 md:pb-16 bg-background">
         <div className="container-page">
           <div className="text-center mb-16">
             <h2 className="heading-section text-foreground mb-4 animate-fade-in-up">
