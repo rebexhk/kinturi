@@ -43,28 +43,45 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-small max-w-xs">Discover a curated selection of fitness-focused holidays and active escapes in beautiful destinations.</p>
-            <p className="mt-4 text-small max-w-xs">
-              Sign up for{" "}
-              <Link
-                to="/#newsletter"
-                onClick={(e) => {
-                  if (window.location.pathname === "/") {
-                    e.preventDefault();
-                    document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="underline underline-offset-2 hover:text-foreground transition-colors"
-              >
-                The Kinturi Edit
-              </Link>
-              {" "}— our newsletter for active escapes.
-            </p>
           </div>
 
           {/* Explore */}
           <div>
             <h4 className="font-sans text-sm font-medium text-foreground tracking-wide uppercase mb-4">
               Explore
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.explore.map(link => <li key={link.name}>
+                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
+                    {link.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-sans text-sm font-medium text-foreground tracking-wide uppercase mb-4">
+              Company
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map(link => <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    onClick={(e) => {
+                      if (link.href === "/#newsletter" && window.location.pathname === "/") {
+                        e.preventDefault();
+                        document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="text-small hover:text-foreground transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
             </h4>
             <ul className="space-y-3">
               {footerLinks.explore.map(link => <li key={link.name}>
