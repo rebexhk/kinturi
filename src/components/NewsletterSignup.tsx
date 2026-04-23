@@ -38,10 +38,10 @@ export function NewsletterSignup() {
     <section className="section-padding bg-primary shadow-none">
       <div className="container-page text-center max-w-xl mx-auto">
         <h2 className="font-serif text-2xl text-primary-foreground mb-3 font-normal shadow-none md:text-2xl">
-          The best active escapes, straight to your inbox
+          Sign up for The Kinturi Edit
         </h2>
         <p className="text-primary-foreground/80 text-sm mb-8">
-          Be the first to hear about new retreats, exclusive offers, and travel inspiration.
+          The best active escapes, straight to your inbox. Be the first to hear about new retreats, exclusive offers, and travel inspiration.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
           <Input
