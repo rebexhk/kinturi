@@ -82,30 +82,6 @@ export function Footer() {
             </ul>
           </div>
 
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.explore.map(link => <li key={link.name}>
-                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
-                    {link.name}
-                  </Link>
-                </li>)}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="font-sans text-sm font-medium text-foreground tracking-wide uppercase mb-4">
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map(link => <li key={link.name}>
-                  <Link to={link.href} className="text-small hover:text-foreground transition-colors">
-                    {link.name}
-                  </Link>
-                </li>)}
-            </ul>
-          </div>
-
           {/* For Hosts */}
           <div>
             <h4 className="font-sans text-sm font-medium text-foreground tracking-wide uppercase mb-4">
