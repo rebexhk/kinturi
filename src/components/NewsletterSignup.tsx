@@ -35,7 +35,7 @@ export function NewsletterSignup() {
   };
 
   return (
-    <section className="section-padding bg-primary shadow-none">
+    <section id="newsletter" className="section-padding bg-primary shadow-none">
       <div className="container-page text-center max-w-xl mx-auto">
         <h2 className="font-serif text-2xl text-primary-foreground mb-3 font-normal shadow-none md:text-2xl">
           Sign up for The Kinturi Edit
