@@ -21,6 +21,9 @@ const footerLinks = {
   }, {
     name: "Contact",
     href: "/contact"
+  }, {
+    name: "The Kinturi Edit Newsletter",
+    href: "/#newsletter"
   }],
   hosts: [{
     name: "Contact",
