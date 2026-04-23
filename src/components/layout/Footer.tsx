@@ -42,7 +42,16 @@ export function Footer() {
             <p className="mt-4 text-small max-w-xs">Discover a curated selection of fitness-focused holidays and active escapes in beautiful destinations.</p>
             <p className="mt-4 text-small max-w-xs">
               Sign up for{" "}
-              <Link to="/#newsletter" className="underline underline-offset-2 hover:text-foreground transition-colors">
+              <Link
+                to="/#newsletter"
+                onClick={(e) => {
+                  if (window.location.pathname === "/") {
+                    e.preventDefault();
+                    document.getElementById("newsletter")?.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="underline underline-offset-2 hover:text-foreground transition-colors"
+              >
                 The Kinturi Edit
               </Link>
               {" "}— our newsletter for active escapes.
