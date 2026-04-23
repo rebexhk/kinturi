@@ -1,34 +1,30 @@
 
-## Move homepage intro copy to About page
 
-### Goal
-Take the full homepage intro section beginning with **“Recharge Through Movement”** and the two paragraphs beneath it, remove it from the homepage, and insert it on the **About** page directly under the page title/subtitle and before the existing “The Why” section.
+## Add CTA below "How It Works"
 
-### Files to update
+Add a centred call-to-action block at the bottom of the "How It Works" section on the homepage, giving users a clear next step after reading the three-step process.
 
-#### 1) `src/pages/Index.tsx`
-- Remove the current **Intro Section** block:
-  - heading: `Recharge Through Movement`
-  - the two paragraphs below it
-- Keep the surrounding section flow intact so **How It Works** follows directly after the AI search section.
-- Review top/bottom spacing after removal so the transition into **How It Works** still feels balanced.
+### Suggested CTA — recommended option
 
-#### 2) `src/pages/About.tsx`
-- Add a new intro section immediately below the existing header section (`About Kinturi` + subtitle).
-- Reuse the exact homepage copy:
-  - `Recharge Through Movement`
-  - both existing paragraphs unchanged
-- Style it to match the About page rhythm:
-  - centred layout
-  - constrained width similar to the homepage intro
-  - spacing that bridges naturally into the existing “The Why” content below
-- Place it above the current first content section (`The Why`).
+**Heading:** *Ready to find your retreat?*
+**Subtext:** *Browse our curated collection or let our AI match you with the perfect active escape.*
+**Buttons (side by side):**
+- Primary (sage): **Browse Retreats** → `/retreats`
+- Secondary (sage-outline): **Try AI Search** → scrolls back to the AI search section on the homepage (anchor) — gives users two clear paths matching steps 01 and 02.
 
-### Content handling
-- Move the copy rather than rewriting it, so wording stays consistent across the site.
-- Since this is static page content, no database or backend changes are required.
+### Alternative angles (pick one if you prefer)
+1. **Partner-focused:** *"Run retreats? List with Kinturi"* → `/list-retreat` — useful if driving organiser sign-ups matters more than guest conversion at this point in the page.
+2. **Single-button simplicity:** Just *"Explore All Retreats"* → `/retreats` — cleaner, less decision fatigue.
 
-### Expected result
-- Homepage becomes tighter: hero → AI search → How It Works.
-- About page gets stronger brand framing near the top, before the founder/story content.
-- No functional changes, only page content placement and spacing adjustments.
+My recommendation is the **dual-button guest CTA** — it reinforces the two discovery paths just described in steps 01–02 and keeps the homepage focused on the primary audience (travellers, not hosts). The partner CTA is already covered in the footer and header.
+
+### Implementation
+- **File:** `src/pages/Index.tsx`
+- Insert a new block inside the `How It Works` section, after the 3-column grid (around line 260), before the closing `</div></section>`.
+- Layout: `mt-16 text-center` wrapper, heading using `heading-section` (smaller scale, e.g. `font-serif text-3xl`), supporting paragraph in `text-body`, then a flex row of two `Button` components (`variant="sage"` and `variant="sage-outline"`, `size="lg"`), stacked on mobile (`flex-col sm:flex-row gap-4 justify-center`).
+- Use `Link` from `react-router-dom` (already imported) for the primary button via `asChild`. Secondary button uses an anchor link `#ai-search` (will require adding `id="ai-search"` to the existing AI search section wrapper).
+
+### Out of scope
+- No copy changes to the three steps themselves.
+- No new sections or backend work.
+
