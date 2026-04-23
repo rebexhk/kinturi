@@ -1,30 +1,25 @@
 
 
-## Add CTA below "How It Works"
+## Add "The Kinturi Edit" reference to the footer (Option A)
 
-Add a centred call-to-action block at the bottom of the "How It Works" section on the homepage, giving users a clear next step after reading the three-step process.
+Add a small branded line in the footer mentioning the newsletter, linking to the homepage signup section.
 
-### Suggested CTA — recommended option
+### Files to update
 
-**Heading:** *Ready to find your retreat?*
-**Subtext:** *Browse our curated collection or let our AI match you with the perfect active escape.*
-**Buttons (side by side):**
-- Primary (sage): **Browse Retreats** → `/retreats`
-- Secondary (sage-outline): **Try AI Search** → scrolls back to the AI search section on the homepage (anchor) — gives users two clear paths matching steps 01 and 02.
+#### 1) `src/components/NewsletterSignup.tsx`
+- Add `id="newsletter"` to the `<section>` wrapper so the footer link can deep-link to it.
 
-### Alternative angles (pick one if you prefer)
-1. **Partner-focused:** *"Run retreats? List with Kinturi"* → `/list-retreat` — useful if driving organiser sign-ups matters more than guest conversion at this point in the page.
-2. **Single-button simplicity:** Just *"Explore All Retreats"* → `/retreats` — cleaner, less decision fatigue.
-
-My recommendation is the **dual-button guest CTA** — it reinforces the two discovery paths just described in steps 01–02 and keeps the homepage focused on the primary audience (travellers, not hosts). The partner CTA is already covered in the footer and header.
-
-### Implementation
-- **File:** `src/pages/Index.tsx`
-- Insert a new block inside the `How It Works` section, after the 3-column grid (around line 260), before the closing `</div></section>`.
-- Layout: `mt-16 text-center` wrapper, heading using `heading-section` (smaller scale, e.g. `font-serif text-3xl`), supporting paragraph in `text-body`, then a flex row of two `Button` components (`variant="sage"` and `variant="sage-outline"`, `size="lg"`), stacked on mobile (`flex-col sm:flex-row gap-4 justify-center`).
-- Use `Link` from `react-router-dom` (already imported) for the primary button via `asChild`. Secondary button uses an anchor link `#ai-search` (will require adding `id="ai-search"` to the existing AI search section wrapper).
+#### 2) `src/components/layout/Footer.tsx`
+- Add a single small line under the existing brand/tagline area in the footer's left column:
+  *"Sign up for **The Kinturi Edit** — our newsletter for active escapes."*
+- "The Kinturi Edit" is a `Link` to `/#newsletter`, styled with a subtle underline matching other footer links.
+- Style: small muted text consistent with existing footer typography.
 
 ### Out of scope
-- No copy changes to the three steps themselves.
-- No new sections or backend work.
+- No new database, edge function, or backend changes.
+- No changes to the homepage signup copy.
+- No restructuring of the footer's existing column layout.
+
+### Expected result
+"The Kinturi Edit" gains a third visible touchpoint (homepage section + About page + footer mention), with the footer link smooth-scrolling to the signup section on the homepage.
 
