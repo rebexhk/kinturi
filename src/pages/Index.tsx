@@ -163,8 +163,57 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Featured Retreats */}
+      {featuredRetreats.length > 0 && (
+        <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-background">
+          <div className="container-page">
+            <div className="text-center mb-12">
+              <h2 className="heading-section text-foreground mb-4">Featured Retreats</h2>
+              <p className="text-body">Handpicked experiences for your journey</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredRetreats.map(retreat => (
+                <Link key={retreat.id} to={`/retreats/${retreat.slug}`} className="group block bg-background rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={retreat.hero_image_url || heroImage}
+                      alt={retreat.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <span className="text-xs tracking-wide uppercase text-primary font-medium">
+                      {(retreat.type || []).join(" · ")}
+                    </span>
+                    <h3 className="heading-card text-foreground mt-2 mb-2 group-hover:text-primary transition-colors">
+                      {retreat.title}
+                    </h3>
+                    <p className="text-small mb-1">
+                      {retreat.location} · {retreat.duration}
+                    </p>
+                    {reviewStats[retreat.id] && (
+                      <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Button variant="sage-outline" size="lg" asChild>
+                <Link to="/retreats">
+                  View All Retreats
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* How It Works */}
-      <section className="pt-16 md:pt-24 pb-12 md:pb-16 bg-background">
+      <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-secondary">
         <div className="container-page">
           <div className="text-center mb-16">
             <h2 className="heading-section text-foreground mb-4 animate-fade-in-up">
@@ -211,55 +260,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      {/* Featured Retreats */}
-      {featuredRetreats.length > 0 && (
-        <section className="pt-12 md:pt-16 pb-16 md:pb-24 bg-secondary">
-          <div className="container-page">
-            <div className="text-center mb-12">
-              <h2 className="heading-section text-foreground mb-4">Featured Retreats</h2>
-              <p className="text-body">Handpicked experiences for your journey</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredRetreats.map(retreat => (
-                <Link key={retreat.id} to={`/retreats/${retreat.slug}`} className="group block bg-background rounded-lg overflow-hidden shadow-soft hover:shadow-hover transition-all duration-300">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img
-                      src={retreat.hero_image_url || heroImage}
-                      alt={retreat.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-xs tracking-wide uppercase text-primary font-medium">
-                      {(retreat.type || []).join(" · ")}
-                    </span>
-                    <h3 className="heading-card text-foreground mt-2 mb-2 group-hover:text-primary transition-colors">
-                      {retreat.title}
-                    </h3>
-                    <p className="text-small mb-1">
-                      {retreat.location} · {retreat.duration}
-                    </p>
-                    {reviewStats[retreat.id] && (
-                      <ReviewSummary avgRating={reviewStats[retreat.id].avg} count={reviewStats[retreat.id].count} />
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <Button variant="sage-outline" size="lg" asChild>
-                <Link to="/retreats">
-                  View All Retreats
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Newsletter Signup */}
       <NewsletterSignup />
