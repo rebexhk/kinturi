@@ -258,6 +258,30 @@ export default function Index() {
               </div>
             ))}
           </div>
+
+          {/* CTA */}
+          <div className="mt-16 text-center max-w-2xl mx-auto">
+            <h3 className="font-serif text-3xl text-foreground mb-4">
+              Ready to find your retreat?
+            </h3>
+            <p className="text-body text-lg mb-8">
+              Browse our curated collection or let our AI match you with the perfect active escape.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild variant="sage" size="lg">
+                <Link to="/retreats">Browse Retreats</Link>
+              </Button>
+              <Button
+                variant="sage-outline"
+                size="lg"
+                onClick={() =>
+                  document.getElementById("ai-search")?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                Try AI Search
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
