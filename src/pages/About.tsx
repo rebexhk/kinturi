@@ -113,7 +113,7 @@ export default function About() {
             <div className="space-y-6 text-body text-lg">
               <h2 className="heading-section text-foreground mb-4">Built on Quality</h2>
               <p>
-                Every retreat in the Kinturi collection is personally researched and vetted.
+                Every retreat in the Kinturi collection is personally researched and vetted, and it must pass our exceptional standards.
               </p>
               <p>
                 Not just the fitness programming, but also the setting, the food, the accommodation, the overall experience. We only list what we'd book ourselves, which means nothing makes it onto this site because it paid to be here or ticked a box on a spreadsheet.
