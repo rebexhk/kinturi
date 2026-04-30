@@ -116,7 +116,7 @@ export default function About() {
                 Every retreat in the Kinturi collection is personally researched and vetted, and it must pass our exceptional standards.
               </p>
               <p>
-                Not just the fitness programming, but also the setting, the food, the accommodation, the overall experience. We only list what we'd book ourselves, which means nothing makes it onto this site because it paid to be here or ticked a box on a spreadsheet.
+                Not just the fitness programming, but also the setting, the food, the accommodation, and the overall experience. We only list what we'd book ourselves, which means nothing makes it onto this site because it paid to be here or ticked a box on a spreadsheet.
               </p>
               <p>
                 The result is a collection built entirely on quality. Curated by a team with over a decade of experience in the travel industry who know the difference between a retreat that looks good on a website and one that delivers in person.
