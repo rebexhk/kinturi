@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReviewSummary } from "@/components/ReviewSummary";
+import { FAQSection } from "@/components/FAQSection";
 import { useCurrency, convertPriceString } from "@/contexts/CurrencyContext";
 import {
   Select,
@@ -297,6 +298,9 @@ export default function Retreats() {
           </Button>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQSection schemaId="faq-jsonld-retreats" />
     </Layout>
   );
 }

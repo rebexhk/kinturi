@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, ChevronDown, Search, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ReviewSummary } from "@/components/ReviewSummary";
-import { FAQSection } from "@/components/FAQSection";
+
 import heroImage from "@/assets/hero-cover.jpg";
 
 interface FeaturedRetreat {
