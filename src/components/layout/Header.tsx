@@ -36,10 +36,10 @@ export function Header({ transparent = false }: HeaderProps) {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-[background-color,box-shadow] duration-300 ease-out",
         isTransparentNow
-          ? "bg-transparent"
-          : "bg-background/95 backdrop-blur-sm border-b border-border"
+          ? "bg-transparent shadow-none"
+          : "bg-background shadow-[0_1px_12px_rgba(0,0,0,0.05)]"
       )}
     >
       <nav className="container-page flex items-center justify-between py-4 lg:py-5">
@@ -90,7 +90,7 @@ export function Header({ transparent = false }: HeaderProps) {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-background border-b border-border">
+        <div className="lg:hidden bg-background shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
           <div className="container-page py-4 space-y-3">
             {navigation.map((item) => (
               <Link
