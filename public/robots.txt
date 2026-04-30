@@ -72,4 +72,4 @@ Allow: /
 User-agent: Amazonbot
 Allow: /
 
-Sitemap: https://kinturi.lovable.app/sitemap.xml
+Sitemap: https://yyggthzfbsiqlyunwzas.supabase.co/functions/v1/sitemap
