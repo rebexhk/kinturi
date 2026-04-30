@@ -286,9 +286,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <FAQSection schemaId="faq-jsonld-home" />
-
       {/* Newsletter Signup */}
       <NewsletterSignup />
 
