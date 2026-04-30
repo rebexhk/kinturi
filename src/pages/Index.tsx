@@ -213,6 +213,9 @@ export default function Index() {
         </section>
       )}
 
+      {/* FAQ */}
+      <FAQSection schemaId="faq-jsonld-home" />
+
       {/* How It Works */}
       <section className="pt-16 md:pt-24 pb-16 md:pb-24 bg-secondary">
         <div className="container-page">
@@ -285,9 +288,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      {/* FAQ */}
-      <FAQSection schemaId="faq-jsonld-home" />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />
