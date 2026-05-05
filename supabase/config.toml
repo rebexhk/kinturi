@@ -15,6 +15,9 @@ verify_jwt = false
 [functions.admin-newsletter-unsubscribe]
 verify_jwt = false
 
+[functions.admin-newsletter]
+verify_jwt = false
+
 [functions.ai-retreat-search]
 verify_jwt = false
 
