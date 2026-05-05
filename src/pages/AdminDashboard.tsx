@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, LogOut, Edit, Trash2, Eye, EyeOff, MessageSquare, Upload, X } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
+import { SubscribersAdmin } from "@/components/admin/SubscribersAdmin";
 
 interface RetreatListItem {
   id: string;
@@ -210,9 +211,10 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs defaultValue="retreats" className="space-y-6">
-          <TabsList className="grid grid-cols-2 w-64">
+          <TabsList className="grid grid-cols-3 w-[28rem]">
             <TabsTrigger value="retreats">Retreats</TabsTrigger>
             <TabsTrigger value="blog">Blog</TabsTrigger>
+            <TabsTrigger value="subscribers">Subscribers</TabsTrigger>
           </TabsList>
 
           {/* RETREATS TAB */}
@@ -368,6 +370,11 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* SUBSCRIBERS TAB */}
+          <TabsContent value="subscribers">
+            <SubscribersAdmin />
           </TabsContent>
         </Tabs>
       </div>
