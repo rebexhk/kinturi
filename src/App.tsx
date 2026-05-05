@@ -23,6 +23,7 @@ import AdminReviews from "./pages/AdminReviews";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import Unsubscribe from "./pages/Unsubscribe";
+import EmailUnsubscribe from "./pages/EmailUnsubscribe";
 import SearchResults from "./pages/SearchResults";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-conditions" element={<TermsConditions />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="/email-unsubscribe" element={<EmailUnsubscribe />} />
             <Route path="/search-results" element={<SearchResults />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
