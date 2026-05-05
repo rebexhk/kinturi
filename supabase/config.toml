@@ -1,28 +1,23 @@
 project_id = "yyggthzfbsiqlyunwzas"
 
-[functions.admin-auth]
-verify_jwt = false
-
-[functions.admin-retreats]
-verify_jwt = false
-
-[functions.admin-blog]
-verify_jwt = false
-
-[functions.admin-reviews]
-verify_jwt = false
-
-[functions.admin-newsletter-unsubscribe]
-verify_jwt = false
-
-[functions.admin-newsletter]
-verify_jwt = false
-
-[functions.ai-retreat-search]
-verify_jwt = false
-
-[functions.sitemap]
-verify_jwt = false
-
-[functions.process-email-queue]
-verify_jwt = true
+[functions]
+  [functions.admin-auth]
+    verify_jwt = false
+  [functions.admin-blog]
+    verify_jwt = false
+  [functions.admin-newsletter]
+    verify_jwt = false
+  [functions.admin-newsletter-unsubscribe]
+    verify_jwt = false
+  [functions.admin-retreats]
+    verify_jwt = false
+  [functions.admin-reviews]
+    verify_jwt = false
+  [functions.ai-retreat-search]
+    verify_jwt = false
+  [functions.auth-email-hook]
+    verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true
+  [functions.sitemap]
+    verify_jwt = false
