@@ -143,82 +143,110 @@ function FloatingAddButton({ editor }: FloatingAddButtonProps) {
     }
   };
 
-  if (!position) return null;
+  const ctaDialog = (
+    <CtaButtonDialog
+      open={ctaOpen}
+      onOpenChange={setCtaOpen}
+      onInsert={(label, url) => {
+        const safeLabel = label.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeUrl = url.replace(/"/g, "&quot;");
+        const html = `<p><a class="blog-cta-button" href="${safeUrl}">${safeLabel}</a></p><p></p>`;
+        editor.chain().focus().insertContent(html).run();
+        setOpen(false);
+      }}
+    />
+  );
+
+  if (!position) {
+    return ctaDialog;
+  }
 
   return (
-    <div
-      ref={menuRef}
-      className="absolute z-10"
-      style={{ top: position.top, left: position.left }}
-    >
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className={cn(
-          "w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all",
-          open
-            ? "bg-primary text-primary-foreground rotate-45 border-primary"
-            : "bg-card text-muted-foreground hover:text-foreground hover:border-foreground/40"
-        )}
+    <>
+      {ctaDialog}
+      <div
+        ref={menuRef}
+        className="absolute z-10"
+        style={{ top: position.top, left: position.left }}
       >
-        <Plus className="w-4 h-4" />
-      </button>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className={cn(
+            "w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all",
+            open
+              ? "bg-primary text-primary-foreground rotate-45 border-primary"
+              : "bg-card text-muted-foreground hover:text-foreground hover:border-foreground/40"
+          )}
+        >
+          <Plus className="w-4 h-4" />
+        </button>
 
-      {open && (
-        <div className="absolute left-9 top-0 bg-card border border-border rounded-lg shadow-lg py-1 flex gap-0.5 px-1 animate-in fade-in-0 zoom-in-95">
-          <ToolbarButton
-            title="Image"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <ImageIcon className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Divider"
-            onClick={() => {
-              editor.chain().focus().setHorizontalRule().run();
-              setOpen(false);
-            }}
-          >
-            <Minus className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Blockquote"
-            onClick={() => {
-              editor.chain().focus().toggleBlockquote().run();
-              setOpen(false);
-            }}
-          >
-            <Quote className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Bullet List"
-            onClick={() => {
-              editor.chain().focus().toggleBulletList().run();
-              setOpen(false);
-            }}
-          >
-            <List className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Numbered List"
-            onClick={() => {
-              editor.chain().focus().toggleOrderedList().run();
-              setOpen(false);
-            }}
-          >
-            <ListOrdered className="w-4 h-4" />
-          </ToolbarButton>
-        </div>
-      )}
+        {open && (
+          <div className="absolute left-9 top-0 bg-card border border-border rounded-lg shadow-lg py-1 flex gap-0.5 px-1 animate-in fade-in-0 zoom-in-95">
+            <ToolbarButton
+              title="CTA button"
+              onClick={() => {
+                setCtaOpen(true);
+                setOpen(false);
+              }}
+            >
+              <MousePointerClick className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Image"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <ImageIcon className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Divider"
+              onClick={() => {
+                editor.chain().focus().setHorizontalRule().run();
+                setOpen(false);
+              }}
+            >
+              <Minus className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Blockquote"
+              onClick={() => {
+                editor.chain().focus().toggleBlockquote().run();
+                setOpen(false);
+              }}
+            >
+              <Quote className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Bullet List"
+              onClick={() => {
+                editor.chain().focus().toggleBulletList().run();
+                setOpen(false);
+              }}
+            >
+              <List className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Numbered List"
+              onClick={() => {
+                editor.chain().focus().toggleOrderedList().run();
+                setOpen(false);
+              }}
+            >
+              <ListOrdered className="w-4 h-4" />
+            </ToolbarButton>
+          </div>
+        )}
 
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        ref={fileInputRef}
-        onChange={handleImageUpload}
-      />
-    </div>
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleImageUpload}
+        />
+      </div>
+    </>
   );
 }
 
