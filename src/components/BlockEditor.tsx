@@ -8,11 +8,12 @@ import Underline from "@tiptap/extension-underline";
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   Heading1, Heading2, Heading3, Quote, List, ListOrdered,
-  Minus, Image as ImageIcon, Plus, Type,
+  Minus, Image as ImageIcon, Plus, Type, MousePointerClick,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { CtaButtonDialog } from "./blog/CtaButtonDialog";
 
 // Legacy block types for migration
 export type BlockType = "heading1" | "heading2" | "heading3" | "paragraph" | "image" | "quote" | "list" | "divider";
