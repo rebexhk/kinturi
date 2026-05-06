@@ -1,0 +1,1 @@
+ALTER TABLE public.blog_posts ADD COLUMN IF NOT EXISTS related_retreat_ids uuid[] NOT NULL DEFAULT '{}'::uuid[];
