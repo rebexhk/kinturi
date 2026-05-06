@@ -127,6 +127,9 @@ export default function BlogPost() {
               )}
             </div>
           </article>
+
+          {/* Related retreats */}
+          <RelatedRetreats ids={(post as any).related_retreat_ids || []} />
         </>
       )}
     </Layout>
