@@ -276,6 +276,11 @@ export default function BlockEditor({ blocks, onChange, value, onChangeHtml }: B
         placeholder: "Start writing… Press Enter for a new line, or click + to add images & more",
       }),
       Underline,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        HTMLAttributes: { rel: "noopener noreferrer" },
+      }),
     ],
     content: initialContent,
     editorProps: {
