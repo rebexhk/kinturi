@@ -277,9 +277,10 @@ export default function AdminBlogEditor() {
 
       <div className="max-w-4xl mx-auto px-6 py-8">
         <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-4 w-full">
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="media">Media</TabsTrigger>
+            <TabsTrigger value="related">Related</TabsTrigger>
             <TabsTrigger value="seo">SEO</TabsTrigger>
           </TabsList>
 
