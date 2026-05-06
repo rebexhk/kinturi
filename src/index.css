@@ -267,3 +267,42 @@
   margin: 1rem auto;
   display: block;
 }
+
+/* Inline CTA button used inside blog content (editor + public post) */
+.tiptap a.blog-cta-button,
+.prose a.blog-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem 0;
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 2px 8px hsl(var(--accent) / 0.25);
+}
+.tiptap a.blog-cta-button::after,
+.prose a.blog-cta-button::after {
+  content: "→";
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.tiptap a.blog-cta-button:hover,
+.prose a.blog-cta-button:hover {
+  background-color: hsl(var(--accent) / 0.9);
+  box-shadow: 0 4px 14px hsl(var(--accent) / 0.35);
+}
+.prose a.blog-cta-button:hover::after {
+  transform: translateX(3px);
+}
+/* Centre CTAs that sit alone in their paragraph on the public post */
+.prose p:has(> a.blog-cta-button:only-child) {
+  text-align: center;
+  margin: 1.75rem 0;
+}

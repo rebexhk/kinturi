@@ -13,6 +13,7 @@ import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import BlockEditor from "@/components/BlockEditor";
+import { RelatedRetreatsPicker } from "@/components/blog/RelatedRetreatsPicker";
 
 interface BlogForm {
   title: string;
@@ -30,6 +31,7 @@ interface BlogForm {
   seo_description: string;
   seo_keywords: string[];
   published_at: string;
+  related_retreat_ids: string[];
 }
 
 const emptyForm: BlogForm = {
@@ -38,6 +40,7 @@ const emptyForm: BlogForm = {
   author: "", category: "", tags: [],
   seo_title: "", seo_description: "", seo_keywords: [],
   published_at: "",
+  related_retreat_ids: [],
 };
 
 function slugify(text: string) {
@@ -275,9 +278,10 @@ export default function AdminBlogEditor() {
 
       <div className="max-w-4xl mx-auto px-6 py-8">
         <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-4 w-full">
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="media">Media</TabsTrigger>
+            <TabsTrigger value="related">Related</TabsTrigger>
             <TabsTrigger value="seo">SEO</TabsTrigger>
           </TabsList>
 
@@ -346,6 +350,21 @@ export default function AdminBlogEditor() {
                 <Input value={form.hero_image_alt} onChange={(e) => updateField("hero_image_alt", e.target.value)} placeholder="Descriptive alt text for SEO" />
               </FieldGroup>
             </div>
+          </TabsContent>
+
+          {/* RELATED TAB */}
+          <TabsContent value="related" className="space-y-6">
+            <div className="border border-border rounded-lg p-5 space-y-2">
+              <h3 className="font-medium text-foreground">Related retreats</h3>
+              <p className="text-sm text-muted-foreground">
+                Add up to 3 retreats to feature as cards at the bottom of this post.
+              </p>
+            </div>
+            <RelatedRetreatsPicker
+              selectedIds={form.related_retreat_ids}
+              onChange={(ids) => updateField("related_retreat_ids", ids)}
+              max={3}
+            />
           </TabsContent>
 
           {/* SEO TAB */}

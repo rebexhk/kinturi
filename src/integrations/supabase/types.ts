@@ -26,6 +26,7 @@ export type Database = {
           hero_image_url: string | null
           id: string
           published_at: string | null
+          related_retreat_ids: string[]
           seo_description: string | null
           seo_keywords: string[] | null
           seo_title: string | null
@@ -46,6 +47,7 @@ export type Database = {
           hero_image_url?: string | null
           id?: string
           published_at?: string | null
+          related_retreat_ids?: string[]
           seo_description?: string | null
           seo_keywords?: string[] | null
           seo_title?: string | null
@@ -66,6 +68,7 @@ export type Database = {
           hero_image_url?: string | null
           id?: string
           published_at?: string | null
+          related_retreat_ids?: string[]
           seo_description?: string | null
           seo_keywords?: string[] | null
           seo_title?: string | null

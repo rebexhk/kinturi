@@ -5,14 +5,16 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   Heading1, Heading2, Heading3, Quote, List, ListOrdered,
-  Minus, Image as ImageIcon, Plus, Type,
+  Minus, Image as ImageIcon, Plus, Type, MousePointerClick,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { CtaButtonDialog } from "./blog/CtaButtonDialog";
 
 // Legacy block types for migration
 export type BlockType = "heading1" | "heading2" | "heading3" | "paragraph" | "image" | "quote" | "list" | "divider";
@@ -78,6 +80,7 @@ function FloatingAddButton({ editor }: FloatingAddButtonProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [ctaOpen, setCtaOpen] = useState(false);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -141,82 +144,110 @@ function FloatingAddButton({ editor }: FloatingAddButtonProps) {
     }
   };
 
-  if (!position) return null;
+  const ctaDialog = (
+    <CtaButtonDialog
+      open={ctaOpen}
+      onOpenChange={setCtaOpen}
+      onInsert={(label, url) => {
+        const safeLabel = label.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeUrl = url.replace(/"/g, "&quot;");
+        const html = `<p><a class="blog-cta-button" href="${safeUrl}">${safeLabel}</a></p><p></p>`;
+        editor.chain().focus().insertContent(html).run();
+        setOpen(false);
+      }}
+    />
+  );
+
+  if (!position) {
+    return ctaDialog;
+  }
 
   return (
-    <div
-      ref={menuRef}
-      className="absolute z-10"
-      style={{ top: position.top, left: position.left }}
-    >
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className={cn(
-          "w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all",
-          open
-            ? "bg-primary text-primary-foreground rotate-45 border-primary"
-            : "bg-card text-muted-foreground hover:text-foreground hover:border-foreground/40"
-        )}
+    <>
+      {ctaDialog}
+      <div
+        ref={menuRef}
+        className="absolute z-10"
+        style={{ top: position.top, left: position.left }}
       >
-        <Plus className="w-4 h-4" />
-      </button>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className={cn(
+            "w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all",
+            open
+              ? "bg-primary text-primary-foreground rotate-45 border-primary"
+              : "bg-card text-muted-foreground hover:text-foreground hover:border-foreground/40"
+          )}
+        >
+          <Plus className="w-4 h-4" />
+        </button>
 
-      {open && (
-        <div className="absolute left-9 top-0 bg-card border border-border rounded-lg shadow-lg py-1 flex gap-0.5 px-1 animate-in fade-in-0 zoom-in-95">
-          <ToolbarButton
-            title="Image"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <ImageIcon className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Divider"
-            onClick={() => {
-              editor.chain().focus().setHorizontalRule().run();
-              setOpen(false);
-            }}
-          >
-            <Minus className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Blockquote"
-            onClick={() => {
-              editor.chain().focus().toggleBlockquote().run();
-              setOpen(false);
-            }}
-          >
-            <Quote className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Bullet List"
-            onClick={() => {
-              editor.chain().focus().toggleBulletList().run();
-              setOpen(false);
-            }}
-          >
-            <List className="w-4 h-4" />
-          </ToolbarButton>
-          <ToolbarButton
-            title="Numbered List"
-            onClick={() => {
-              editor.chain().focus().toggleOrderedList().run();
-              setOpen(false);
-            }}
-          >
-            <ListOrdered className="w-4 h-4" />
-          </ToolbarButton>
-        </div>
-      )}
+        {open && (
+          <div className="absolute left-9 top-0 bg-card border border-border rounded-lg shadow-lg py-1 flex gap-0.5 px-1 animate-in fade-in-0 zoom-in-95">
+            <ToolbarButton
+              title="CTA button"
+              onClick={() => {
+                setCtaOpen(true);
+                setOpen(false);
+              }}
+            >
+              <MousePointerClick className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Image"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <ImageIcon className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Divider"
+              onClick={() => {
+                editor.chain().focus().setHorizontalRule().run();
+                setOpen(false);
+              }}
+            >
+              <Minus className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Blockquote"
+              onClick={() => {
+                editor.chain().focus().toggleBlockquote().run();
+                setOpen(false);
+              }}
+            >
+              <Quote className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Bullet List"
+              onClick={() => {
+                editor.chain().focus().toggleBulletList().run();
+                setOpen(false);
+              }}
+            >
+              <List className="w-4 h-4" />
+            </ToolbarButton>
+            <ToolbarButton
+              title="Numbered List"
+              onClick={() => {
+                editor.chain().focus().toggleOrderedList().run();
+                setOpen(false);
+              }}
+            >
+              <ListOrdered className="w-4 h-4" />
+            </ToolbarButton>
+          </div>
+        )}
 
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        ref={fileInputRef}
-        onChange={handleImageUpload}
-      />
-    </div>
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleImageUpload}
+        />
+      </div>
+    </>
   );
 }
 
@@ -245,6 +276,22 @@ export default function BlockEditor({ blocks, onChange, value, onChangeHtml }: B
         placeholder: "Start writing… Press Enter for a new line, or click + to add images & more",
       }),
       Underline,
+      Link.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            class: {
+              default: null,
+              parseHTML: (el) => el.getAttribute("class"),
+              renderHTML: (attrs) => (attrs.class ? { class: attrs.class } : {}),
+            },
+          };
+        },
+      }).configure({
+        openOnClick: false,
+        autolink: true,
+        HTMLAttributes: { rel: "noopener noreferrer" },
+      }),
     ],
     content: initialContent,
     editorProps: {
