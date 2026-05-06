@@ -79,6 +79,7 @@ function FloatingAddButton({ editor }: FloatingAddButtonProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [ctaOpen, setCtaOpen] = useState(false);
 
   useEffect(() => {
     const updatePosition = () => {
