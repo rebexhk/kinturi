@@ -1,43 +1,40 @@
-# Add proper CTAs to blog posts
+## Retrofit "The Core Escape: Top 3 Reformer Pilates Retreats in Europe for 2026"
 
-Right now blog content is just rich text — any "View this retreat" is a plain hyperlink. To make CTAs feel like actual buttons/cards, we'll add **two** complementary tools so you have flexibility per post.
+I checked your 4 existing posts and your 12 published retreats. Only the Reformer Pilates post directly references retreats from your catalogue. Here's what overlaps:
 
-## 1. Inline CTA button (in the editor)
+| Post mentions | Matching retreat in your DB |
+|---|---|
+| #1 Ibiza "Explore Pilates & Wellness" | None |
+| #2 Euphoria, Mystras Greece | None |
+| #3 OM Academy, Porto | None |
+| **#4 Azulfit Surya, Fuerteventura** | **Azulfit Yoga & Pilates Retreat** ✅ |
 
-A new toolbar action in the blog editor: **"Insert CTA button"**.
+The other three posts (Solo Retreats 2026, Find the Right Active Retreat, What to Expect on Your First Active Retreat) are evergreen/general — they don't name specific retreats, so retro-fitting CTAs there would feel forced. Better to leave those and add CTAs when you write retreat-specific posts.
 
-- Opens a small dialogue: **Button label** + **Link URL** (with a quick "Link to a retreat" picker that searches your retreats and inserts the correct `/retreats/{slug}` URL).
-- Inserts a styled button block into the article body — terracotta accent, rounded, centred, with arrow icon. Matches site button style.
-- Renders identically on the live blog post.
-- Use case: drop a "View this retreat →" button mid-article, or a "Browse all yoga retreats" CTA after a section.
+### Changes to the Reformer post
 
-Technically: a custom TipTap node that serialises to a semantic `<a class="blog-cta-button" href="…">…</a>`, styled via `src/index.css` so it survives `dangerouslySetInnerHTML` rendering on the public post.
+1. **Inline CTA button** under the Azulfit (#4) section — terracotta pill labelled **"View the Azulfit Retreat"** linking to `/retreats/azulfit-yoga-pilates-fuerteventura-spain`.
 
-## 2. "Related retreats" picker (per post)
+2. **Final CTA button** at the bottom (after "Ready to Find Your Flow?") — labelled **"Browse All Pilates Retreats"** linking to `/retreats?type=Pilates` (or whichever filter param matches your listing — I'll verify before inserting).
 
-A new section in the blog editor sidebar: **Related retreats**.
+3. **Related Retreats** at the foot of the post — set `related_retreat_ids` to:
+   - Azulfit Yoga & Pilates Retreat (Fuerteventura)
+   - Shanti-Som Pilates Retreat (Marbella)
+   - Alaya Yoga & Wine Retreat (Barcelona) — closest "European Pilates-adjacent" third option
 
-- Multi-select from your existing retreats (search + add, max 3).
-- Stored as a `related_retreat_ids` array on the `blog_posts` row.
-- Auto-renders at the **bottom of the published post** as a "Continue exploring" block: small retreat cards (image, name, location, "View retreat →" button), styled to match the rest of the site.
-- Zero effort per post once selected — no need to write the CTA copy.
+This gives the post one in-context button, one closing button, and a 3-card "Continue exploring" strip — without inventing CTAs for retreats you don't actually list.
 
-## Where things change
+### How
 
-```text
-DB        → blog_posts: + related_retreat_ids uuid[] (nullable)
-Editor    → AdminBlogEditor.tsx: new "Related retreats" picker
-Editor    → BlockEditor.tsx: new CTA-button toolbar action + node
-Public    → BlogPost.tsx: render related-retreats card grid below article
-Styles    → index.css: .blog-cta-button styling (terracotta, rounded)
-```
+- Update the `content` JSONB of the Reformer post to insert two `<a class="blog-cta-button">…</a>` anchors at the right positions.
+- Update `related_retreat_ids` on that row with the three retreat UUIDs.
 
-## Notes
+Both done via a single SQL migration. No code changes needed — the rendering and styles are already in place from the previous build.
 
-- All copy in British English (memory rule).
-- CTA buttons use the existing terracotta accent; cards use sage hover state — consistent with the rest of the site.
-- Old posts keep working unchanged; both features are optional per post.
+### Want me to swap any of this?
 
-## What I'll need from you after build
+- Different label wording on either button?
+- Different third related retreat (or only show 2)?
+- Also add a closing CTA to the three evergreen posts pointing to `/retreats` generally?
 
-Nothing immediately — once it's live, open any post in the admin, try the **Insert CTA button** toolbar option, and pick 1–3 related retreats from the new sidebar section. I can also retro-fit one existing post as a demo if you tell me which.
+Approve and I'll run the migration.
