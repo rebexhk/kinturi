@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft } from "lucide-react";
+import { RelatedRetreats } from "@/components/blog/RelatedRetreats";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
