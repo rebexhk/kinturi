@@ -352,6 +352,21 @@ export default function AdminBlogEditor() {
             </div>
           </TabsContent>
 
+          {/* RELATED TAB */}
+          <TabsContent value="related" className="space-y-6">
+            <div className="border border-border rounded-lg p-5 space-y-2">
+              <h3 className="font-medium text-foreground">Related retreats</h3>
+              <p className="text-sm text-muted-foreground">
+                Add up to 3 retreats to feature as cards at the bottom of this post.
+              </p>
+            </div>
+            <RelatedRetreatsPicker
+              selectedIds={form.related_retreat_ids}
+              onChange={(ids) => updateField("related_retreat_ids", ids)}
+              max={3}
+            />
+          </TabsContent>
+
           {/* SEO TAB */}
           <TabsContent value="seo" className="space-y-6">
             <FieldGroup label="SEO Title">
