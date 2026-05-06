@@ -276,7 +276,18 @@ export default function BlockEditor({ blocks, onChange, value, onChangeHtml }: B
         placeholder: "Start writing… Press Enter for a new line, or click + to add images & more",
       }),
       Underline,
-      Link.configure({
+      Link.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            class: {
+              default: null,
+              parseHTML: (el) => el.getAttribute("class"),
+              renderHTML: (attrs) => (attrs.class ? { class: attrs.class } : {}),
+            },
+          };
+        },
+      }).configure({
         openOnClick: false,
         autolink: true,
         HTMLAttributes: { rel: "noopener noreferrer" },
