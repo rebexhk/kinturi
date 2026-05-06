@@ -30,6 +30,7 @@ interface BlogForm {
   seo_description: string;
   seo_keywords: string[];
   published_at: string;
+  related_retreat_ids: string[];
 }
 
 const emptyForm: BlogForm = {
@@ -38,6 +39,7 @@ const emptyForm: BlogForm = {
   author: "", category: "", tags: [],
   seo_title: "", seo_description: "", seo_keywords: [],
   published_at: "",
+  related_retreat_ids: [],
 };
 
 function slugify(text: string) {
