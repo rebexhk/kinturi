@@ -13,6 +13,7 @@ import { ChevronLeft, Save, Upload, X, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import BlockEditor from "@/components/BlockEditor";
+import { RelatedRetreatsPicker } from "@/components/blog/RelatedRetreatsPicker";
 
 interface BlogForm {
   title: string;
