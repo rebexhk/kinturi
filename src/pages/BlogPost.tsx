@@ -44,17 +44,18 @@ export default function BlogPost() {
             <meta name="robots" content="noindex" />
           </Helmet>
           <div className="pt-32 pb-16">
-          <div className="container-page max-w-3xl">
-            <Skeleton className="h-8 w-64 mb-4" />
-            <Skeleton className="h-12 w-full mb-6" />
-            <Skeleton className="aspect-[16/9] w-full rounded-lg mb-8" />
-            <div className="space-y-4">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-5/6" />
-              <Skeleton className="h-4 w-4/6" />
+            <div className="container-page max-w-3xl">
+              <Skeleton className="h-8 w-64 mb-4" />
+              <Skeleton className="h-12 w-full mb-6" />
+              <Skeleton className="aspect-[16/9] w-full rounded-lg mb-8" />
+              <div className="space-y-4">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-4/6" />
+              </div>
             </div>
           </div>
-        </div>
+        </>
       ) : error || !post ? (
         <>
           <Helmet>
@@ -62,13 +63,14 @@ export default function BlogPost() {
             <meta name="robots" content="noindex" />
           </Helmet>
           <div className="pt-32 pb-16 text-center">
-          <div className="container-page">
-            <h1 className="heading-display text-foreground mb-4">Post not found</h1>
-            <Link to="/blog" className="text-primary hover:underline">
-              ← Back to Journal
-            </Link>
+            <div className="container-page">
+              <h1 className="heading-display text-foreground mb-4">Post not found</h1>
+              <Link to="/blog" className="text-primary hover:underline">
+                ← Back to Journal
+              </Link>
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <>
           <Helmet>
