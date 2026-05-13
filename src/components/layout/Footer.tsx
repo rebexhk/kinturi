@@ -43,6 +43,32 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-small max-w-xs">Discover a curated selection of fitness-focused holidays and active escapes in beautiful destinations.</p>
+            <div className="mt-4 flex items-center gap-3">
+              {/* Instagram placeholder */}
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <circle cx="12" cy="12" r="5" />
+                  <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* Explore */}
