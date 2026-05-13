@@ -68,6 +68,30 @@ export function Footer() {
                   <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
                 </svg>
               </a>
+              {/* Pinterest placeholder */}
+              <a
+                href="https://pinterest.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pinterest"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M8 12c0-2.8 1.8-5 4-5s4 2.2 4 5c0 2.2-1.8 4-4 4" />
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M9 22l1.5-6" />
+                </svg>
+              </a>
             </div>
           </div>
 
