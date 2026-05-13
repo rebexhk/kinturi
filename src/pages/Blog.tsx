@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -29,6 +30,14 @@ export default function Blog() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Kinturi Blog — Active Escape Guides &amp; Inspiration</title>
+        <meta name="description" content="Expert guides, retreat reviews, and inspiration for your next fitness holiday. Discover the best active escapes around the world." />
+        <link rel="canonical" href="https://kinturi.lovable.app/blog" />
+        <meta property="og:title" content="Kinturi Blog — Active Escape Guides &amp; Inspiration" />
+        <meta property="og:description" content="Expert guides, retreat reviews, and inspiration for your next fitness holiday. Discover the best active escapes around the world." />
+        <meta property="og:url" content="https://kinturi.lovable.app/blog" />
+      </Helmet>
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">
           <h1 className="heading-display text-foreground mb-6">Journal</h1>
