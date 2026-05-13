@@ -174,6 +174,10 @@ export default function RetreatDetail() {
   if (loading) {
     return (
       <Layout>
+        <Helmet>
+          <title>Loading Retreat — Kinturi</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <section className="pt-32 pb-16 bg-secondary min-h-screen">
           <div className="container-page space-y-4">
             <Skeleton className="h-8 w-1/3" />
@@ -187,6 +191,11 @@ export default function RetreatDetail() {
   if (!retreat) {
     return (
       <Layout>
+        <Helmet>
+          <title>Retreat Not Found — Kinturi</title>
+          <meta name="description" content="Sorry, we couldn't find the retreat you're looking for. Explore other curated active retreats on Kinturi." />
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <section className="pt-32 pb-16 bg-secondary min-h-screen">
           <div className="container-page text-center">
             <h1 className="heading-display text-foreground mb-6">Retreat Not Found</h1>
@@ -202,6 +211,23 @@ export default function RetreatDetail() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>{`${retreat.title} — Kinturi`}</title>
+        <meta name="description" content={retreat.description.slice(0, 160)} />
+        <link rel="canonical" href={`https://kinturi.lovable.app/retreats/${retreat.slug}`} />
+        <meta property="og:title" content={`${retreat.title} — Kinturi`} />
+        <meta property="og:description" content={retreat.description.slice(0, 160)} />
+        <meta property="og:url" content={`https://kinturi.lovable.app/retreats/${retreat.slug}`} />
+        {retreat.hero_image_url && <meta property="og:image" content={retreat.hero_image_url} />}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: retreat.title,
+          description: retreat.description,
+          image: retreat.hero_image_url || undefined,
+          url: `https://kinturi.lovable.app/retreats/${retreat.slug}`,
+        })}</script>
+      </Helmet>
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px]">
         <div className="absolute inset-0">

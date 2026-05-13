@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { Helmet } from "react-helmet-async";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,7 +38,12 @@ export default function BlogPost() {
   return (
     <Layout>
       {isLoading ? (
-        <div className="pt-32 pb-16">
+        <>
+          <Helmet>
+            <title>Loading — Kinturi Blog</title>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+          <div className="pt-32 pb-16">
           <div className="container-page max-w-3xl">
             <Skeleton className="h-8 w-64 mb-4" />
             <Skeleton className="h-12 w-full mb-6" />
@@ -50,7 +56,12 @@ export default function BlogPost() {
           </div>
         </div>
       ) : error || !post ? (
-        <div className="pt-32 pb-16 text-center">
+        <>
+          <Helmet>
+            <title>Post Not Found — Kinturi Blog</title>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+          <div className="pt-32 pb-16 text-center">
           <div className="container-page">
             <h1 className="heading-display text-foreground mb-4">Post not found</h1>
             <Link to="/blog" className="text-primary hover:underline">
@@ -60,7 +71,26 @@ export default function BlogPost() {
         </div>
       ) : (
         <>
-          {/* SEO meta would go in a Helmet here */}
+          <Helmet>
+            <title>{`${post.title} — Kinturi Blog`}</title>
+            <meta name="description" content={post.excerpt || post.title} />
+            <link rel="canonical" href={`https://kinturi.lovable.app/blog/${post.slug}`} />
+            <meta property="og:title" content={`${post.title} — Kinturi Blog`} />
+            <meta property="og:description" content={post.excerpt || post.title} />
+            <meta property="og:url" content={`https://kinturi.lovable.app/blog/${post.slug}`} />
+            <meta property="og:type" content="article" />
+            {post.hero_image_url && <meta property="og:image" content={post.hero_image_url} />}
+            <script type="application/ld+json">{JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.title,
+              description: post.excerpt || post.title,
+              image: post.hero_image_url || undefined,
+              url: `https://kinturi.lovable.app/blog/${post.slug}`,
+              datePublished: post.published_at,
+              author: post.author ? { "@type": "Person", name: post.author } : undefined,
+            })}</script>
+          </Helmet>
           <article className="pt-32 pb-16">
             <div className="container-page max-w-3xl">
               {/* Back link */}
