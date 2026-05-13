@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,14 @@ export default function SearchResults() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Search Results — Kinturi</title>
+        <meta name="description" content="AI-powered search results for your ideal active retreat. Browse curated fitness holidays matching your preferences." />
+        <link rel="canonical" href={`https://kinturi.lovable.app/search-results${searchParams.toString() ? '?' + searchParams.toString() : ''}`} />
+        <meta property="og:title" content="Search Results — Kinturi" />
+        <meta property="og:description" content="AI-powered search results for your ideal active retreat. Browse curated fitness holidays matching your preferences." />
+        <meta property="og:url" content={`https://kinturi.lovable.app/search-results${searchParams.toString() ? '?' + searchParams.toString() : ''}`} />
+      </Helmet>
       <div className="min-h-screen bg-background pt-32 pb-16">
         <div className="container-page max-w-4xl mx-auto">
           {/* Search again bar */}

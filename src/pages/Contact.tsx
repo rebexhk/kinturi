@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,14 @@ export default function Contact() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Contact Kinturi — Request to Book</title>
+        <meta name="description" content="Get in touch to request a booking or ask questions about our curated active retreats and fitness holidays." />
+        <link rel="canonical" href="https://kinturi.lovable.app/contact" />
+        <meta property="og:title" content="Contact Kinturi — Request to Book" />
+        <meta property="og:description" content="Get in touch to request a booking or ask questions about our curated active retreats and fitness holidays." />
+        <meta property="og:url" content="https://kinturi.lovable.app/contact" />
+      </Helmet>
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">

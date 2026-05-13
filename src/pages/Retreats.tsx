@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
@@ -135,6 +136,14 @@ export default function Retreats() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Explore Active Retreats — Kinturi</title>
+        <meta name="description" content="Browse curated fitness holidays, yoga retreats, surf camps, and pilates escapes. Filter by destination, activity, and budget." />
+        <link rel="canonical" href="https://kinturi.lovable.app/retreats" />
+        <meta property="og:title" content="Explore Active Retreats — Kinturi" />
+        <meta property="og:description" content="Browse curated fitness holidays, yoga retreats, surf camps, and pilates escapes. Filter by destination, activity, and budget." />
+        <meta property="og:url" content="https://kinturi.lovable.app/retreats" />
+      </Helmet>
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">

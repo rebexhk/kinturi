@@ -1,8 +1,17 @@
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 
 export default function PrivacyPolicy() {
   return (
     <Layout>
+      <Helmet>
+        <title>Privacy Policy — Kinturi</title>
+        <meta name="description" content="How Kinturi collects, uses, and protects your personal data when you use our website." />
+        <link rel="canonical" href="https://kinturi.lovable.app/privacy-policy" />
+        <meta property="og:title" content="Privacy Policy — Kinturi" />
+        <meta property="og:description" content="How Kinturi collects, uses, and protects your personal data when you use our website." />
+        <meta property="og:url" content="https://kinturi.lovable.app/privacy-policy" />
+      </Helmet>
       <div className="container-page py-16 lg:py-24 max-w-3xl mx-auto">
         <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-2">Privacy Policy</h1>
         <p className="text-muted-foreground text-sm mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>

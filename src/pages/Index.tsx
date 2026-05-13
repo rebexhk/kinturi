@@ -73,6 +73,14 @@ export default function Index() {
 
   return (
     <Layout transparentHeader>
+      <Helmet>
+        <title>Kinturi — Find Your Perfect Active Escape</title>
+        <meta name="description" content="Curated fitness retreats and active escapes worldwide. AI-powered search to discover your ideal yoga, surf, or pilates holiday." />
+        <link rel="canonical" href="https://kinturi.lovable.app/" />
+        <meta property="og:title" content="Kinturi — Find Your Perfect Active Escape" />
+        <meta property="og:description" content="Curated fitness retreats and active escapes worldwide. AI-powered search to discover your ideal yoga, surf, or pilates holiday." />
+        <meta property="og:url" content="https://kinturi.lovable.app/" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center">
         <div className="absolute inset-0">

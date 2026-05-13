@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -10,6 +11,14 @@ import aboutYogaImg from "@/assets/about-yoga.jpg";
 export default function About() {
   return (
     <Layout>
+      <Helmet>
+        <title>About Kinturi — Curated Active Retreats</title>
+        <meta name="description" content="We find the world's best active retreats so you don't have to. Learn about our mission and how we curate fitness-focused holidays." />
+        <link rel="canonical" href="https://kinturi.lovable.app/about" />
+        <meta property="og:title" content="About Kinturi — Curated Active Retreats" />
+        <meta property="og:description" content="We find the world's best active retreats so you don't have to. Learn about our mission and how we curate fitness-focused holidays." />
+        <meta property="og:url" content="https://kinturi.lovable.app/about" />
+      </Helmet>
       {/* Header */}
       <section className="pt-32 pb-16 bg-secondary">
         <div className="container-page text-center">

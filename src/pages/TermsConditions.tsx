@@ -1,8 +1,17 @@
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 
 export default function TermsConditions() {
   return (
     <Layout>
+      <Helmet>
+        <title>Terms &amp; Conditions — Kinturi</title>
+        <meta name="description" content="Terms of use for the Kinturi platform. Read our conditions for browsing, booking requests, and site usage." />
+        <link rel="canonical" href="https://kinturi.lovable.app/terms-conditions" />
+        <meta property="og:title" content="Terms &amp; Conditions — Kinturi" />
+        <meta property="og:description" content="Terms of use for the Kinturi platform. Read our conditions for browsing, booking requests, and site usage." />
+        <meta property="og:url" content="https://kinturi.lovable.app/terms-conditions" />
+      </Helmet>
       <div className="container-page py-16 lg:py-24 max-w-3xl mx-auto">
         <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-2">Terms & Conditions</h1>
         <p className="text-muted-foreground text-sm mb-10">Last updated: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
