@@ -1,40 +1,46 @@
-## Retrofit "The Core Escape: Top 3 Reformer Pilates Retreats in Europe for 2026"
+# Save Content & Grammar Skill
 
-I checked your 4 existing posts and your 12 published retreats. Only the Reformer Pilates post directly references retreats from your catalogue. Here's what overlaps:
+Create a project-scoped skill at `.workspace/skills/content-voice/SKILL.md` that the agent loads automatically whenever a prompt touches copy, content, or grammar.
 
-| Post mentions | Matching retreat in your DB |
-|---|---|
-| #1 Ibiza "Explore Pilates & Wellness" | None |
-| #2 Euphoria, Mystras Greece | None |
-| #3 OM Academy, Porto | None |
-| **#4 Azulfit Surya, Fuerteventura** | **Azulfit Yoga & Pilates Retreat** ✅ |
+## What the skill will contain
 
-The other three posts (Solo Retreats 2026, Find the Right Active Retreat, What to Expect on Your First Active Retreat) are evergreen/general — they don't name specific retreats, so retro-fitting CTAs there would feel forced. Better to leave those and add CTAs when you write retreat-specific posts.
+**Frontmatter**
+- `name`: content-voice
+- `description`: Apply when writing, editing, or reviewing any user-facing copy, microcopy, headings, blog posts, meta descriptions, or grammar across the Kinturi site.
 
-### Changes to the Reformer post
+**Voice & tone (Lonely Planet / Monocle / Condé Nast Traveller)**
+- Premium travel-editorial register: confident, sensory, specific. Favours concrete detail (place names, textures, times of day) over generic adjectives ("amazing", "luxurious", "unique").
+- Sentences vary in length; lead with a hook, follow with substance. No marketing fluff, no exclamation marks, no emoji.
+- Active voice. Strong verbs. Show, don't tell.
+- Worldly but warm - never cold or corporate. Light wit is welcome; sarcasm is not.
+- Insider framing: write as a well-travelled editor recommending to a discerning friend.
 
-1. **Inline CTA button** under the Azulfit (#4) section — terracotta pill labelled **"View the Azulfit Retreat"** linking to `/retreats/azulfit-yoga-pilates-fuerteventura-spain`.
+**Grammar & mechanics**
+- British English always (organiser, centre, colour, programme, traveller). Reinforces existing core memory.
+- **Never use em dashes (—). Always use a spaced short dash ( - ) instead.** Applies to all generated copy, code comments shown to users, and edits.
+- En dashes only for true ranges (2-4 nights, Mon-Fri).
+- Oxford comma: off (house style; matches editorial travel press).
+- Numbers: spell out one-nine, numerals for 10+; always numerals for measurements, prices, times.
+- Single quotes for inline quotes; double quotes only when nested.
+- Title case for H1/H2 headings; sentence case for buttons, labels, and meta descriptions.
+- No trailing full stops in headings, buttons, nav items, or list items that aren't full sentences.
+- Avoid: "discover", "unlock", "elevate", "curated" (overused), "journey" as a verb, "nestled", "hidden gem", "world-class".
+- Prefer: precise verbs (slip into, swim out to, push through), proper nouns, time-of-day cues, sensory detail.
 
-2. **Final CTA button** at the bottom (after "Ready to Find Your Flow?") — labelled **"Browse All Pilates Retreats"** linking to `/retreats?type=Pilates` (or whichever filter param matches your listing — I'll verify before inserting).
+**Format-specific rules**
+- Meta descriptions: 50-160 chars, sentence case, end with full stop, include primary keyword naturally.
+- Page titles: under 60 chars, ` - Kinturi` suffix where it fits.
+- Blog intros: open with a scene or a sharp observation, not a definition.
+- CTAs: 2-4 words, verb-led, no full stop ("Request to book", "Plan your escape").
 
-3. **Related Retreats** at the foot of the post — set `related_retreat_ids` to:
-   - Azulfit Yoga & Pilates Retreat (Fuerteventura)
-   - Shanti-Som Pilates Retreat (Marbella)
-   - Alaya Yoga & Wine Retreat (Barcelona) — closest "European Pilates-adjacent" third option
+**Self-check before delivering copy**
+1. Any em dashes? Replace with spaced short dash.
+2. Any American spellings? Convert to British.
+3. Any banned words? Rewrite.
+4. Reads like a Condé Nast Traveller paragraph or a brochure?
 
-This gives the post one in-context button, one closing button, and a 3-card "Continue exploring" strip — without inventing CTAs for retreats you don't actually list.
+## Files
 
-### How
+- `.workspace/skills/content-voice/SKILL.md` (new)
 
-- Update the `content` JSONB of the Reformer post to insert two `<a class="blog-cta-button">…</a>` anchors at the right positions.
-- Update `related_retreat_ids` on that row with the three retreat UUIDs.
-
-Both done via a single SQL migration. No code changes needed — the rendering and styles are already in place from the previous build.
-
-### Want me to swap any of this?
-
-- Different label wording on either button?
-- Different third related retreat (or only show 2)?
-- Also add a closing CTA to the three evergreen posts pointing to `/retreats` generally?
-
-Approve and I'll run the migration.
+No code or component changes. The skill loads automatically on future prompts touching content or grammar.
